@@ -1,0 +1,157 @@
+topic,year,n_papers,n_authors,topic_share_t1_bin,cross_topic_rate_t1_bin,connectivity_t1_bin,modularity_t1_bin,topic_growth_bin,log1p_median_c2_bin,hit_rate_2yr_bin,bridge_concentration_t1_bin
+3D Shape Modeling and Analysis,2020,29,135,q1,q1,q1,q1,q3,q3,q2,low_or_mid
+3D Shape Modeling and Analysis,2021,23,117,q1,q1,q3,q2,q1,q2,q3,high
+3D Shape Modeling and Analysis,2022,28,142,q1,q1,q3,q2,q2,q1,q2,high
+3D Shape Modeling and Analysis,2023,29,137,q1,q2,q3,q2,q1,q1,q3,high
+Advanced Bandit Algorithms Research,2013,27,66,q2,q1,q1,q1,q3,q2,q1,high
+Advanced Bandit Algorithms Research,2014,28,63,q3,q1,q1,q1,q1,q2,q1,high
+Advanced Bandit Algorithms Research,2015,32,91,q3,q1,q1,q1,q2,q2,q1,high
+Advanced Bandit Algorithms Research,2016,43,119,q3,q1,q1,q2,q2,q2,q1,high
+Advanced Bandit Algorithms Research,2017,47,138,q3,q1,q1,q2,q2,q2,q1,high
+Advanced Bandit Algorithms Research,2018,47,145,q3,q2,q1,q3,q1,q2,q1,high
+Advanced Bandit Algorithms Research,2019,87,256,q2,q2,q1,q3,q3,q2,q1,high
+Advanced Bandit Algorithms Research,2020,109,327,q3,q2,q1,q3,q2,q2,q1,high
+Advanced Bandit Algorithms Research,2021,131,378,q3,q3,q2,q3,q2,q1,q1,high
+Advanced Bandit Algorithms Research,2022,129,418,q3,q3,q2,q3,q1,q1,q1,high
+Advanced Bandit Algorithms Research,2023,151,492,q2,q3,q2,q3,q2,q1,q1,high
+Advanced Image and Video Retrieval Techniques,2021,27,119,q1,q3,q2,q1,q3,q1,q2,low_or_mid
+Advanced Memory and Neural Computing,2022,21,95,q1,q1,q3,q1,q3,q2,q2,low_or_mid
+Advanced Memory and Neural Computing,2023,22,109,q1,q1,q3,q1,q1,q1,q3,high
+Advanced Neural Network Applications,2015,24,75,q2,q1,q2,q1,q3,q3,q3,high
+Advanced Neural Network Applications,2016,29,101,q3,q1,q1,q1,q1,q3,q3,low_or_mid
+Advanced Neural Network Applications,2017,43,158,q3,q1,q1,q2,q3,q3,q2,high
+Advanced Neural Network Applications,2018,83,330,q3,q1,q3,q1,q3,q3,q3,high
+Advanced Neural Network Applications,2019,132,524,q3,q1,q2,q3,q2,q3,q3,high
+Advanced Neural Network Applications,2020,202,816,q3,q2,q2,q3,q2,q3,q2,high
+Advanced Neural Network Applications,2021,236,1041,q3,q1,q3,q3,q2,q1,q3,high
+Advanced Neural Network Applications,2022,319,1360,q3,q2,q3,q3,q2,q2,q3,high
+Advanced Neural Network Applications,2023,356,1618,q3,q2,q3,q3,q1,q1,q2,high
+Advanced Vision and Imaging,2021,26,111,q1,q3,q3,q1,q3,q1,q3,low_or_mid
+Advanced Vision and Imaging,2022,38,190,q1,q1,q2,q2,q3,q3,q3,high
+Advanced Vision and Imaging,2023,55,259,q1,q1,q3,q2,q2,q1,q2,high
+Adversarial Robustness in Machine Learning,2018,51,180,q2,q1,q2,q2,q3,q3,q3,low_or_mid
+Adversarial Robustness in Machine Learning,2019,87,356,q3,q2,q2,q3,q3,q3,q3,high
+Adversarial Robustness in Machine Learning,2020,109,419,q3,q2,q3,q3,q2,q3,q2,high
+Adversarial Robustness in Machine Learning,2021,131,543,q3,q3,q3,q3,q2,q1,q2,high
+Adversarial Robustness in Machine Learning,2022,148,640,q3,q3,q3,q3,q2,q2,q1,high
+Adversarial Robustness in Machine Learning,2023,144,641,q3,q2,q3,q3,q1,q1,q2,high
+Anomaly Detection Techniques and Applications,2021,23,83,q1,q3,q1,q1,q3,q1,q2,low_or_mid
+Anomaly Detection Techniques and Applications,2022,24,137,q1,q3,q1,q2,q1,q2,q3,high
+Anomaly Detection Techniques and Applications,2023,36,181,q1,q3,q3,q1,q3,q2,q2,high
+Auction Theory and Applications,2021,20,69,q1,q3,q2,q1,q2,q1,q1,low_or_mid
+Auction Theory and Applications,2022,24,88,q1,q3,q2,q1,q2,q1,q1,high
+Auction Theory and Applications,2023,29,103,q1,q2,q2,q2,q2,q1,q1,high
+Bayesian Modeling and Causal Inference,2013,23,64,q2,q1,q1,q1,q3,q2,q1,high
+Bayesian Modeling and Causal Inference,2015,23,66,q2,q1,q1,q1,q3,q1,q1,high
+Bayesian Modeling and Causal Inference,2016,21,64,q3,q1,q1,q2,q1,q1,q1,high
+Bayesian Modeling and Causal Inference,2018,33,106,q2,q2,q1,q1,q3,q2,q1,low_or_mid
+Bayesian Modeling and Causal Inference,2019,28,83,q2,q2,q1,q2,q1,q1,q1,high
+Bayesian Modeling and Causal Inference,2020,43,140,q1,q3,q1,q2,q2,q2,q1,high
+Bayesian Modeling and Causal Inference,2021,45,146,q2,q3,q2,q3,q1,q1,q1,high
+Bayesian Modeling and Causal Inference,2022,47,183,q1,q2,q2,q3,q1,q1,q1,high
+Bayesian Modeling and Causal Inference,2023,69,244,q1,q2,q2,q3,q2,q1,q1,high
+Computational Drug Discovery Methods,2023,21,105,q1,q2,q3,q1,q3,q2,q1,low_or_mid
+Domain Adaptation and Few-Shot Learning,2017,23,87,q2,q1,q2,q2,q2,q3,q3,low_or_mid
+Domain Adaptation and Few-Shot Learning,2018,48,205,q2,q2,q2,q1,q3,q3,q3,high
+Domain Adaptation and Few-Shot Learning,2019,63,284,q2,q1,q3,q3,q2,q3,q3,high
+Domain Adaptation and Few-Shot Learning,2020,127,523,q2,q2,q3,q3,q3,q3,q3,high
+Domain Adaptation and Few-Shot Learning,2021,166,688,q3,q2,q3,q3,q2,q2,q3,high
+Domain Adaptation and Few-Shot Learning,2022,178,826,q3,q3,q3,q3,q1,q2,q2,high
+Domain Adaptation and Few-Shot Learning,2023,171,826,q3,q2,q3,q3,q1,q1,q2,high
+Explainable Artificial Intelligence (XAI),2020,35,166,q1,q2,q2,q2,q3,q3,q2,low_or_mid
+Explainable Artificial Intelligence (XAI),2021,41,166,q1,q1,q3,q1,q2,q1,q2,high
+Explainable Artificial Intelligence (XAI),2022,58,256,q1,q2,q2,q3,q2,q2,q3,high
+Explainable Artificial Intelligence (XAI),2023,97,497,q2,q3,q3,q2,q3,q1,q2,high
+Face and Expression Recognition,2022,28,133,q1,q3,q2,q1,q3,q1,q2,low_or_mid
+Face and Expression Recognition,2023,43,212,q1,q1,q3,q2,q3,q1,q1,low_or_mid
+Gaussian Processes and Bayesian Inference,2014,21,60,q2,q1,q1,q2,q3,q3,q2,high
+Gaussian Processes and Bayesian Inference,2015,28,84,q3,q1,q1,q1,q3,q3,q1,high
+Gaussian Processes and Bayesian Inference,2016,21,62,q3,q2,q1,q2,q1,q3,q3,high
+Gaussian Processes and Bayesian Inference,2017,32,100,q2,q2,q1,q2,q3,q2,q2,high
+Gaussian Processes and Bayesian Inference,2018,35,117,q2,q2,q1,q2,q1,q3,q1,high
+Gaussian Processes and Bayesian Inference,2019,36,141,q2,q2,q2,q2,q1,q2,q2,high
+Gaussian Processes and Bayesian Inference,2020,45,166,q2,q2,q3,q2,q2,q2,q2,high
+Gaussian Processes and Bayesian Inference,2021,56,184,q2,q3,q2,q3,q2,q1,q1,high
+Gaussian Processes and Bayesian Inference,2022,40,145,q2,q3,q2,q3,q1,q1,q1,high
+Gaussian Processes and Bayesian Inference,2023,41,151,q1,q2,q1,q3,q1,q1,q1,high
+Generative Adversarial Networks and Image Synthesis,2016,20,80,q2,q3,q1,q1,q2,q3,q3,high
+Generative Adversarial Networks and Image Synthesis,2017,35,138,q2,q3,q3,q1,q3,q3,q3,high
+Generative Adversarial Networks and Image Synthesis,2018,38,144,q3,q3,q2,q2,q1,q3,q3,high
+Generative Adversarial Networks and Image Synthesis,2019,61,235,q2,q3,q2,q2,q2,q3,q3,high
+Generative Adversarial Networks and Image Synthesis,2020,69,251,q2,q3,q2,q3,q1,q3,q3,high
+Generative Adversarial Networks and Image Synthesis,2021,72,275,q2,q3,q2,q3,q1,q1,q3,high
+Generative Adversarial Networks and Image Synthesis,2022,83,378,q2,q2,q2,q2,q2,q2,q3,high
+Generative Adversarial Networks and Image Synthesis,2023,106,533,q2,q3,q3,q3,q2,q2,q3,high
+Human Pose and Action Recognition,2021,25,115,q1,q2,q3,q1,q3,q1,q3,low_or_mid
+Human Pose and Action Recognition,2022,34,164,q1,q2,q3,q3,q2,q3,q3,low_or_mid
+Human Pose and Action Recognition,2023,40,209,q1,q2,q3,q3,q2,q1,q3,high
+Machine Learning and Algorithms,2013,26,79,q3,q1,q1,q1,q1,q2,q3,high
+Machine Learning and Algorithms,2014,33,92,q3,q2,q1,q2,q2,q2,q1,high
+Machine Learning and Algorithms,2015,32,90,q3,q2,q1,q1,q2,q2,q1,high
+Machine Learning and Algorithms,2016,39,114,q3,q1,q1,q2,q1,q2,q1,high
+Machine Learning and Algorithms,2017,55,169,q3,q1,q1,q2,q3,q2,q2,high
+Machine Learning and Algorithms,2018,72,246,q3,q2,q1,q3,q1,q3,q2,high
+Machine Learning and Algorithms,2019,93,300,q3,q2,q2,q3,q1,q2,q2,high
+Machine Learning and Algorithms,2020,116,403,q3,q2,q1,q3,q2,q2,q2,high
+Machine Learning and Algorithms,2021,121,447,q3,q3,q2,q3,q1,q1,q2,high
+Machine Learning and Algorithms,2022,195,772,q3,q3,q2,q3,q3,q1,q2,high
+Machine Learning and Algorithms,2023,195,858,q3,q3,q3,q3,q1,q1,q2,high
+Markov Chains and Monte Carlo Methods,2019,20,60,q1,q3,q2,q1,q3,q2,q2,high
+Markov Chains and Monte Carlo Methods,2020,20,67,q1,q3,q1,q1,q1,q2,q1,high
+Markov Chains and Monte Carlo Methods,2023,22,62,q1,q3,q1,q1,q3,q1,q1,low_or_mid
+Multimodal Machine Learning Applications,2018,24,96,q2,q3,q3,q1,q2,q3,q2,high
+Multimodal Machine Learning Applications,2019,24,103,q2,q2,q2,q1,q1,q3,q2,high
+Multimodal Machine Learning Applications,2020,27,122,q1,q1,q2,q2,q1,q3,q3,high
+Multimodal Machine Learning Applications,2021,45,222,q1,q1,q3,q2,q3,q2,q3,high
+Multimodal Machine Learning Applications,2022,84,497,q1,q3,q3,q3,q3,q3,q3,high
+Multimodal Machine Learning Applications,2023,163,965,q2,q2,q3,q2,q3,q3,q3,high
+Music and Audio Processing,2023,35,211,q1,q1,q3,q1,q3,q2,q3,high
+Natural Language Processing Techniques,2020,20,88,q1,q1,q2,q1,q2,q3,q2,low_or_mid
+Natural Language Processing Techniques,2021,28,134,q1,q1,q2,q2,q2,q1,q3,low_or_mid
+Natural Language Processing Techniques,2022,26,148,q1,q1,q3,q2,q1,q3,q3,low_or_mid
+Natural Language Processing Techniques,2023,59,299,q1,q1,q3,q1,q3,q1,q3,high
+Neural dynamics and brain function,2020,27,101,q1,q1,q3,q1,q3,q2,q1,high
+Neural dynamics and brain function,2021,23,93,q1,q1,q2,q2,q1,q2,q3,high
+Neural dynamics and brain function,2022,21,82,q1,q1,q3,q2,q1,q1,q1,high
+Neural dynamics and brain function,2023,37,160,q1,q1,q2,q1,q3,q1,q2,low_or_mid
+Privacy-Preserving Technologies in Data,2019,33,101,q1,q1,q1,q1,q3,q2,q2,low_or_mid
+Privacy-Preserving Technologies in Data,2020,37,119,q2,q1,q2,q1,q1,q3,q3,high
+Privacy-Preserving Technologies in Data,2021,58,228,q1,q3,q2,q1,q3,q2,q3,high
+Privacy-Preserving Technologies in Data,2022,70,302,q2,q2,q3,q3,q2,q2,q2,high
+Privacy-Preserving Technologies in Data,2023,102,410,q2,q2,q3,q1,q2,q1,q2,high
+Reinforcement Learning in Robotics,2017,32,141,q2,q2,q2,q1,q3,q3,q3,high
+Reinforcement Learning in Robotics,2018,59,208,q2,q3,q3,q1,q3,q3,q3,high
+Reinforcement Learning in Robotics,2019,89,352,q3,q1,q2,q2,q2,q3,q2,high
+Reinforcement Learning in Robotics,2020,131,490,q3,q2,q3,q2,q2,q3,q2,high
+Reinforcement Learning in Robotics,2021,170,676,q3,q3,q3,q2,q2,q1,q2,high
+Reinforcement Learning in Robotics,2022,176,753,q3,q3,q3,q2,q1,q1,q1,high
+Reinforcement Learning in Robotics,2023,170,790,q3,q1,q3,q3,q1,q1,q1,high
+Sparse and Compressive Sensing Techniques,2013,36,92,q3,q2,q1,q2,q3,q2,q2,high
+Sparse and Compressive Sensing Techniques,2014,44,128,q3,q2,q1,q2,q2,q3,q2,high
+Sparse and Compressive Sensing Techniques,2015,38,97,q3,q1,q1,q2,q1,q2,q2,high
+Sparse and Compressive Sensing Techniques,2016,53,140,q3,q2,q1,q3,q2,q2,q2,high
+Sparse and Compressive Sensing Techniques,2017,39,114,q3,q1,q1,q3,q1,q2,q1,high
+Sparse and Compressive Sensing Techniques,2018,40,118,q3,q2,q1,q3,q1,q2,q1,high
+Sparse and Compressive Sensing Techniques,2019,61,179,q2,q1,q1,q2,q2,q2,q1,high
+Sparse and Compressive Sensing Techniques,2020,53,166,q2,q3,q1,q3,q1,q2,q2,high
+Sparse and Compressive Sensing Techniques,2021,52,174,q2,q3,q1,q3,q1,q1,q1,high
+Sparse and Compressive Sensing Techniques,2022,41,144,q2,q2,q1,q3,q1,q1,q2,high
+Sparse and Compressive Sensing Techniques,2023,48,176,q1,q3,q2,q1,q2,q1,q1,high
+Statistical Methods and Inference,2019,28,77,q1,q2,q1,q1,q3,q2,q1,low_or_mid
+Statistical Methods and Inference,2020,30,101,q1,q3,q1,q2,q1,q1,q1,high
+Statistical Methods and Inference,2022,29,107,q1,q3,q1,q1,q3,q1,q1,low_or_mid
+Statistical Methods and Inference,2023,35,120,q1,q3,q1,q2,q2,q1,q1,high
+Stochastic Gradient Optimization Techniques,2016,21,72,q2,q3,q1,q1,q1,q2,q1,low_or_mid
+Stochastic Gradient Optimization Techniques,2017,34,102,q2,q2,q2,q1,q3,q3,q3,high
+Stochastic Gradient Optimization Techniques,2018,59,180,q3,q2,q1,q2,q2,q3,q2,high
+Stochastic Gradient Optimization Techniques,2019,72,234,q3,q3,q2,q3,q1,q3,q2,high
+Stochastic Gradient Optimization Techniques,2020,58,195,q2,q3,q2,q3,q1,q3,q2,high
+Stochastic Gradient Optimization Techniques,2021,88,289,q2,q3,q2,q2,q3,q1,q1,high
+Stochastic Gradient Optimization Techniques,2022,108,381,q2,q3,q2,q3,q2,q1,q1,high
+Stochastic Gradient Optimization Techniques,2023,80,283,q2,q3,q2,q3,q1,q1,q1,high
+Topic Modeling,2018,30,119,q1,q3,q2,q1,q3,q3,q2,high
+Topic Modeling,2019,32,118,q2,q2,q3,q2,q1,q3,q3,high
+Topic Modeling,2020,49,280,q2,q3,q2,q2,q2,q3,q3,high
+Topic Modeling,2021,49,222,q2,q1,q3,q1,q1,q2,q3,high
+Topic Modeling,2022,96,610,q2,q1,q3,q2,q3,q3,q3,high
+Topic Modeling,2023,185,1073,q2,q1,q3,q1,q3,q3,q3,high
