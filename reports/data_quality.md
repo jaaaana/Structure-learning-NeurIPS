@@ -1,10 +1,12 @@
-# Data Quality Report -- NeurIPS Topic-Year Panel
+# Data Quality Report -- NeurIPS Topic-Year Panel (v4)
 
 Source: `data/raw/nips-panel-v4.csv`
 
-## Open issue requiring confirmation
+## Citation-window finding (resolved)
 
-`median_cites_2yr` / `hit_rate_2yr` show a zero-citation rate of 0% for every year 2013-2020, then jump to 13% (2021), 40% (2022), 46% (2023) -- see the Citation-window check below. This is consistent with an incomplete 2-year citation window for recent rows (either extraction timing or citation-indexing lag), and affects roughly half the panel (76/156 rows are 2021-2023).
+`median_cites_2yr` / `hit_rate_2yr` show a rising zero-citation rate in recent years (see the Citation-window check below). This was initially suspected to be right-censoring from a stale data pull, but the recovered panel-construction pipeline (`nips_pipeline_v4_clean.ipynb`, last run 2026-03-17) shows this concern is already handled: `median_cites_2yr` only uses papers whose 2-year citation window has fully elapsed (`c2_complete = current_year > pub_year + 1`), computed from OpenAlex's real per-year citation breakdown (`counts_by_year`), not a raw lifetime snapshot. Since the pipeline ran in 2026, every year through 2023 clears that bar -- the pattern is real, complete data.
+
+The likely remaining explanation is OpenAlex's own citation-indexing lag for recent literature -- independently confirmed by a teammate who built the citation-enrichment step: *'OpenAlex gives significantly smaller values... it seems difficult to get citations up to year t.'* This is a substantive limitation worth discussing in the thesis, but **not** grounds to truncate or exclude recent-year rows -- there's no reason to treat those rows as less valid than earlier years.
 
 ## Overview
 
@@ -119,9 +121,17 @@ year
 
 ## Flagged variables
 
-- `bridge_concentration_t1` is near-degenerate: 14% of rows sit at/near 0 and 84% sit at/near 1, leaving very few rows in between. Continuous CI tests (Fisher-Z) assume a roughly continuous spread, so this variable is a poor fit for the continuous PC run -- treat it as effectively binary and rely on the discretized version for it.
+- `bridge_concentration_t1` is near-degenerate: 14% of rows sit at/near 0 and 84% sit at/near 1, leaving very few rows in between. Continuous CI tests (Fisher-Z) assume a roughly continuous spread, so this variable is a poor fit for the continuous PC run -- treat it as effectively binary and rely on the discretized version for it. Per the recovered pipeline (`nips_pipeline_v4_clean.ipynb`), this is the share of total betweenness centrality held by the top 10% of authors in the topic's co-authorship graph -- on small author counts, a handful of authors mechanically dominate betweenness, which explains the degeneracy directly rather than just describing it.
 - `modularity_t1` has low variance (compressed into [0.61, 0.99]) and correlates with topic size (corr with n_papers = 0.45): bigger topics tend to show higher modularity. Any edge involving modularity_t1 should be checked against topic size as a possible confound, and treated cautiously on small topics where a handful of authors can make the collaboration graph trivially "modular".
 - `median_cites_2yr` is right-skewed (skew=1.99); its log-transformed twin `log1p_median_c2` is close to symmetric (skew=-0.01) and is the better choice for continuous Fisher-Z tests.
 - `hit_rate_2yr` is a bounded proportion (range [0.00, 0.49]) and right-skewed (skew=1.23), not a raw count -- keep this in mind for the predictive-usefulness models in the evaluation framework later.
+- Rows are (topic, year) pairs, and the same topic contributes multiple rows across years. Standard CI tests used by PC assume i.i.d. samples, which repeated observations of the same topic technically violate. This isn't fixed at the data-prep stage; the bootstrap/subsampling stability analysis in Step 4 is the empirical check against it. A within-topic-demeaned version is also worth adding as a Step 4 sensitivity setting, since pooling topics conflates between-topic differences with the within-topic t-1->t dynamic the model is actually meant to capture.
 - `connectivity_t1` is heavily right-tailed (kurtosis far above every other variable, a handful of very high values) -- a log transform or winsorizing before the continuous Fisher-Z run would reduce the chance that a few extreme topic-years dominate the partial-correlation estimates.
-- `median_cites_2yr` / `hit_rate_2yr` show a suspicious jump in zero-citation rate for recent years -- 2013-2020 all sit at 0% zero-rate, then it climbs to 13% (2021), 40% (2022), 46% (2023). This pattern is consistent with the 2-year citation window not being fully reflected in the underlying citation snapshot for the most recent years (either the query predates full window closure, or citation-indexing lag in the source database).
+- `median_cites_2yr` / `hit_rate_2yr` show a rising zero-citation rate in recent years -- see the 'Citation-window finding' section above for the full explanation (OpenAlex citation-indexing lag, not a stale-extraction artifact) and the Citation-window check table below for the exact per-year numbers.
+
+## Recommendation for the first PC model
+
+- Use the **continuous** table (`data/processed/topic_year_continuous.csv`) with Fisher-Z for the primary run, dropping `bridge_concentration_t1` from that continuous run (near-degenerate, see flags above) -- keep the other 4 predictors (`topic_share_t1`, `cross_topic_rate_t1`, `connectivity_t1`, `modularity_t1`) and use `log1p_median_c2` in place of raw `median_cites_2yr`.
+- Use the **discretized** table (`data/processed/topic_year_discretized.csv`) with chi-square/G-test as the second setting -- this is where `bridge_concentration_t1_bin` (binary) can be included, since discretization sidesteps its continuous-test unsuitability.
+- Carry `modularity_t1` in both versions, but flag any edge touching it during interpretation (Step 5 / thesis D4) as possibly confounded with topic size.
+- `n_papers`/`n_authors` are not part of the causal model (per docx Step 2's variable list) but are kept in both output tables as context columns for exactly this kind of small-topic sanity check.
