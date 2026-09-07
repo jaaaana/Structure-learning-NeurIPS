@@ -1,0 +1,178 @@
+{
+  "version": "v5",
+  "thresholds": {
+    "stable": 0.7,
+    "candidate": 0.3,
+    "gap": 0.3
+  },
+  "main_graph": {
+    "setting": {
+      "representation": "continuous",
+      "indep_test": "fisherz",
+      "alpha": 0.05,
+      "constrained": true
+    },
+    "edges": [
+      {
+        "src": "topic_share_t1",
+        "dst": "topic_share_t",
+        "tier": "stable",
+        "mean_rate": 1.0
+      },
+      {
+        "src": "year",
+        "dst": "cross_topic_rate_t1",
+        "tier": "stable",
+        "mean_rate": 0.777
+      },
+      {
+        "src": "cross_topic_rate_t1",
+        "dst": "log1p_median_c2",
+        "tier": "candidate",
+        "mean_rate": 0.64
+      },
+      {
+        "src": "year",
+        "dst": "connectivity_t1_log",
+        "tier": "stable",
+        "mean_rate": 0.967
+      },
+      {
+        "src": "year",
+        "dst": "topic_share_t",
+        "tier": "ambiguous",
+        "mean_rate": 0.524
+      },
+      {
+        "src": "year",
+        "dst": "log1p_median_c2",
+        "tier": "stable",
+        "mean_rate": 0.935
+      }
+    ]
+  },
+  "tiers": {
+    "stable": [
+      {
+        "from": "topic_share_t1",
+        "to": "topic_share_t",
+        "continuous_rate": 1.0,
+        "discretized_rate": 1.0,
+        "mean_rate": 1.0,
+        "gap": 0.0
+      },
+      {
+        "from": "year",
+        "to": "connectivity_t1",
+        "continuous_rate": 1.0,
+        "discretized_rate": 0.934,
+        "mean_rate": 0.967,
+        "gap": 0.066
+      },
+      {
+        "from": "year",
+        "to": "log1p_median_c2",
+        "continuous_rate": 0.97,
+        "discretized_rate": 0.9,
+        "mean_rate": 0.935,
+        "gap": 0.07
+      },
+      {
+        "from": "year",
+        "to": "cross_topic_rate_t1",
+        "continuous_rate": 0.832,
+        "discretized_rate": 0.722,
+        "mean_rate": 0.777,
+        "gap": 0.11
+      }
+    ],
+    "candidate": [
+      {
+        "from": "cross_topic_rate_t1",
+        "to": "log1p_median_c2",
+        "continuous_rate": 0.496,
+        "discretized_rate": 0.784,
+        "mean_rate": 0.64,
+        "gap": 0.288
+      },
+      {
+        "from": "year",
+        "to": "modularity_t1",
+        "continuous_rate": 0.298,
+        "discretized_rate": 0.566,
+        "mean_rate": 0.432,
+        "gap": 0.268
+      }
+    ],
+    "ambiguous": [
+      {
+        "from": "year",
+        "to": "topic_share_t",
+        "continuous_rate": 0.684,
+        "discretized_rate": 0.364,
+        "mean_rate": 0.524,
+        "gap": 0.32
+      },
+      {
+        "from": "year",
+        "to": "topic_share_t1",
+        "continuous_rate": 0.02,
+        "discretized_rate": 0.62,
+        "mean_rate": 0.32,
+        "gap": 0.6
+      },
+      {
+        "from": "connectivity_t1",
+        "to": "log1p_median_c2",
+        "continuous_rate": 0.022,
+        "discretized_rate": 0.596,
+        "mean_rate": 0.309,
+        "gap": 0.574
+      },
+      {
+        "from": "connectivity_t1",
+        "to": "topic_share_t",
+        "continuous_rate": 0.002,
+        "discretized_rate": 0.328,
+        "mean_rate": 0.165,
+        "gap": 0.326
+      },
+      {
+        "from": "cross_topic_rate_t1",
+        "to": "topic_share_t",
+        "continuous_rate": 0.006,
+        "discretized_rate": 0.316,
+        "mean_rate": 0.161,
+        "gap": 0.31
+      }
+    ],
+    "excluded": [
+      {
+        "from": "modularity_t1",
+        "to": "log1p_median_c2",
+        "continuous_rate": 0.37,
+        "discretized_rate": 0.506,
+        "mean_rate": 0.438,
+        "gap": 0.136
+      },
+      {
+        "from": "modularity_t1",
+        "to": "topic_share_t",
+        "continuous_rate": 0.056,
+        "discretized_rate": 0.078,
+        "mean_rate": 0.067,
+        "gap": 0.022
+      }
+    ],
+    "weak": [
+      {
+        "from": "topic_share_t1",
+        "to": "log1p_median_c2",
+        "continuous_rate": 0.004,
+        "discretized_rate": 0.16,
+        "mean_rate": 0.082,
+        "gap": 0.156
+      }
+    ]
+  }
+}

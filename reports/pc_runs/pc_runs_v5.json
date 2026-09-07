@@ -1,0 +1,1361 @@
+[
+  {
+    "indep_test": "fisherz",
+    "alpha": 0.01,
+    "constrained": true,
+    "n_rows": 127,
+    "n_directed": 5,
+    "n_undirected": 0,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "topic_share_t1",
+        "topic_share_t"
+      ],
+      [
+        "year",
+        "cross_topic_rate_t1"
+      ],
+      [
+        "year",
+        "connectivity_t1_log"
+      ],
+      [
+        "year",
+        "topic_share_t"
+      ],
+      [
+        "year",
+        "log1p_median_c2"
+      ]
+    ],
+    "undirected_edges": [],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "main"
+  },
+  {
+    "indep_test": "fisherz",
+    "alpha": 0.01,
+    "constrained": false,
+    "n_rows": 127,
+    "n_directed": 4,
+    "n_undirected": 1,
+    "n_other": 0,
+    "n_temporal_violations": 4,
+    "directed_edges": [
+      [
+        "cross_topic_rate_t1",
+        "year"
+      ],
+      [
+        "connectivity_t1_log",
+        "year"
+      ],
+      [
+        "topic_share_t",
+        "year"
+      ],
+      [
+        "log1p_median_c2",
+        "year"
+      ]
+    ],
+    "undirected_edges": [
+      [
+        "topic_share_t",
+        "topic_share_t1"
+      ]
+    ],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "main"
+  },
+  {
+    "indep_test": "fisherz",
+    "alpha": 0.05,
+    "constrained": true,
+    "n_rows": 127,
+    "n_directed": 6,
+    "n_undirected": 0,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "topic_share_t1",
+        "topic_share_t"
+      ],
+      [
+        "year",
+        "cross_topic_rate_t1"
+      ],
+      [
+        "cross_topic_rate_t1",
+        "log1p_median_c2"
+      ],
+      [
+        "year",
+        "connectivity_t1_log"
+      ],
+      [
+        "year",
+        "topic_share_t"
+      ],
+      [
+        "year",
+        "log1p_median_c2"
+      ]
+    ],
+    "undirected_edges": [],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "main"
+  },
+  {
+    "indep_test": "fisherz",
+    "alpha": 0.05,
+    "constrained": false,
+    "n_rows": 127,
+    "n_directed": 4,
+    "n_undirected": 4,
+    "n_other": 0,
+    "n_temporal_violations": 1,
+    "directed_edges": [
+      [
+        "modularity_t1",
+        "topic_share_t1"
+      ],
+      [
+        "topic_share_t",
+        "topic_share_t1"
+      ],
+      [
+        "modularity_t1",
+        "connectivity_t1_log"
+      ],
+      [
+        "year",
+        "connectivity_t1_log"
+      ]
+    ],
+    "undirected_edges": [
+      [
+        "cross_topic_rate_t1",
+        "year"
+      ],
+      [
+        "cross_topic_rate_t1",
+        "log1p_median_c2"
+      ],
+      [
+        "topic_share_t",
+        "year"
+      ],
+      [
+        "log1p_median_c2",
+        "year"
+      ]
+    ],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "main"
+  },
+  {
+    "indep_test": "fisherz",
+    "alpha": 0.1,
+    "constrained": true,
+    "n_rows": 127,
+    "n_directed": 7,
+    "n_undirected": 0,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "topic_share_t1",
+        "topic_share_t"
+      ],
+      [
+        "year",
+        "cross_topic_rate_t1"
+      ],
+      [
+        "cross_topic_rate_t1",
+        "log1p_median_c2"
+      ],
+      [
+        "year",
+        "connectivity_t1_log"
+      ],
+      [
+        "modularity_t1",
+        "log1p_median_c2"
+      ],
+      [
+        "year",
+        "topic_share_t"
+      ],
+      [
+        "year",
+        "log1p_median_c2"
+      ]
+    ],
+    "undirected_edges": [],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "main"
+  },
+  {
+    "indep_test": "fisherz",
+    "alpha": 0.1,
+    "constrained": false,
+    "n_rows": 127,
+    "n_directed": 4,
+    "n_undirected": 5,
+    "n_other": 0,
+    "n_temporal_violations": 1,
+    "directed_edges": [
+      [
+        "modularity_t1",
+        "topic_share_t1"
+      ],
+      [
+        "topic_share_t",
+        "topic_share_t1"
+      ],
+      [
+        "modularity_t1",
+        "connectivity_t1_log"
+      ],
+      [
+        "year",
+        "connectivity_t1_log"
+      ]
+    ],
+    "undirected_edges": [
+      [
+        "cross_topic_rate_t1",
+        "year"
+      ],
+      [
+        "cross_topic_rate_t1",
+        "log1p_median_c2"
+      ],
+      [
+        "log1p_median_c2",
+        "modularity_t1"
+      ],
+      [
+        "topic_share_t",
+        "year"
+      ],
+      [
+        "log1p_median_c2",
+        "year"
+      ]
+    ],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "main"
+  },
+  {
+    "indep_test": "chisq",
+    "alpha": 0.01,
+    "constrained": true,
+    "n_rows": 127,
+    "n_directed": 3,
+    "n_undirected": 0,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "topic_share_t1_bin",
+        "topic_share_t_bin"
+      ],
+      [
+        "year_bin",
+        "connectivity_t1_bin"
+      ],
+      [
+        "year_bin",
+        "log1p_median_c2_bin"
+      ]
+    ],
+    "undirected_edges": [],
+    "other_edges": [],
+    "representation": "discretized",
+    "group": "main"
+  },
+  {
+    "indep_test": "chisq",
+    "alpha": 0.01,
+    "constrained": false,
+    "n_rows": 127,
+    "n_directed": 0,
+    "n_undirected": 3,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [],
+    "undirected_edges": [
+      [
+        "topic_share_t1_bin",
+        "topic_share_t_bin"
+      ],
+      [
+        "connectivity_t1_bin",
+        "year_bin"
+      ],
+      [
+        "log1p_median_c2_bin",
+        "year_bin"
+      ]
+    ],
+    "other_edges": [],
+    "representation": "discretized",
+    "group": "main"
+  },
+  {
+    "indep_test": "chisq",
+    "alpha": 0.05,
+    "constrained": true,
+    "n_rows": 127,
+    "n_directed": 5,
+    "n_undirected": 0,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "year_bin",
+        "topic_share_t1_bin"
+      ],
+      [
+        "topic_share_t1_bin",
+        "topic_share_t_bin"
+      ],
+      [
+        "cross_topic_rate_t1_bin",
+        "log1p_median_c2_bin"
+      ],
+      [
+        "year_bin",
+        "connectivity_t1_bin"
+      ],
+      [
+        "year_bin",
+        "log1p_median_c2_bin"
+      ]
+    ],
+    "undirected_edges": [],
+    "other_edges": [],
+    "representation": "discretized",
+    "group": "main"
+  },
+  {
+    "indep_test": "chisq",
+    "alpha": 0.05,
+    "constrained": false,
+    "n_rows": 127,
+    "n_directed": 2,
+    "n_undirected": 3,
+    "n_other": 0,
+    "n_temporal_violations": 1,
+    "directed_edges": [
+      [
+        "year_bin",
+        "topic_share_t1_bin"
+      ],
+      [
+        "topic_share_t_bin",
+        "topic_share_t1_bin"
+      ]
+    ],
+    "undirected_edges": [
+      [
+        "cross_topic_rate_t1_bin",
+        "log1p_median_c2_bin"
+      ],
+      [
+        "connectivity_t1_bin",
+        "year_bin"
+      ],
+      [
+        "log1p_median_c2_bin",
+        "year_bin"
+      ]
+    ],
+    "other_edges": [],
+    "representation": "discretized",
+    "group": "main"
+  },
+  {
+    "indep_test": "chisq",
+    "alpha": 0.1,
+    "constrained": true,
+    "n_rows": 127,
+    "n_directed": 4,
+    "n_undirected": 0,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "topic_share_t1_bin",
+        "topic_share_t_bin"
+      ],
+      [
+        "year_bin",
+        "cross_topic_rate_t1_bin"
+      ],
+      [
+        "year_bin",
+        "connectivity_t1_bin"
+      ],
+      [
+        "year_bin",
+        "log1p_median_c2_bin"
+      ]
+    ],
+    "undirected_edges": [],
+    "other_edges": [],
+    "representation": "discretized",
+    "group": "main"
+  },
+  {
+    "indep_test": "chisq",
+    "alpha": 0.1,
+    "constrained": false,
+    "n_rows": 127,
+    "n_directed": 4,
+    "n_undirected": 1,
+    "n_other": 0,
+    "n_temporal_violations": 2,
+    "directed_edges": [
+      [
+        "cross_topic_rate_t1_bin",
+        "connectivity_t1_bin"
+      ],
+      [
+        "cross_topic_rate_t1_bin",
+        "year_bin"
+      ],
+      [
+        "year_bin",
+        "connectivity_t1_bin"
+      ],
+      [
+        "log1p_median_c2_bin",
+        "year_bin"
+      ]
+    ],
+    "undirected_edges": [
+      [
+        "topic_share_t1_bin",
+        "topic_share_t_bin"
+      ]
+    ],
+    "other_edges": [],
+    "representation": "discretized",
+    "group": "main"
+  },
+  {
+    "indep_test": "kci",
+    "alpha": 0.01,
+    "constrained": true,
+    "n_rows": 127,
+    "n_directed": 6,
+    "n_undirected": 0,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "topic_share_t1",
+        "topic_share_t"
+      ],
+      [
+        "year",
+        "cross_topic_rate_t1"
+      ],
+      [
+        "year",
+        "connectivity_t1_log"
+      ],
+      [
+        "connectivity_t1_log",
+        "log1p_median_c2"
+      ],
+      [
+        "year",
+        "modularity_t1"
+      ],
+      [
+        "year",
+        "log1p_median_c2"
+      ]
+    ],
+    "undirected_edges": [],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "main"
+  },
+  {
+    "indep_test": "kci",
+    "alpha": 0.01,
+    "constrained": false,
+    "n_rows": 127,
+    "n_directed": 6,
+    "n_undirected": 2,
+    "n_other": 0,
+    "n_temporal_violations": 5,
+    "directed_edges": [
+      [
+        "modularity_t1",
+        "topic_share_t1"
+      ],
+      [
+        "topic_share_t",
+        "topic_share_t1"
+      ],
+      [
+        "cross_topic_rate_t1",
+        "year"
+      ],
+      [
+        "connectivity_t1_log",
+        "year"
+      ],
+      [
+        "modularity_t1",
+        "year"
+      ],
+      [
+        "log1p_median_c2",
+        "year"
+      ]
+    ],
+    "undirected_edges": [
+      [
+        "cross_topic_rate_t1",
+        "log1p_median_c2"
+      ],
+      [
+        "connectivity_t1_log",
+        "modularity_t1"
+      ]
+    ],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "main"
+  },
+  {
+    "indep_test": "kci",
+    "alpha": 0.05,
+    "constrained": true,
+    "n_rows": 127,
+    "n_directed": 6,
+    "n_undirected": 0,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "topic_share_t1",
+        "topic_share_t"
+      ],
+      [
+        "year",
+        "cross_topic_rate_t1"
+      ],
+      [
+        "year",
+        "connectivity_t1_log"
+      ],
+      [
+        "connectivity_t1_log",
+        "log1p_median_c2"
+      ],
+      [
+        "year",
+        "modularity_t1"
+      ],
+      [
+        "year",
+        "log1p_median_c2"
+      ]
+    ],
+    "undirected_edges": [],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "main"
+  },
+  {
+    "indep_test": "kci",
+    "alpha": 0.05,
+    "constrained": false,
+    "n_rows": 127,
+    "n_directed": 7,
+    "n_undirected": 1,
+    "n_other": 0,
+    "n_temporal_violations": 4,
+    "directed_edges": [
+      [
+        "topic_share_t1",
+        "modularity_t1"
+      ],
+      [
+        "cross_topic_rate_t1",
+        "year"
+      ],
+      [
+        "modularity_t1",
+        "connectivity_t1_log"
+      ],
+      [
+        "connectivity_t1_log",
+        "year"
+      ],
+      [
+        "log1p_median_c2",
+        "connectivity_t1_log"
+      ],
+      [
+        "year",
+        "modularity_t1"
+      ],
+      [
+        "log1p_median_c2",
+        "year"
+      ]
+    ],
+    "undirected_edges": [
+      [
+        "topic_share_t",
+        "topic_share_t1"
+      ]
+    ],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "main"
+  },
+  {
+    "indep_test": "kci",
+    "alpha": 0.1,
+    "constrained": true,
+    "n_rows": 127,
+    "n_directed": 7,
+    "n_undirected": 0,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "topic_share_t1",
+        "topic_share_t"
+      ],
+      [
+        "year",
+        "cross_topic_rate_t1"
+      ],
+      [
+        "year",
+        "connectivity_t1_log"
+      ],
+      [
+        "connectivity_t1_log",
+        "log1p_median_c2"
+      ],
+      [
+        "year",
+        "modularity_t1"
+      ],
+      [
+        "year",
+        "topic_share_t"
+      ],
+      [
+        "year",
+        "log1p_median_c2"
+      ]
+    ],
+    "undirected_edges": [],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "main"
+  },
+  {
+    "indep_test": "kci",
+    "alpha": 0.1,
+    "constrained": false,
+    "n_rows": 127,
+    "n_directed": 8,
+    "n_undirected": 1,
+    "n_other": 0,
+    "n_temporal_violations": 3,
+    "directed_edges": [
+      [
+        "topic_share_t1",
+        "modularity_t1"
+      ],
+      [
+        "cross_topic_rate_t1",
+        "year"
+      ],
+      [
+        "connectivity_t1_log",
+        "modularity_t1"
+      ],
+      [
+        "connectivity_t1_log",
+        "year"
+      ],
+      [
+        "connectivity_t1_log",
+        "log1p_median_c2"
+      ],
+      [
+        "year",
+        "modularity_t1"
+      ],
+      [
+        "topic_share_t",
+        "year"
+      ],
+      [
+        "year",
+        "log1p_median_c2"
+      ]
+    ],
+    "undirected_edges": [
+      [
+        "topic_share_t",
+        "topic_share_t1"
+      ]
+    ],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "main"
+  },
+  {
+    "indep_test": "fisherz",
+    "alpha": 0.05,
+    "constrained": true,
+    "n_rows": 127,
+    "n_directed": 4,
+    "n_undirected": 0,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "year",
+        "topic_share_t1"
+      ],
+      [
+        "year",
+        "cross_topic_rate_t1"
+      ],
+      [
+        "year",
+        "connectivity_t1_log"
+      ],
+      [
+        "modularity_t1",
+        "topic_growth"
+      ]
+    ],
+    "undirected_edges": [],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "sensitivity_outcome:topic_growth"
+  },
+  {
+    "indep_test": "chisq",
+    "alpha": 0.05,
+    "constrained": true,
+    "n_rows": 127,
+    "n_directed": 3,
+    "n_undirected": 0,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "year_bin",
+        "topic_share_t1_bin"
+      ],
+      [
+        "year_bin",
+        "cross_topic_rate_t1_bin"
+      ],
+      [
+        "year_bin",
+        "connectivity_t1_bin"
+      ]
+    ],
+    "undirected_edges": [],
+    "other_edges": [],
+    "representation": "discretized",
+    "group": "sensitivity_outcome:topic_growth"
+  },
+  {
+    "indep_test": "fisherz",
+    "alpha": 0.05,
+    "constrained": false,
+    "n_rows": 127,
+    "n_directed": 4,
+    "n_undirected": 2,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "modularity_t1",
+        "topic_share_t1"
+      ],
+      [
+        "year",
+        "topic_share_t1"
+      ],
+      [
+        "modularity_t1",
+        "connectivity_t1_log"
+      ],
+      [
+        "year",
+        "connectivity_t1_log"
+      ]
+    ],
+    "undirected_edges": [
+      [
+        "cross_topic_rate_t1",
+        "year"
+      ],
+      [
+        "modularity_t1",
+        "topic_growth"
+      ]
+    ],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "sensitivity_outcome:topic_growth"
+  },
+  {
+    "indep_test": "chisq",
+    "alpha": 0.05,
+    "constrained": false,
+    "n_rows": 127,
+    "n_directed": 4,
+    "n_undirected": 0,
+    "n_other": 0,
+    "n_temporal_violations": 2,
+    "directed_edges": [
+      [
+        "cross_topic_rate_t1_bin",
+        "topic_share_t1_bin"
+      ],
+      [
+        "year_bin",
+        "topic_share_t1_bin"
+      ],
+      [
+        "cross_topic_rate_t1_bin",
+        "year_bin"
+      ],
+      [
+        "connectivity_t1_bin",
+        "year_bin"
+      ]
+    ],
+    "undirected_edges": [],
+    "other_edges": [],
+    "representation": "discretized",
+    "group": "sensitivity_outcome:topic_growth"
+  },
+  {
+    "indep_test": "fisherz",
+    "alpha": 0.05,
+    "constrained": true,
+    "n_rows": 127,
+    "n_directed": 4,
+    "n_undirected": 0,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "year",
+        "topic_share_t1"
+      ],
+      [
+        "year",
+        "cross_topic_rate_t1"
+      ],
+      [
+        "year",
+        "connectivity_t1_log"
+      ],
+      [
+        "connectivity_t1_log",
+        "hit_rate_2yr"
+      ]
+    ],
+    "undirected_edges": [],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "sensitivity_outcome:hit_rate_2yr"
+  },
+  {
+    "indep_test": "chisq",
+    "alpha": 0.05,
+    "constrained": true,
+    "n_rows": 127,
+    "n_directed": 5,
+    "n_undirected": 0,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "year_bin",
+        "topic_share_t1_bin"
+      ],
+      [
+        "year_bin",
+        "cross_topic_rate_t1_bin"
+      ],
+      [
+        "cross_topic_rate_t1_bin",
+        "hit_rate_2yr_bin"
+      ],
+      [
+        "year_bin",
+        "connectivity_t1_bin"
+      ],
+      [
+        "connectivity_t1_bin",
+        "hit_rate_2yr_bin"
+      ]
+    ],
+    "undirected_edges": [],
+    "other_edges": [],
+    "representation": "discretized",
+    "group": "sensitivity_outcome:hit_rate_2yr"
+  },
+  {
+    "indep_test": "fisherz",
+    "alpha": 0.05,
+    "constrained": false,
+    "n_rows": 127,
+    "n_directed": 4,
+    "n_undirected": 1,
+    "n_other": 0,
+    "n_temporal_violations": 1,
+    "directed_edges": [
+      [
+        "modularity_t1",
+        "topic_share_t1"
+      ],
+      [
+        "year",
+        "topic_share_t1"
+      ],
+      [
+        "year",
+        "connectivity_t1_log"
+      ],
+      [
+        "hit_rate_2yr",
+        "connectivity_t1_log"
+      ]
+    ],
+    "undirected_edges": [
+      [
+        "cross_topic_rate_t1",
+        "year"
+      ]
+    ],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "sensitivity_outcome:hit_rate_2yr"
+  },
+  {
+    "indep_test": "chisq",
+    "alpha": 0.05,
+    "constrained": false,
+    "n_rows": 127,
+    "n_directed": 5,
+    "n_undirected": 1,
+    "n_other": 0,
+    "n_temporal_violations": 1,
+    "directed_edges": [
+      [
+        "cross_topic_rate_t1_bin",
+        "topic_share_t1_bin"
+      ],
+      [
+        "modularity_t1_bin",
+        "topic_share_t1_bin"
+      ],
+      [
+        "year_bin",
+        "topic_share_t1_bin"
+      ],
+      [
+        "year_bin",
+        "connectivity_t1_bin"
+      ],
+      [
+        "hit_rate_2yr_bin",
+        "connectivity_t1_bin"
+      ]
+    ],
+    "undirected_edges": [
+      [
+        "cross_topic_rate_t1_bin",
+        "year_bin"
+      ]
+    ],
+    "other_edges": [],
+    "representation": "discretized",
+    "group": "sensitivity_outcome:hit_rate_2yr"
+  },
+  {
+    "indep_test": "fisherz",
+    "alpha": 0.05,
+    "constrained": true,
+    "n_rows": 127,
+    "n_directed": 3,
+    "n_undirected": 0,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "topic_share_t1",
+        "topic_share_t"
+      ],
+      [
+        "cross_topic_rate_t1",
+        "log1p_median_c2"
+      ],
+      [
+        "modularity_t1",
+        "log1p_median_c2"
+      ]
+    ],
+    "undirected_edges": [],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "sensitivity_no_year"
+  },
+  {
+    "indep_test": "chisq",
+    "alpha": 0.05,
+    "constrained": true,
+    "n_rows": 127,
+    "n_directed": 3,
+    "n_undirected": 0,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "topic_share_t1_bin",
+        "topic_share_t_bin"
+      ],
+      [
+        "cross_topic_rate_t1_bin",
+        "log1p_median_c2_bin"
+      ],
+      [
+        "connectivity_t1_bin",
+        "log1p_median_c2_bin"
+      ]
+    ],
+    "undirected_edges": [],
+    "other_edges": [],
+    "representation": "discretized",
+    "group": "sensitivity_no_year"
+  },
+  {
+    "indep_test": "fisherz",
+    "alpha": 0.05,
+    "constrained": false,
+    "n_rows": 127,
+    "n_directed": 4,
+    "n_undirected": 1,
+    "n_other": 0,
+    "n_temporal_violations": 2,
+    "directed_edges": [
+      [
+        "modularity_t1",
+        "topic_share_t1"
+      ],
+      [
+        "topic_share_t",
+        "topic_share_t1"
+      ],
+      [
+        "connectivity_t1_log",
+        "modularity_t1"
+      ],
+      [
+        "log1p_median_c2",
+        "modularity_t1"
+      ]
+    ],
+    "undirected_edges": [
+      [
+        "cross_topic_rate_t1",
+        "log1p_median_c2"
+      ]
+    ],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "sensitivity_no_year"
+  },
+  {
+    "indep_test": "chisq",
+    "alpha": 0.05,
+    "constrained": false,
+    "n_rows": 127,
+    "n_directed": 0,
+    "n_undirected": 3,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [],
+    "undirected_edges": [
+      [
+        "topic_share_t1_bin",
+        "topic_share_t_bin"
+      ],
+      [
+        "cross_topic_rate_t1_bin",
+        "log1p_median_c2_bin"
+      ],
+      [
+        "connectivity_t1_bin",
+        "log1p_median_c2_bin"
+      ]
+    ],
+    "other_edges": [],
+    "representation": "discretized",
+    "group": "sensitivity_no_year"
+  },
+  {
+    "indep_test": "fisherz",
+    "alpha": 0.01,
+    "constrained": true,
+    "n_rows": 127,
+    "n_directed": 4,
+    "n_undirected": 0,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "n_papers_t1_log",
+        "topic_share_t1"
+      ],
+      [
+        "topic_share_t1",
+        "topic_share_t"
+      ],
+      [
+        "year",
+        "connectivity_t1_log"
+      ],
+      [
+        "year",
+        "topic_share_t"
+      ]
+    ],
+    "undirected_edges": [],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "sensitivity_size_control"
+  },
+  {
+    "indep_test": "fisherz",
+    "alpha": 0.01,
+    "constrained": false,
+    "n_rows": 127,
+    "n_directed": 2,
+    "n_undirected": 2,
+    "n_other": 0,
+    "n_temporal_violations": 2,
+    "directed_edges": [
+      [
+        "connectivity_t1_log",
+        "year"
+      ],
+      [
+        "topic_share_t",
+        "year"
+      ]
+    ],
+    "undirected_edges": [
+      [
+        "n_papers_t1_log",
+        "topic_share_t1"
+      ],
+      [
+        "topic_share_t",
+        "topic_share_t1"
+      ]
+    ],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "sensitivity_size_control"
+  },
+  {
+    "indep_test": "fisherz",
+    "alpha": 0.05,
+    "constrained": true,
+    "n_rows": 127,
+    "n_directed": 5,
+    "n_undirected": 0,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "n_papers_t1_log",
+        "topic_share_t1"
+      ],
+      [
+        "topic_share_t1",
+        "topic_share_t"
+      ],
+      [
+        "cross_topic_rate_t1",
+        "log1p_median_c2"
+      ],
+      [
+        "year",
+        "connectivity_t1_log"
+      ],
+      [
+        "n_papers_t1_log",
+        "modularity_t1"
+      ]
+    ],
+    "undirected_edges": [],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "sensitivity_size_control"
+  },
+  {
+    "indep_test": "fisherz",
+    "alpha": 0.05,
+    "constrained": false,
+    "n_rows": 127,
+    "n_directed": 2,
+    "n_undirected": 4,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "modularity_t1",
+        "connectivity_t1_log"
+      ],
+      [
+        "year",
+        "connectivity_t1_log"
+      ]
+    ],
+    "undirected_edges": [
+      [
+        "n_papers_t1_log",
+        "topic_share_t1"
+      ],
+      [
+        "topic_share_t",
+        "topic_share_t1"
+      ],
+      [
+        "cross_topic_rate_t1",
+        "log1p_median_c2"
+      ],
+      [
+        "modularity_t1",
+        "n_papers_t1_log"
+      ]
+    ],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "sensitivity_size_control"
+  },
+  {
+    "indep_test": "fisherz",
+    "alpha": 0.1,
+    "constrained": true,
+    "n_rows": 127,
+    "n_directed": 6,
+    "n_undirected": 0,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "n_papers_t1_log",
+        "topic_share_t1"
+      ],
+      [
+        "topic_share_t1",
+        "topic_share_t"
+      ],
+      [
+        "cross_topic_rate_t1",
+        "log1p_median_c2"
+      ],
+      [
+        "year",
+        "connectivity_t1_log"
+      ],
+      [
+        "n_papers_t1_log",
+        "modularity_t1"
+      ],
+      [
+        "year",
+        "topic_share_t"
+      ]
+    ],
+    "undirected_edges": [],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "sensitivity_size_control"
+  },
+  {
+    "indep_test": "fisherz",
+    "alpha": 0.1,
+    "constrained": false,
+    "n_rows": 127,
+    "n_directed": 2,
+    "n_undirected": 5,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "modularity_t1",
+        "connectivity_t1_log"
+      ],
+      [
+        "year",
+        "connectivity_t1_log"
+      ]
+    ],
+    "undirected_edges": [
+      [
+        "n_papers_t1_log",
+        "topic_share_t1"
+      ],
+      [
+        "topic_share_t",
+        "topic_share_t1"
+      ],
+      [
+        "cross_topic_rate_t1",
+        "log1p_median_c2"
+      ],
+      [
+        "modularity_t1",
+        "n_papers_t1_log"
+      ],
+      [
+        "topic_share_t",
+        "year"
+      ]
+    ],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "sensitivity_size_control"
+  }
+]

@@ -1,0 +1,166 @@
+{
+  "version": "v4",
+  "thresholds": {
+    "stable": 0.7,
+    "candidate": 0.3,
+    "gap": 0.3
+  },
+  "main_graph": {
+    "setting": {
+      "representation": "continuous",
+      "indep_test": "fisherz",
+      "alpha": 0.05,
+      "constrained": true
+    },
+    "edges": [
+      {
+        "src": "topic_share_t1",
+        "dst": "topic_share_t",
+        "tier": "stable",
+        "mean_rate": 1.0
+      },
+      {
+        "src": "year",
+        "dst": "connectivity_t1_log",
+        "tier": "stable",
+        "mean_rate": 0.972
+      },
+      {
+        "src": "modularity_t1",
+        "dst": "log1p_median_c2",
+        "tier": "excluded",
+        "mean_rate": 0.333
+      },
+      {
+        "src": "year",
+        "dst": "log1p_median_c2",
+        "tier": "stable",
+        "mean_rate": 0.991
+      }
+    ]
+  },
+  "tiers": {
+    "stable": [
+      {
+        "from": "topic_share_t1",
+        "to": "topic_share_t",
+        "continuous_rate": 1.0,
+        "discretized_rate": 1.0,
+        "mean_rate": 1.0,
+        "gap": 0.0
+      },
+      {
+        "from": "year",
+        "to": "log1p_median_c2",
+        "continuous_rate": 1.0,
+        "discretized_rate": 0.982,
+        "mean_rate": 0.991,
+        "gap": 0.018
+      },
+      {
+        "from": "year",
+        "to": "connectivity_t1",
+        "continuous_rate": 1.0,
+        "discretized_rate": 0.944,
+        "mean_rate": 0.972,
+        "gap": 0.056
+      }
+    ],
+    "candidate": [
+      {
+        "from": "year",
+        "to": "topic_share_t1",
+        "continuous_rate": 0.364,
+        "discretized_rate": 0.616,
+        "mean_rate": 0.49,
+        "gap": 0.252
+      },
+      {
+        "from": "year",
+        "to": "modularity_t1",
+        "continuous_rate": 0.248,
+        "discretized_rate": 0.536,
+        "mean_rate": 0.392,
+        "gap": 0.288
+      },
+      {
+        "from": "cross_topic_rate_t1",
+        "to": "log1p_median_c2",
+        "continuous_rate": 0.2,
+        "discretized_rate": 0.418,
+        "mean_rate": 0.309,
+        "gap": 0.218
+      }
+    ],
+    "ambiguous": [
+      {
+        "from": "year",
+        "to": "cross_topic_rate_t1",
+        "continuous_rate": 0.202,
+        "discretized_rate": 0.58,
+        "mean_rate": 0.391,
+        "gap": 0.378
+      },
+      {
+        "from": "connectivity_t1",
+        "to": "log1p_median_c2",
+        "continuous_rate": 0.016,
+        "discretized_rate": 0.72,
+        "mean_rate": 0.368,
+        "gap": 0.704
+      },
+      {
+        "from": "cross_topic_rate_t1",
+        "to": "topic_share_t",
+        "continuous_rate": 0.0,
+        "discretized_rate": 0.348,
+        "mean_rate": 0.174,
+        "gap": 0.348
+      }
+    ],
+    "excluded": [
+      {
+        "from": "modularity_t1",
+        "to": "log1p_median_c2",
+        "continuous_rate": 0.41,
+        "discretized_rate": 0.256,
+        "mean_rate": 0.333,
+        "gap": 0.154
+      },
+      {
+        "from": "modularity_t1",
+        "to": "topic_share_t",
+        "continuous_rate": 0.274,
+        "discretized_rate": 0.31,
+        "mean_rate": 0.292,
+        "gap": 0.036
+      }
+    ],
+    "weak": [
+      {
+        "from": "connectivity_t1",
+        "to": "topic_share_t",
+        "continuous_rate": 0.116,
+        "discretized_rate": 0.162,
+        "mean_rate": 0.139,
+        "gap": 0.046
+      },
+      {
+        "from": "year",
+        "to": "topic_share_t",
+        "continuous_rate": 0.162,
+        "discretized_rate": 0.096,
+        "mean_rate": 0.129,
+        "gap": 0.066
+      },
+      {
+        "from": "topic_share_t1",
+        "to": "log1p_median_c2",
+        "continuous_rate": 0.028,
+        "discretized_rate": 0.128,
+        "mean_rate": 0.078,
+        "gap": 0.1
+      }
+    ]
+  }
+}
