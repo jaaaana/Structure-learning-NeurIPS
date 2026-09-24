@@ -5,7 +5,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from bootstrap_stability_report import render_report
+from pc_bootstrap_stability_report import render_report
 from data_prep import DATASETS
 from pc_learning import (
     CONTINUOUS_PREDICTORS,
