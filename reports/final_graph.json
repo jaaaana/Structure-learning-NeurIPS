@@ -17,25 +17,29 @@
         "src": "topic_share_t1",
         "dst": "topic_share_t",
         "tier": "stable",
-        "mean_rate": 1.0
+        "mean_rate": 1.0,
+        "same_direction_rate": 0.112
       },
       {
         "src": "year",
         "dst": "connectivity_t1_log",
         "tier": "stable",
-        "mean_rate": 0.972
+        "mean_rate": 0.972,
+        "same_direction_rate": 0.57
       },
       {
         "src": "modularity_t1",
         "dst": "log1p_median_c2",
         "tier": "excluded",
-        "mean_rate": 0.333
+        "mean_rate": 0.333,
+        "same_direction_rate": 0.19
       },
       {
         "src": "year",
         "dst": "log1p_median_c2",
         "tier": "stable",
-        "mean_rate": 0.991
+        "mean_rate": 0.991,
+        "same_direction_rate": 0.086
       }
     ]
   },

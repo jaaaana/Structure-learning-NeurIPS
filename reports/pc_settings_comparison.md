@@ -42,6 +42,7 @@ sensitivity_size_control   continuous   fisherz   0.05   True    4         0    
 sensitivity_size_control   continuous   fisherz   0.05   False   2         3           0                   
 sensitivity_size_control   continuous   fisherz   0.1    True    7         0           0                   
 sensitivity_size_control   continuous   fisherz   0.1    False   6         2           1                   
+sensitivity_relaxed_tiers  continuous   fisherz   0.05   True    5         1           0                   
 ```
 
 ## Edge detail per setting
@@ -373,6 +374,17 @@ Directed:
 Undirected / ambiguous:
 - `modularity_t1` -- `n_papers_t1_log`
 - `log1p_median_c2` -- `year`
+
+### [sensitivity_relaxed_tiers] continuous / fisherz / alpha=0.05 / constrained
+
+Directed:
+- `topic_share_t1` -> `topic_share_t`
+- `modularity_t1` -> `connectivity_t1_log`
+- `year` -> `connectivity_t1_log`
+- `modularity_t1` -> `log1p_median_c2`
+- `year` -> `log1p_median_c2`
+Undirected / ambiguous:
+- `modularity_t1` -- `topic_share_t1`
 
 ## Adjacency vs. orientation stability across constrained main-model settings
 

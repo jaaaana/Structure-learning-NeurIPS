@@ -98,9 +98,14 @@ def count_temporal_violations(directed_edges: list) -> int:
 
 
 def run_one_setting(df: pd.DataFrame, node_names: list, indep_test: str, alpha: float,
-                     constrained: bool, size_vars: list = None) -> dict:
+                     constrained: bool, size_vars: list = None,
+                     allow_predictor_predictor: bool = False,
+                     allow_outcome_outcome: bool = False) -> dict:
     data = df[node_names].to_numpy(dtype=float)
-    bk = build_background_knowledge(node_names, size_vars=size_vars) if constrained else None
+    bk = (build_background_knowledge(node_names, size_vars=size_vars,
+                                      allow_predictor_predictor=allow_predictor_predictor,
+                                      allow_outcome_outcome=allow_outcome_outcome)
+          if constrained else None)
 
     cg = pc(data, alpha=alpha, indep_test=indep_test, node_names=node_names,
             background_knowledge=bk, show_progress=False)
@@ -187,6 +192,13 @@ def run_grid(version: str) -> list:
         res["group"] = "sensitivity_size_control"
         results.append(res)
 
+    node_names = CONTINUOUS_PREDICTORS + CONTINUOUS_OUTCOMES
+    res = run_one_setting(cont_df, node_names, "fisherz", SENSITIVITY_OUTCOME_ALPHA, True,
+                           allow_predictor_predictor=True, allow_outcome_outcome=True)
+    res["representation"] = "continuous"
+    res["group"] = "sensitivity_relaxed_tiers"
+    results.append(res)
+
     return results
 
 
@@ -238,6 +250,77 @@ def edge_recurrence(results: list) -> pd.DataFrame:
             "orientation_rate_given_adjacent": round(n_dir / n_adj, 3),
         })
     return pd.DataFrame(rows).sort_values("adjacency_rate", ascending=False)[cols]
+
+
+def orientation_provenance(results: list) -> dict:
+    n_settings = len(results)
+    cross_tier_counts = {}
+    same_tier_counts = {}
+
+    for r in results:
+        seen_this_run = set()
+        for src, dst in r["directed_edges"]:
+            a, b = _base_name(src), _base_name(dst)
+            ra, rb = _tier_rank(a), _tier_rank(b)
+            if ra == rb:
+                pair = tuple(sorted((a, b)))
+                if pair in seen_this_run:
+                    continue
+                seen_this_run.add(pair)
+                same_tier_counts[pair] = same_tier_counts.get(pair, 0) + 1
+                continue
+            pair = (a, b) if ra < rb else (b, a)
+            if pair in seen_this_run:
+                continue
+            seen_this_run.add(pair)
+            d = cross_tier_counts.setdefault(pair, {"n_adjacent": 0, "n_same": 0, "n_reverse": 0, "n_undirected": 0})
+            d["n_adjacent"] += 1
+            d["n_same" if ra < rb else "n_reverse"] += 1
+
+        for x, y in r["undirected_edges"]:
+            a, b = _base_name(x), _base_name(y)
+            ra, rb = _tier_rank(a), _tier_rank(b)
+            if ra == rb:
+                pair = tuple(sorted((a, b)))
+                if pair in seen_this_run:
+                    continue
+                seen_this_run.add(pair)
+                same_tier_counts[pair] = same_tier_counts.get(pair, 0) + 1
+                continue
+            pair = (a, b) if ra < rb else (b, a)
+            if pair in seen_this_run:
+                continue
+            seen_this_run.add(pair)
+            d = cross_tier_counts.setdefault(pair, {"n_adjacent": 0, "n_same": 0, "n_reverse": 0, "n_undirected": 0})
+            d["n_adjacent"] += 1
+            d["n_undirected"] += 1
+
+    cross_cols = ["from", "to", "n_adjacent", "adjacency_rate",
+                  "same_direction_rate", "reverse_direction_rate", "undirected_rate"]
+    cross_rows = [
+        {
+            "from": frm, "to": to,
+            "n_adjacent": d["n_adjacent"],
+            "adjacency_rate": round(d["n_adjacent"] / n_settings, 3) if n_settings else 0.0,
+            "same_direction_rate": round(d["n_same"] / d["n_adjacent"], 3),
+            "reverse_direction_rate": round(d["n_reverse"] / d["n_adjacent"], 3),
+            "undirected_rate": round(d["n_undirected"] / d["n_adjacent"], 3),
+        }
+        for (frm, to), d in cross_tier_counts.items()
+    ]
+    cross_df = (pd.DataFrame(cross_rows).sort_values("n_adjacent", ascending=False)[cross_cols]
+                if cross_rows else pd.DataFrame(columns=cross_cols))
+
+    same_cols = ["from", "to", "n_adjacent", "adjacency_rate"]
+    same_rows = [
+        {"from": frm, "to": to, "n_adjacent": n,
+         "adjacency_rate": round(n / n_settings, 3) if n_settings else 0.0}
+        for (frm, to), n in same_tier_counts.items()
+    ]
+    same_df = (pd.DataFrame(same_rows).sort_values("n_adjacent", ascending=False)[same_cols]
+               if same_rows else pd.DataFrame(columns=same_cols))
+
+    return {"cross_tier": cross_df, "same_tier_only_unconstrained": same_df}
 
 
 def main(version: str = "v4"):

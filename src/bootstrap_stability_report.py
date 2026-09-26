@@ -1,5 +1,6 @@
 def render_report(version: str, seed: int, n_boot: int, boot_alpha: float,
-                   cont_diag: dict, cont_freq, disc_diag: dict, disc_freq) -> str:
+                   cont_diag: dict, cont_freq, disc_diag: dict, disc_freq,
+                   unc_diag: dict, provenance: dict) -> str:
     suffix = "" if version == "v4" else f"_{version}"
     lines = []
     lines.append(f"# Bootstrap Stability Analysis -- Step 4 ({version})\n")
@@ -15,6 +16,22 @@ def render_report(version: str, seed: int, n_boot: int, boot_alpha: float,
         "alpha/representation grid -- that grid holds the sample fixed and "
         "varies settings; this analysis holds settings fixed and varies the "
         "sample.\n"
+    )
+
+    lines.append(
+        "**Orientation-stability caveat**: in every table below, "
+        "`orientation_rate_given_adjacent` is computed under the constrained "
+        "(temporal background knowledge) setting. Under this pipeline's tier "
+        "structure, every edge that can appear at all is between two "
+        "different tiers, and `causal-learn` forcibly directs any such edge "
+        "immediately after skeleton discovery -- before its own v-structure "
+        "or Meek orientation rules ever run. So `orientation_rate_given_adjacent` "
+        "here is mechanical (it reflects the constraint being applied, not an "
+        "independent PC finding); `adjacency_rate` -- not orientation rate -- "
+        "is the actual stability evidence (it is also the only quantity "
+        "`final_graph.py`'s stable/candidate/ambiguous tiering ever reads). "
+        "See 'Orientation provenance' below for genuine, unconstrained-derived "
+        "orientation evidence.\n"
     )
 
     for label, diag, freq in [
@@ -42,9 +59,11 @@ def render_report(version: str, seed: int, n_boot: int, boot_alpha: float,
                 "`adjacency_rate` = share of successful replicates where PC placed "
                 "any edge (directed or undirected) between the pair; "
                 "`orientation_rate_given_adjacent` = of those, share where PC "
-                "committed to a direction. Sorted by adjacency_rate descending -- "
-                "this table, not the settings-grid recurrence table, is the "
-                "stability evidence for Step 5 / thesis Chapter 5. No fixed "
+                "committed to a direction -- see the caveat above: this is "
+                "mechanical under the constrained setting here, not independent "
+                "evidence. Sorted by adjacency_rate descending -- this table, "
+                "not the settings-grid recurrence table, is the stability "
+                "evidence for Step 5 / thesis Chapter 5. No fixed "
                 "stable/unstable cutoff is applied here; choose and justify a "
                 "threshold in the writeup.\n"
             )
@@ -53,5 +72,65 @@ def render_report(version: str, seed: int, n_boot: int, boot_alpha: float,
             lines.append("```\n")
         else:
             lines.append("No successful replicates produced any edge.\n")
+
+    lines.append("## Orientation provenance (continuous / Fisher-Z, unconstrained comparison)\n")
+    lines.append(
+        "Same topic-level resamples as the continuous/Fisher-Z bootstrap above "
+        "(identical seed), rerun with **no background knowledge at all** -- "
+        "not just the within-tier restriction, the temporal t-1->t rule too. "
+        "This is the only way to get independent evidence for a direction the "
+        "constrained model can only ever assume: if PC's own v-structure/Meek "
+        "orientation logic, with no help from the temporal assumption, still "
+        "lands on the same direction most of the time, that is real "
+        "corroboration; if it does not, the direction rests on the temporal "
+        "assumption alone.\n"
+    )
+    lines.append(
+        f"- Requested: {unc_diag['n_boot_requested']} replicates. "
+        f"Succeeded: {unc_diag['n_succeeded']}. "
+        f"Skipped (degenerate resample): {unc_diag['n_degenerate_skipped']}. "
+        f"Failed (PC raised an exception): {unc_diag['n_failed']}.\n"
+    )
+
+    cross = provenance["cross_tier"]
+    if len(cross):
+        merged = cross.merge(
+            cont_freq[["from", "to", "adjacency_rate"]].rename(
+                columns={"adjacency_rate": "constrained_adjacency_rate"}),
+            on=["from", "to"], how="left",
+        )
+        cols = ["from", "to", "constrained_adjacency_rate", "adjacency_rate",
+                "same_direction_rate", "reverse_direction_rate", "undirected_rate"]
+        merged = merged[cols].rename(columns={"adjacency_rate": "unconstrained_adjacency_rate"})
+        lines.append(
+            "`constrained_adjacency_rate` is from the constrained bootstrap "
+            "above, shown for reference. `same_direction_rate`/"
+            "`reverse_direction_rate`/`undirected_rate` are shares of "
+            "unconstrained-adjacent replicates where PC, with no constraint "
+            "at all, oriented the pair the same way the temporal rule would "
+            "force, the opposite way, or left it undirected.\n"
+        )
+        lines.append("```")
+        lines.append(merged.to_string(index=False))
+        lines.append("```\n")
+    else:
+        lines.append("No cross-tier edges recurred in the unconstrained bootstrap.\n")
+
+    lines.append("### Edges only visible once all constraints are relaxed\n")
+    lines.append(
+        "Predictor-predictor or outcome-outcome pairs -- banned from the "
+        "constrained model's skeleton outright (`forbid_within_tier`), so "
+        "they can never appear in the tables above at any adjacency rate. No "
+        "directional comparison is possible for these (there is no "
+        "tier-implied direction to agree or disagree with); adjacency rate "
+        "alone is shown.\n"
+    )
+    same = provenance["same_tier_only_unconstrained"]
+    if len(same):
+        lines.append("```")
+        lines.append(same.to_string(index=False))
+        lines.append("```\n")
+    else:
+        lines.append("None recurred in the unconstrained bootstrap.\n")
 
     return "\n".join(lines)

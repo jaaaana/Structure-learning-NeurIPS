@@ -142,9 +142,9 @@ def redundancy_check(df: pd.DataFrame, cols: list, threshold: float = 0.5) -> li
 def small_graph_instability(df: pd.DataFrame, n_quartiles: int = 4) -> pd.DataFrame:
     tmp = df.copy()
     labels = [f"Q{i + 1}" for i in range(n_quartiles)]
-    tmp["size_quartile"] = pd.qcut(tmp["n_papers"], n_quartiles, labels=labels)
+    tmp["size_quartile"] = pd.qcut(tmp["n_papers_t1"], n_quartiles, labels=labels)
     summary = tmp.groupby("size_quartile", observed=True).agg(
-        n_papers_mean=("n_papers", "mean"),
+        n_papers_t1_mean=("n_papers_t1", "mean"),
         modularity_t1_mean=("modularity_t1", "mean"),
         modularity_t1_std=("modularity_t1", "std"),
         bridge_concentration_t1_mean=("bridge_concentration_t1", "mean"),
@@ -181,7 +181,7 @@ def compute_flag_stats(df: pd.DataFrame) -> dict:
         "bc_at_ceiling": (bc >= 0.95).mean(),
         "mod_min": mod.min(),
         "mod_max": mod.max(),
-        "mod_size_corr": mod.corr(df["n_papers"]),
+        "mod_size_corr": mod.corr(df["n_papers_t1"]),
         "skew_raw": df["median_cites_2yr"].skew(),
         "skew_log": df["log1p_median_c2"].skew(),
         "hr_min": df["hit_rate_2yr"].min(),
@@ -240,6 +240,7 @@ def make_discretized_version(df: pd.DataFrame, out_path: Path, n_bins: int = 3) 
 def main(version: str = "v4"):
     paths = DATASETS[version]
     df = load_data(paths["raw"])
+    df = add_t1_size_cols(df)
 
     structure = panel_structure(df)
     missing = missing_value_report(df)

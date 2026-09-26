@@ -1268,5 +1268,46 @@
     "other_edges": [],
     "representation": "continuous",
     "group": "sensitivity_size_control"
+  },
+  {
+    "indep_test": "fisherz",
+    "alpha": 0.05,
+    "constrained": true,
+    "n_rows": 123,
+    "n_directed": 5,
+    "n_undirected": 1,
+    "n_other": 0,
+    "n_temporal_violations": 0,
+    "directed_edges": [
+      [
+        "topic_share_t1",
+        "topic_share_t"
+      ],
+      [
+        "modularity_t1",
+        "connectivity_t1_log"
+      ],
+      [
+        "year",
+        "connectivity_t1_log"
+      ],
+      [
+        "modularity_t1",
+        "log1p_median_c2"
+      ],
+      [
+        "year",
+        "log1p_median_c2"
+      ]
+    ],
+    "undirected_edges": [
+      [
+        "modularity_t1",
+        "topic_share_t1"
+      ]
+    ],
+    "other_edges": [],
+    "representation": "continuous",
+    "group": "sensitivity_relaxed_tiers"
   }
 ]

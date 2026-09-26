@@ -100,7 +100,7 @@ def render_flags(stats: dict) -> list:
         (
             "`modularity_t1` has low variance (compressed into "
             f"[{stats['mod_min']:.2f}, {stats['mod_max']:.2f}]) and correlates with topic size "
-            f"(corr with n_papers = {stats['mod_size_corr']:.2f}): bigger topics tend to show "
+            f"(corr with n_papers_t1 = {stats['mod_size_corr']:.2f}): bigger topics tend to show "
             "higher modularity. Any edge involving modularity_t1 should be checked "
             "against topic size as a possible confound, and treated cautiously on "
             "small topics where a handful of authors can make the collaboration "
@@ -259,7 +259,7 @@ def render_report(df, structure: dict, missing, dist, pearson, flags: list,
 
     lines.append(
         "## Small-graph instability check "
-        "(modularity_t1 / bridge_concentration_t1 by topic-size quartile)\n"
+        "(modularity_t1 / bridge_concentration_t1 by t-1 topic-size (n_papers_t1) quartile)\n"
     )
     lines.append("```")
     lines.append(size_instability.to_string())

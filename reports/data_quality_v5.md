@@ -109,15 +109,15 @@ topic_share                           0    -0.261  0.008   0.119
 - `median_cites_2yr` <-> `hit_rate_2yr`: r=0.60
 - `log1p_median_c2` <-> `hit_rate_2yr`: r=0.58
 
-## Small-graph instability check (modularity_t1 / bridge_concentration_t1 by topic-size quartile)
+## Small-graph instability check (modularity_t1 / bridge_concentration_t1 by t-1 topic-size (n_papers_t1) quartile)
 
 ```
-               n_papers_mean  modularity_t1_mean  modularity_t1_std  bridge_concentration_t1_mean  bridge_concentration_t1_std
-size_quartile                                                                                                                 
-Q1                    23.857               0.880              0.064                         0.729                        0.441
-Q2                    35.524               0.911              0.043                         0.872                        0.325
-Q3                    56.135               0.930              0.038                         0.970                        0.164
-Q4                   135.750               0.951              0.043                         0.995                        0.008
+               n_papers_t1_mean  modularity_t1_mean  modularity_t1_std  bridge_concentration_t1_mean  bridge_concentration_t1_std
+size_quartile                                                                                                                    
+Q1                       16.595               0.861              0.059                         0.631                        0.477
+Q2                       30.475               0.916              0.028                         0.945                        0.220
+Q3                       50.077               0.938              0.033                         0.997                        0.008
+Q4                      129.425               0.957              0.036                         0.994                        0.008
 ```
 
 ## Citation-window check (median_cites_2yr / hit_rate_2yr by year)
@@ -142,7 +142,7 @@ year
 ## Flagged variables
 
 - `bridge_concentration_t1` is near-degenerate: 11% of rows sit at/near 0 and 88% sit at/near 1, leaving very few rows in between. Continuous CI tests (Fisher-Z) assume a roughly continuous spread, so this variable is a poor fit for the continuous PC run -- treat it as effectively binary and rely on the discretized version for it. Per the recovered pipeline (`nips_pipeline_v4_clean.ipynb`), this is the share of total betweenness centrality held by the top 10% of authors in the topic's co-authorship graph -- on small author counts, a handful of authors mechanically dominate betweenness, which explains the degeneracy directly rather than just describing it.
-- `modularity_t1` has low variance (compressed into [0.61, 0.99]) and correlates with topic size (corr with n_papers = 0.42): bigger topics tend to show higher modularity. Any edge involving modularity_t1 should be checked against topic size as a possible confound, and treated cautiously on small topics where a handful of authors can make the collaboration graph trivially "modular".
+- `modularity_t1` has low variance (compressed into [0.61, 0.99]) and correlates with topic size (corr with n_papers_t1 = 0.52): bigger topics tend to show higher modularity. Any edge involving modularity_t1 should be checked against topic size as a possible confound, and treated cautiously on small topics where a handful of authors can make the collaboration graph trivially "modular".
 - `median_cites_2yr` is right-skewed (skew=2.11); its log-transformed twin `log1p_median_c2` is close to symmetric (skew=0.16) and is the better choice for continuous Fisher-Z tests.
 - `hit_rate_2yr` is a bounded proportion (range [0.00, 0.49]) and right-skewed (skew=1.12), not a raw count -- keep this in mind for the predictive-usefulness models in the evaluation framework later.
 - Rows are (topic, year) pairs, and the same topic contributes multiple rows across years. Standard CI tests used by PC assume i.i.d. samples, which repeated observations of the same topic technically violate. This isn't fixed at the data-prep stage; the bootstrap/subsampling stability analysis in Step 4 is the empirical check against it. A within-topic-demeaned version is also worth adding as a Step 4 sensitivity setting, since pooling topics conflates between-topic differences with the within-topic t-1->t dynamic the model is actually meant to capture.

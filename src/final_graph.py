@@ -12,8 +12,7 @@ from constraints import (
 )
 from data_prep import DATASETS
 from final_graph_report import render_report
-from pc_learning import CONNECTIVITY_LOG_VARIANT, _tier_rank, edge_recurrence
-from predictive_usefulness import run_comparison
+from pc_learning import CONNECTIVITY_LOG_VARIANT, _tier_rank, edge_recurrence, orientation_provenance
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -37,6 +36,10 @@ def _bootstrap_runs_path(version: str) -> Path:
 
 def _pc_runs_path(version: str) -> Path:
     return ROOT / "reports" / "pc_runs" / f"pc_runs{_suffix(version)}.json"
+
+
+def _predictive_nested_cv_path(version: str) -> Path:
+    return ROOT / "reports" / "pc_runs" / f"predictive_nested_cv{_suffix(version)}.json"
 
 
 def _report_out(version: str) -> Path:
@@ -100,7 +103,16 @@ def load_main_graph(version: str) -> dict:
     raise ValueError(f"Frozen main setting not found in {_pc_runs_path(version)}")
 
 
-def annotate_main_graph(main_graph: dict, classification: list) -> list:
+def orientation_provenance_lookup(version: str) -> dict:
+    data = json.loads(_bootstrap_runs_path(version).read_text(encoding="utf-8"))
+    unc_results = data.get("continuous_unconstrained", [])
+    cross = orientation_provenance(unc_results)["cross_tier"]
+    if len(cross) == 0:
+        return {}
+    return cross.set_index(["from", "to"])["same_direction_rate"].to_dict()
+
+
+def annotate_main_graph(main_graph: dict, classification: list, orientation_lookup: dict) -> list:
     by_pair = {(r["from"], r["to"]): r for r in classification}
     annotated = []
     for src, dst in main_graph["directed_edges"]:
@@ -110,12 +122,19 @@ def annotate_main_graph(main_graph: dict, classification: list) -> list:
             "src": src, "dst": dst,
             "tier": row["tier"] if row else "unclassified (not seen in bootstrap)",
             "mean_rate": row["mean_rate"] if row else None,
+            "same_direction_rate": orientation_lookup.get(pair),
         })
     return annotated
 
 
 def predictive_usefulness_summary(version: str) -> dict:
-    return run_comparison(version)
+    path = _predictive_nested_cv_path(version)
+    if not path.exists():
+        raise FileNotFoundError(
+            f"{path} not found -- run `python src/predictive_usefulness.py "
+            f"--version {version}` first."
+        )
+    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def export_json(version: str, classification: list, main_graph: dict, annotated_main: list) -> dict:
@@ -140,7 +159,8 @@ def export_json(version: str, classification: list, main_graph: dict, annotated_
 def main(version: str = "v4"):
     classification = build_classification(version)
     main_graph = load_main_graph(version)
-    annotated_main = annotate_main_graph(main_graph, classification)
+    orientation_lookup = orientation_provenance_lookup(version)
+    annotated_main = annotate_main_graph(main_graph, classification, orientation_lookup)
     pred_usefulness = predictive_usefulness_summary(version)
 
     report = render_report(version, classification, main_graph, annotated_main, pred_usefulness,

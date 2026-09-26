@@ -1,0 +1,240 @@
+{
+  "topic_share_t": {
+    "baseline": {
+      "label": "persistence + year",
+      "features": [
+        "topic_share_t1",
+        "year"
+      ],
+      "n_splits_used": 5,
+      "note": "",
+      "r2_mean": 0.692911855103844,
+      "r2_std": 0.16069469987687973,
+      "mae_mean": 0.009779184396548702,
+      "mae_std": 0.002144638290512436
+    },
+    "all_t1": {
+      "label": "all main t-1 predictors + year",
+      "features": [
+        "topic_share_t1",
+        "cross_topic_rate_t1",
+        "connectivity_t1_log",
+        "modularity_t1",
+        "year"
+      ],
+      "n_splits_used": 5,
+      "note": "",
+      "r2_mean": 0.6882619458264612,
+      "r2_std": 0.18480732659617274,
+      "mae_mean": 0.009732290482627394,
+      "mae_std": 0.0022423929376132533
+    },
+    "all_t1_no_modularity": {
+      "label": "all_t1 minus modularity_t1 (size-confound check, see sensitivity_size_control)",
+      "features": [
+        "topic_share_t1",
+        "cross_topic_rate_t1",
+        "connectivity_t1_log",
+        "year"
+      ],
+      "n_splits_used": 5,
+      "note": "",
+      "r2_mean": 0.6963950684806396,
+      "r2_std": 0.17058173323014914,
+      "mae_mean": 0.009565085412295272,
+      "mae_std": 0.0022796463000126703
+    },
+    "graph_parents_nested_cv": {
+      "label": "baseline features + graph-selected predictors, nested per-fold bootstrap (150 reps/fold, continuous/Fisher-Z, threshold=0.5)",
+      "features": [
+        "topic_share_t1",
+        "year"
+      ],
+      "per_fold_added": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "fold_diagnostics": [
+        {
+          "n_boot_requested": 150,
+          "n_succeeded": 150,
+          "n_degenerate_skipped": 0,
+          "n_failed": 0,
+          "row_counts_min": 67,
+          "row_counts_mean": 101.94666666666667,
+          "row_counts_max": 133,
+          "n_train_topics": 17
+        },
+        {
+          "n_boot_requested": 150,
+          "n_succeeded": 150,
+          "n_degenerate_skipped": 0,
+          "n_failed": 0,
+          "row_counts_min": 70,
+          "row_counts_mean": 100.86666666666666,
+          "row_counts_max": 138,
+          "n_train_topics": 18
+        },
+        {
+          "n_boot_requested": 150,
+          "n_succeeded": 150,
+          "n_degenerate_skipped": 0,
+          "n_failed": 0,
+          "row_counts_min": 67,
+          "row_counts_mean": 100.86,
+          "row_counts_max": 130,
+          "n_train_topics": 17
+        },
+        {
+          "n_boot_requested": 150,
+          "n_succeeded": 150,
+          "n_degenerate_skipped": 0,
+          "n_failed": 0,
+          "row_counts_min": 73,
+          "row_counts_mean": 102.22,
+          "row_counts_max": 146,
+          "n_train_topics": 18
+        },
+        {
+          "n_boot_requested": 150,
+          "n_succeeded": 150,
+          "n_degenerate_skipped": 0,
+          "n_failed": 0,
+          "row_counts_min": 61,
+          "row_counts_mean": 99.85333333333334,
+          "row_counts_max": 133,
+          "n_train_topics": 18
+        }
+      ],
+      "n_splits_used": 5,
+      "note": "no additional predictor cleared the threshold in any fold",
+      "r2_mean": 0.6929118551038428,
+      "r2_std": 0.16069469987688131,
+      "mae_mean": 0.009779184396548707,
+      "mae_std": 0.0021446382905124317
+    }
+  },
+  "log1p_median_c2": {
+    "baseline": {
+      "label": "year only",
+      "features": [
+        "year"
+      ],
+      "n_splits_used": 5,
+      "note": "",
+      "r2_mean": -0.06716080296980971,
+      "r2_std": 0.3970139694282567,
+      "mae_mean": 0.4893786531664645,
+      "mae_std": 0.03929205092328638
+    },
+    "all_t1": {
+      "label": "all main t-1 predictors + year",
+      "features": [
+        "topic_share_t1",
+        "cross_topic_rate_t1",
+        "connectivity_t1_log",
+        "modularity_t1",
+        "year"
+      ],
+      "n_splits_used": 5,
+      "note": "",
+      "r2_mean": 0.2629885752840003,
+      "r2_std": 0.21268922081003597,
+      "mae_mean": 0.41246908496119394,
+      "mae_std": 0.04590484247262087
+    },
+    "all_t1_no_modularity": {
+      "label": "all_t1 minus modularity_t1 (size-confound check, see sensitivity_size_control)",
+      "features": [
+        "topic_share_t1",
+        "cross_topic_rate_t1",
+        "connectivity_t1_log",
+        "year"
+      ],
+      "n_splits_used": 5,
+      "note": "",
+      "r2_mean": 0.14025162199149727,
+      "r2_std": 0.2627848458178977,
+      "mae_mean": 0.4480706554591583,
+      "mae_std": 0.05640000347716141
+    },
+    "graph_parents_nested_cv": {
+      "label": "baseline features + graph-selected predictors, nested per-fold bootstrap (150 reps/fold, continuous/Fisher-Z, threshold=0.5)",
+      "features": [
+        "year"
+      ],
+      "per_fold_added": [
+        [],
+        [
+          "cross_topic_rate_t1"
+        ],
+        [],
+        [
+          "cross_topic_rate_t1"
+        ],
+        []
+      ],
+      "fold_diagnostics": [
+        {
+          "n_boot_requested": 150,
+          "n_succeeded": 150,
+          "n_degenerate_skipped": 0,
+          "n_failed": 0,
+          "row_counts_min": 67,
+          "row_counts_mean": 101.94666666666667,
+          "row_counts_max": 133,
+          "n_train_topics": 17
+        },
+        {
+          "n_boot_requested": 150,
+          "n_succeeded": 150,
+          "n_degenerate_skipped": 0,
+          "n_failed": 0,
+          "row_counts_min": 70,
+          "row_counts_mean": 100.86666666666666,
+          "row_counts_max": 138,
+          "n_train_topics": 18
+        },
+        {
+          "n_boot_requested": 150,
+          "n_succeeded": 150,
+          "n_degenerate_skipped": 0,
+          "n_failed": 0,
+          "row_counts_min": 67,
+          "row_counts_mean": 100.86,
+          "row_counts_max": 130,
+          "n_train_topics": 17
+        },
+        {
+          "n_boot_requested": 150,
+          "n_succeeded": 150,
+          "n_degenerate_skipped": 0,
+          "n_failed": 0,
+          "row_counts_min": 73,
+          "row_counts_mean": 102.22,
+          "row_counts_max": 146,
+          "n_train_topics": 18
+        },
+        {
+          "n_boot_requested": 150,
+          "n_succeeded": 150,
+          "n_degenerate_skipped": 0,
+          "n_failed": 0,
+          "row_counts_min": 61,
+          "row_counts_mean": 99.85333333333334,
+          "row_counts_max": 133,
+          "n_train_topics": 18
+        }
+      ],
+      "n_splits_used": 5,
+      "note": "additional predictors selected per fold beyond the baseline: cross_topic_rate_t1 (2/5 folds)",
+      "r2_mean": -0.0889233003482848,
+      "r2_std": 0.3825634050515671,
+      "mae_mean": 0.491518694206629,
+      "mae_std": 0.035538291472694224
+    }
+  }
+}

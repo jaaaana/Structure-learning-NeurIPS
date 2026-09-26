@@ -17,37 +17,43 @@
         "src": "topic_share_t1",
         "dst": "topic_share_t",
         "tier": "stable",
-        "mean_rate": 1.0
+        "mean_rate": 1.0,
+        "same_direction_rate": 0.016
       },
       {
         "src": "year",
         "dst": "cross_topic_rate_t1",
         "tier": "stable",
-        "mean_rate": 0.777
+        "mean_rate": 0.777,
+        "same_direction_rate": 0.182
       },
       {
         "src": "cross_topic_rate_t1",
         "dst": "log1p_median_c2",
         "tier": "candidate",
-        "mean_rate": 0.64
+        "mean_rate": 0.64,
+        "same_direction_rate": 0.174
       },
       {
         "src": "year",
         "dst": "connectivity_t1_log",
         "tier": "stable",
-        "mean_rate": 0.967
+        "mean_rate": 0.967,
+        "same_direction_rate": 0.498
       },
       {
         "src": "year",
         "dst": "topic_share_t",
         "tier": "ambiguous",
-        "mean_rate": 0.524
+        "mean_rate": 0.524,
+        "same_direction_rate": 0.073
       },
       {
         "src": "year",
         "dst": "log1p_median_c2",
         "tier": "stable",
-        "mean_rate": 0.935
+        "mean_rate": 0.935,
+        "same_direction_rate": 0.151
       }
     ]
   },

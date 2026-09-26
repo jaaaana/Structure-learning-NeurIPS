@@ -16,6 +16,7 @@ from pc_learning import (
     load_discretized,
     run_one_setting,
     edge_recurrence,
+    orientation_provenance,
 )
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -45,7 +46,7 @@ def _is_degenerate(df: pd.DataFrame, node_names: list) -> bool:
 
 
 def run_bootstrap(df: pd.DataFrame, node_names: list, indep_test: str,
-                   n_boot: int, seed: int) -> tuple:
+                   n_boot: int, seed: int, constrained: bool = True) -> tuple:
     groups = {t: g for t, g in df.groupby("topic")}
     topics = df["topic"].unique()
     rng = np.random.default_rng(seed)
@@ -63,7 +64,7 @@ def run_bootstrap(df: pd.DataFrame, node_names: list, indep_test: str,
             n_degenerate += 1
             continue
         try:
-            res = run_one_setting(resampled, node_names, indep_test, BOOT_ALPHA, constrained=True)
+            res = run_one_setting(resampled, node_names, indep_test, BOOT_ALPHA, constrained=constrained)
         except Exception:
             n_failed += 1
             continue
@@ -97,7 +98,12 @@ def main(version: str = "v4", n_boot: int = 500, seed: int = 0):
     disc_results, disc_diag = run_bootstrap(disc_df, disc_nodes, "chisq", n_boot, seed)
     disc_freq = edge_recurrence(disc_results)
 
-    report = render_report(version, seed, n_boot, BOOT_ALPHA, cont_diag, cont_freq, disc_diag, disc_freq)
+    print(f"[{version}] Bootstrapping continuous/Fisher-Z, unconstrained: {n_boot} replicates...")
+    unc_results, unc_diag = run_bootstrap(cont_df, cont_nodes, "fisherz", n_boot, seed, constrained=False)
+    provenance = orientation_provenance(unc_results)
+
+    report = render_report(version, seed, n_boot, BOOT_ALPHA, cont_diag, cont_freq, disc_diag, disc_freq,
+                            unc_diag, provenance)
     report_out = _report_out(version)
     report_out.write_text(report, encoding="utf-8")
 
@@ -107,12 +113,14 @@ def main(version: str = "v4", n_boot: int = 500, seed: int = 0):
             "seed": seed, "n_boot": n_boot,
             "continuous": cont_results, "continuous_diagnostics": cont_diag,
             "discretized": disc_results, "discretized_diagnostics": disc_diag,
+            "continuous_unconstrained": unc_results, "continuous_unconstrained_diagnostics": unc_diag,
         },
         indent=2, default=str,
     ), encoding="utf-8")
 
     print(f"[{version}] continuous: {cont_diag['n_succeeded']}/{n_boot} succeeded")
     print(f"[{version}] discretized: {disc_diag['n_succeeded']}/{n_boot} succeeded")
+    print(f"[{version}] continuous unconstrained: {unc_diag['n_succeeded']}/{n_boot} succeeded")
     print(f"Wrote {report_out}")
     print(f"Wrote {runs_out}")
 

@@ -2,15 +2,19 @@
 
 Classifies every predictor/exogenous edge seen in the Step 4 topic-level block bootstrap (`bootstrap_stability.py`, 500 replicates) into a tier, using both the continuous+Fisher-Z and discretized+chi-square representations rather than a single adjacency number. `excluded` overrides the numeric tiers regardless of rate -- see the 'Excluded from interpretation' section. Thresholds: stable >= 0.7 mean rate (representation gap <= 0.3), candidate >= 0.3 mean rate (same gap requirement), ambiguous = gap > 0.3 regardless of mean, weak = everything else. Classified independently per dataset version -- v4 and v5 can and do disagree on some edges.
 
+These tiers are computed from **adjacency rate alone** -- whether an edge appears at all, in either bootstrap representation -- never from orientation rate. Under this pipeline's temporal-tier background knowledge, every edge that can appear at all is between two different tiers, and `causal-learn` mechanically forces its direction immediately after skeleton discovery, before any independent PC orientation logic runs; see `bootstrap_stability.md`'s orientation-stability caveat and 'Orientation provenance' section for the full derivation.
+
 ## Main graph (frozen setting: continuous / Fisher-Z / alpha=0.05 / constrained)
 
 4 directed edges, 0 undirected, on n=123 rows. Every edge below is annotated with its tier from the bootstrap classification (not just this single run).
 
+Every edge's *direction* here is `[T]` -- forced by the temporal background knowledge, not discovered by PC on its own. Under this model's tier structure, every edge that can exist at all is between two different tiers, and `causal-learn` mechanically orients any such edge immediately after skeleton discovery, before its own v-structure or Meek orientation logic ever runs -- there is no edge in this graph that could have been genuinely `[PC]`-oriented under these constraints (see `bootstrap_stability.md`'s 'Orientation provenance' section for the full derivation). `unconstrained_same_direction` below is the one independent check available: the share of an unconstrained bootstrap's adjacent replicates (same resampled data, no background knowledge at all) where PC's own orientation logic landed on this same direction anyway -- high means the data corroborates the assumption, low means the direction rests on the temporal assumption alone.
+
 ```
-topic_share_t1 -> topic_share_t   [stable, mean_rate=1.000]
-year -> connectivity_t1_log   [stable, mean_rate=0.972]
-modularity_t1 -> log1p_median_c2   [excluded, mean_rate=0.333]
-year -> log1p_median_c2   [stable, mean_rate=0.991]
+topic_share_t1 -> topic_share_t   [T, unconstrained_same_direction=0.112]   [stable, mean_rate=1.000]
+year -> connectivity_t1_log   [T, unconstrained_same_direction=0.570]   [stable, mean_rate=0.972]
+modularity_t1 -> log1p_median_c2   [T, unconstrained_same_direction=0.190]   [excluded, mean_rate=0.333]
+year -> log1p_median_c2   [T, unconstrained_same_direction=0.086]   [stable, mean_rate=0.991]
 ```
 
 ## Stable-edge graph
@@ -61,8 +65,10 @@ modularity_t1          topic_share_t        0.274       0.31         0.292   0.0
 
 ## Cross-reference: predictive usefulness (Step 5 / D2.3)
 
-- `topic_share_t`: baseline R²=0.806, all_t1=0.810, all_t1_no_modularity=0.812, graph_parents=0.806 (see `predictive_usefulness.md` for full CV detail).
-- `log1p_median_c2`: baseline R²=-0.163, all_t1=0.352, all_t1_no_modularity=0.334, graph_parents=0.121 (see `predictive_usefulness.md` for full CV detail).
+`graph_parents_nested_cv` below selects its additional predictors separately inside each cross-validation fold, using only that fold's training topics, specifically to avoid the held-out fold's topics leaking into predictor selection (see `predictive_usefulness.md` for the full nested-CV detail). It is a different statistic from the stable/candidate tiers above (which use the full-dataset, both-representations bootstrap) -- not the same number restated under a new name.
+
+- `topic_share_t`: baseline R²=0.804, all_t1=0.810, all_t1_no_modularity=0.812, graph_parents_nested_cv=0.804 (see `predictive_usefulness.md` for full CV detail).
+- `log1p_median_c2`: baseline R²=0.121, all_t1=0.352, all_t1_no_modularity=0.334, graph_parents_nested_cv=0.121 (see `predictive_usefulness.md` for full CV detail).
 
 Note: `sensitivity_outcome:topic_growth`/`:hit_rate_2yr` and `sensitivity_no_year` (in `pc_settings_comparison.md`) are single-run results, not bootstrap-replicated, so they are not tier-classified above -- treat them as context, not stability evidence.
 
