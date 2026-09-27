@@ -5,45 +5,40 @@ Formal forbidden/allowed/sensitivity edge lists for the PC runs in Step 3, per t
 ## Temporal tiers
 
 - Tier 0 (exogenous, context): year
-- Tier 1 (predictors, t-1): topic_share_t1, cross_topic_rate_t1, connectivity_t1, modularity_t1, bridge_concentration_t1
+- Tier 1 (predictors, t-1): topic_share_t1, cross_topic_rate_t1, connectivity_t1, modularity_t1
 - Tier 2 (outcomes, t): topic_growth, median_cites_2yr, hit_rate_2yr, topic_share_t
 - Note: `log1p_median_c2` is `median_cites_2yr` log1p-transformed for continuous CI tests -- same tier, same underlying variable, never include both in one PC run.
 - `year` (tier 0) is exogenous: it may point at anything, but nothing may point into it -- added per the 2026-08-19 correction, since several variables share a calendar-time trend and an unconstrained year node could otherwise absorb spurious edges.
 
 ## Main model vs. sensitivity-only variables
 
-Per the 2026-08-19 correction, the **main PC model** uses predictors topic_share_t1, cross_topic_rate_t1, connectivity_t1, modularity_t1 (+ `year`) and outcomes topic_share_t, log1p_median_c2. `bridge_concentration_t1` is a sensitivity-only predictor and `topic_growth, hit_rate_2yr` are sensitivity-only outcomes -- all still temporally tiered the same way above, just excluded from the main Step 3 grid.
+Per the 2026-08-19 correction, the **main PC model** uses predictors topic_share_t1, cross_topic_rate_t1, connectivity_t1, modularity_t1 (+ `year`) and outcomes topic_share_t, log1p_median_c2. `topic_growth, hit_rate_2yr` are sensitivity-only outcomes -- still temporally tiered the same way above, just excluded from the main Step 3 grid. There are no sensitivity-only predictors: `bridge_concentration_t1` (formerly tracked here) is excluded from PC modeling entirely -- the main model and every sensitivity setting -- due to near-degeneracy and a known issue in its underlying betweenness-centrality computation; see `data_quality.md`'s flagged-variables section. It remains in the raw panel only, as future work.
 
 ## Forbidden edges (hard rule, always applied)
 
-All 29 outcome-to-predictor edges (t -> t-1). Example: `median_cites_2yr -> connectivity_t1` is forbidden.
+All 24 outcome-to-predictor edges (t -> t-1). Example: `median_cites_2yr -> connectivity_t1` is forbidden.
 
 ```
 topic_growth -> topic_share_t1  [FORBIDDEN]
 topic_growth -> cross_topic_rate_t1  [FORBIDDEN]
 topic_growth -> connectivity_t1  [FORBIDDEN]
 topic_growth -> modularity_t1  [FORBIDDEN]
-topic_growth -> bridge_concentration_t1  [FORBIDDEN]
 median_cites_2yr -> topic_share_t1  [FORBIDDEN]
 median_cites_2yr -> cross_topic_rate_t1  [FORBIDDEN]
 median_cites_2yr -> connectivity_t1  [FORBIDDEN]
 median_cites_2yr -> modularity_t1  [FORBIDDEN]
-median_cites_2yr -> bridge_concentration_t1  [FORBIDDEN]
 hit_rate_2yr -> topic_share_t1  [FORBIDDEN]
 hit_rate_2yr -> cross_topic_rate_t1  [FORBIDDEN]
 hit_rate_2yr -> connectivity_t1  [FORBIDDEN]
 hit_rate_2yr -> modularity_t1  [FORBIDDEN]
-hit_rate_2yr -> bridge_concentration_t1  [FORBIDDEN]
 topic_share_t -> topic_share_t1  [FORBIDDEN]
 topic_share_t -> cross_topic_rate_t1  [FORBIDDEN]
 topic_share_t -> connectivity_t1  [FORBIDDEN]
 topic_share_t -> modularity_t1  [FORBIDDEN]
-topic_share_t -> bridge_concentration_t1  [FORBIDDEN]
 topic_share_t1 -> year  [FORBIDDEN]
 cross_topic_rate_t1 -> year  [FORBIDDEN]
 connectivity_t1 -> year  [FORBIDDEN]
 modularity_t1 -> year  [FORBIDDEN]
-bridge_concentration_t1 -> year  [FORBIDDEN]
 topic_growth -> year  [FORBIDDEN]
 median_cites_2yr -> year  [FORBIDDEN]
 hit_rate_2yr -> year  [FORBIDDEN]
@@ -52,7 +47,7 @@ topic_share_t -> year  [FORBIDDEN]
 
 ## Allowed edges (main model search space)
 
-All 29 predictor-to-outcome edges (t-1 -> t). This is the space PC is permitted to place edges in for the main model -- it is not a guarantee any specific edge will be learned, that's for Step 3 to determine from data.
+All 24 predictor-to-outcome edges (t-1 -> t). This is the space PC is permitted to place edges in for the main model -- it is not a guarantee any specific edge will be learned, that's for Step 3 to determine from data.
 
 ```
 topic_share_t1 -> topic_growth  [allowed]
@@ -71,15 +66,10 @@ modularity_t1 -> topic_growth  [allowed]
 modularity_t1 -> median_cites_2yr  [allowed]
 modularity_t1 -> hit_rate_2yr  [allowed]
 modularity_t1 -> topic_share_t  [allowed]
-bridge_concentration_t1 -> topic_growth  [allowed]
-bridge_concentration_t1 -> median_cites_2yr  [allowed]
-bridge_concentration_t1 -> hit_rate_2yr  [allowed]
-bridge_concentration_t1 -> topic_share_t  [allowed]
 year -> topic_share_t1  [allowed]
 year -> cross_topic_rate_t1  [allowed]
 year -> connectivity_t1  [allowed]
 year -> modularity_t1  [allowed]
-year -> bridge_concentration_t1  [allowed]
 year -> topic_growth  [allowed]
 year -> median_cites_2yr  [allowed]
 year -> hit_rate_2yr  [allowed]
@@ -115,23 +105,15 @@ Not explicitly specified, but treated the same way as outcome-outcome edges here
 topic_share_t1 -> cross_topic_rate_t1  [sensitivity only]
 topic_share_t1 -> connectivity_t1  [sensitivity only]
 topic_share_t1 -> modularity_t1  [sensitivity only]
-topic_share_t1 -> bridge_concentration_t1  [sensitivity only]
 cross_topic_rate_t1 -> topic_share_t1  [sensitivity only]
 cross_topic_rate_t1 -> connectivity_t1  [sensitivity only]
 cross_topic_rate_t1 -> modularity_t1  [sensitivity only]
-cross_topic_rate_t1 -> bridge_concentration_t1  [sensitivity only]
 connectivity_t1 -> topic_share_t1  [sensitivity only]
 connectivity_t1 -> cross_topic_rate_t1  [sensitivity only]
 connectivity_t1 -> modularity_t1  [sensitivity only]
-connectivity_t1 -> bridge_concentration_t1  [sensitivity only]
 modularity_t1 -> topic_share_t1  [sensitivity only]
 modularity_t1 -> cross_topic_rate_t1  [sensitivity only]
 modularity_t1 -> connectivity_t1  [sensitivity only]
-modularity_t1 -> bridge_concentration_t1  [sensitivity only]
-bridge_concentration_t1 -> topic_share_t1  [sensitivity only]
-bridge_concentration_t1 -> cross_topic_rate_t1  [sensitivity only]
-bridge_concentration_t1 -> connectivity_t1  [sensitivity only]
-bridge_concentration_t1 -> modularity_t1  [sensitivity only]
 ```
 
 ## Notes for downstream steps

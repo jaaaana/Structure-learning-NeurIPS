@@ -15,7 +15,6 @@ TIER_0 = [
     "cross_topic_rate_t1",
     "connectivity_t1",
     "modularity_t1",
-    "bridge_concentration_t1",
 ]
 
 TIER_1 = ["topic_growth", "median_cites_2yr", "hit_rate_2yr", "topic_share_t"]
@@ -25,7 +24,6 @@ EXOGENOUS = ["year"]
 
 MAIN_PREDICTORS = ["topic_share_t1", "cross_topic_rate_t1", "connectivity_t1", "modularity_t1"]
 MAIN_OUTCOMES = ["topic_share_t", TIER_1_LOG_VARIANT]
-SENSITIVITY_PREDICTORS_ONLY = ["bridge_concentration_t1"]
 SENSITIVITY_OUTCOMES_ONLY = ["topic_growth", "hit_rate_2yr"]
 
 SIZE_VARS = ["n_papers_t1"]
@@ -114,7 +112,7 @@ def export_json() -> dict:
         },
         "main_model": {"predictors": MAIN_PREDICTORS, "outcomes": MAIN_OUTCOMES, "exogenous": EXOGENOUS},
         "sensitivity_only": {
-            "predictors": SENSITIVITY_PREDICTORS_ONLY,
+            "predictors": [],
             "outcomes": SENSITIVITY_OUTCOMES_ONLY,
             "size_control": SIZE_VARS,
         },
@@ -135,8 +133,7 @@ def main():
     data = export_json()
     report = render_report(data, EXOGENOUS, TIER_0, TIER_1, TIER_1_LOG_VARIANT,
                             MAIN_PREDICTORS, MAIN_OUTCOMES,
-                            SENSITIVITY_PREDICTORS_ONLY, SENSITIVITY_OUTCOMES_ONLY,
-                            SIZE_VARS)
+                            SENSITIVITY_OUTCOMES_ONLY, SIZE_VARS)
     REPORT_OUT.parent.mkdir(parents=True, exist_ok=True)
     REPORT_OUT.write_text(report, encoding="utf-8")
 

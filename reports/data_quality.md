@@ -50,50 +50,47 @@ n_authors_t1    33
 ## Distribution summary (core variables)
 
 ```
-                         count   mean    std    min    50%     max   skew
-topic_share_t1           156.0  0.039  0.027  0.004  0.034   0.115  0.716
-cross_topic_rate_t1      156.0  0.265  0.064  0.133  0.261   0.483  0.418
-connectivity_t1          156.0  3.819  1.388  2.050  3.493  13.761  3.018
-modularity_t1            156.0  0.915  0.056  0.615  0.928   0.987 -1.913
-bridge_concentration_t1  156.0  0.853  0.347  0.000  1.000   1.000 -2.068
-topic_growth             156.0  0.038  0.277 -0.641  0.016   0.752  0.001
-median_cites_2yr         156.0  3.093  3.141  0.000  2.000  19.000  1.989
-log1p_median_c2          156.0  1.157  0.720  0.000  1.099   2.996 -0.007
-hit_rate_2yr             156.0  0.111  0.107  0.000  0.083   0.486  1.230
-topic_share              156.0  0.040  0.027  0.006  0.035   0.115  0.706
+                     count   mean    std    min    50%     max   skew
+topic_share_t1       156.0  0.039  0.027  0.004  0.034   0.115  0.716
+cross_topic_rate_t1  156.0  0.265  0.064  0.133  0.261   0.483  0.418
+connectivity_t1      156.0  3.819  1.388  2.050  3.493  13.761  3.018
+modularity_t1        156.0  0.915  0.056  0.615  0.928   0.987 -1.913
+topic_growth         156.0  0.038  0.277 -0.641  0.016   0.752  0.001
+median_cites_2yr     156.0  3.093  3.141  0.000  2.000  19.000  1.989
+log1p_median_c2      156.0  1.157  0.720  0.000  1.099   2.996 -0.007
+hit_rate_2yr         156.0  0.111  0.107  0.000  0.083   0.486  1.230
+topic_share          156.0  0.040  0.027  0.006  0.035   0.115  0.706
 ```
 
 ## Correlation analysis (Pearson, core variables)
 
 ```
-                         topic_share_t1  cross_topic_rate_t1  connectivity_t1  modularity_t1  bridge_concentration_t1  topic_growth  median_cites_2yr  log1p_median_c2  hit_rate_2yr  topic_share
-topic_share_t1                     1.00                -0.13            -0.21           0.43                     0.36         -0.28              0.08             0.15         -0.13         0.92
-cross_topic_rate_t1               -0.13                 1.00            -0.15           0.09                     0.08         -0.11             -0.12            -0.25         -0.18        -0.18
-connectivity_t1                   -0.21                -0.15             1.00          -0.22                     0.08          0.19             -0.01            -0.01          0.44        -0.16
-modularity_t1                      0.43                 0.09            -0.22           1.00                     0.30         -0.45             -0.14            -0.15         -0.08         0.31
-bridge_concentration_t1            0.36                 0.08             0.08           0.30                     1.00         -0.29              0.03             0.03          0.00         0.33
-topic_growth                      -0.28                -0.11             0.19          -0.45                    -0.29          1.00              0.19             0.18          0.24         0.05
-median_cites_2yr                   0.08                -0.12            -0.01          -0.14                     0.03          0.19              1.00             0.90          0.59         0.19
-log1p_median_c2                    0.15                -0.25            -0.01          -0.15                     0.03          0.18              0.90             1.00          0.56         0.26
-hit_rate_2yr                      -0.13                -0.18             0.44          -0.08                     0.00          0.24              0.59             0.56          1.00        -0.03
-topic_share                        0.92                -0.18            -0.16           0.31                     0.33          0.05              0.19             0.26         -0.03         1.00
+                     topic_share_t1  cross_topic_rate_t1  connectivity_t1  modularity_t1  topic_growth  median_cites_2yr  log1p_median_c2  hit_rate_2yr  topic_share
+topic_share_t1                 1.00                -0.13            -0.21           0.43         -0.28              0.08             0.15         -0.13         0.92
+cross_topic_rate_t1           -0.13                 1.00            -0.15           0.09         -0.11             -0.12            -0.25         -0.18        -0.18
+connectivity_t1               -0.21                -0.15             1.00          -0.22          0.19             -0.01            -0.01          0.44        -0.16
+modularity_t1                  0.43                 0.09            -0.22           1.00         -0.45             -0.14            -0.15         -0.08         0.31
+topic_growth                  -0.28                -0.11             0.19          -0.45          1.00              0.19             0.18          0.24         0.05
+median_cites_2yr               0.08                -0.12            -0.01          -0.14          0.19              1.00             0.90          0.59         0.19
+log1p_median_c2                0.15                -0.25            -0.01          -0.15          0.18              0.90             1.00          0.56         0.26
+hit_rate_2yr                  -0.13                -0.18             0.44          -0.08          0.24              0.59             0.56          1.00        -0.03
+topic_share                    0.92                -0.18            -0.16           0.31          0.05              0.19             0.26         -0.03         1.00
 ```
 
 ## Outliers and heavy tails (IQR method)
 
 ```
-                         n_outliers_iqr  kurtosis    min     max
-variable                                                        
-topic_share_t1                        0    -0.337  0.004   0.115
-cross_topic_rate_t1                   1     0.338  0.133   0.483
-connectivity_t1                       6    17.011  2.050  13.761
-modularity_t1                         4     6.088  0.615   0.987
-bridge_concentration_t1              28     2.331  0.000   1.000
-topic_growth                          0    -0.450 -0.641   0.752
-median_cites_2yr                      9     5.551  0.000  19.000
-log1p_median_c2                       1    -0.520  0.000   2.996
-hit_rate_2yr                          4     1.210  0.000   0.486
-topic_share                           0    -0.312  0.006   0.115
+                     n_outliers_iqr  kurtosis    min     max
+variable                                                    
+topic_share_t1                    0    -0.337  0.004   0.115
+cross_topic_rate_t1               1     0.338  0.133   0.483
+connectivity_t1                   6    17.011  2.050  13.761
+modularity_t1                     4     6.088  0.615   0.987
+topic_growth                      0    -0.450 -0.641   0.752
+median_cites_2yr                  9     5.551  0.000  19.000
+log1p_median_c2                   1    -0.520  0.000   2.996
+hit_rate_2yr                      4     1.210  0.000   0.486
+topic_share                       0    -0.312  0.006   0.115
 ```
 
 ## Redundancy check (|Pearson r| > 0.5)
@@ -134,7 +131,7 @@ year
 
 ## Flagged variables
 
-- `bridge_concentration_t1` is near-degenerate: 14% of rows sit at/near 0 and 84% sit at/near 1, leaving very few rows in between. Continuous CI tests (Fisher-Z) assume a roughly continuous spread, so this variable is a poor fit for the continuous PC run -- treat it as effectively binary and rely on the discretized version for it. Per the recovered pipeline (`nips_pipeline_v4_clean.ipynb`), this is the share of total betweenness centrality held by the top 10% of authors in the topic's co-authorship graph -- on small author counts, a handful of authors mechanically dominate betweenness, which explains the degeneracy directly rather than just describing it.
+- `bridge_concentration_t1` was considered as a measure of brokerage concentration -- per the recovered pipeline (`nips_pipeline_v4_clean.ipynb`), the share of total betweenness centrality held by the top 10% of authors in the topic's co-authorship graph -- but is **excluded from the main model and every sensitivity setting**, for two independent reasons. First, insufficient variability: 14% of rows sit at/near 0 and 84% sit at/near 1, leaving very few rows in between -- on small author counts, a handful of authors mechanically dominate betweenness, which explains the near-degeneracy directly rather than just describing it. Second, problematic stability in how it is computed: `refresh_citations.py`'s `graph_metrics()` calls `nx.betweenness_centrality(G, weight="weight")` with `weight` set to raw co-authorship frequency, but NetworkX treats `weight` as a shortest-path distance/cost, not a connection strength -- so heavier collaboration is currently treated as a *longer*, less-preferred path, the reverse of the intended interpretation. The theoretically correct fix is `distance = 1/weight`, not applied here since the near-degeneracy above already makes the variable untrustworthy regardless -- left as future work rather than fixed now. The raw `bridge_concentration_t1` column remains in the panel for that future work; it is dropped from both model-ready tables.
 - `modularity_t1` has low variance (compressed into [0.61, 0.99]) and correlates with topic size (corr with n_papers_t1 = 0.51): bigger topics tend to show higher modularity. Any edge involving modularity_t1 should be checked against topic size as a possible confound, and treated cautiously on small topics where a handful of authors can make the collaboration graph trivially "modular".
 - `median_cites_2yr` is right-skewed (skew=1.99); its log-transformed twin `log1p_median_c2` is close to symmetric (skew=-0.01) and is the better choice for continuous Fisher-Z tests.
 - `hit_rate_2yr` is a bounded proportion (range [0.00, 0.49]) and right-skewed (skew=1.23), not a raw count -- keep this in mind for the predictive-usefulness models in the evaluation framework later.
@@ -144,13 +141,13 @@ year
 
 ## t-1 minimum-graph-size filter (2026-08-19 correction)
 
-Network predictors (`topic_share_t1`, `cross_topic_rate_t1`, `connectivity_t1`, `modularity_t1`, `bridge_concentration_t1`) are measured on the topic's **t-1** collaboration graph, not the t graph -- so the minimum-graph-size condition has to be checked against `n_papers_t1`, not `n_papers`. Both continuous and discretized output tables below have this filter already applied (rows with `n_papers_t1 < 20`, or no recoverable t-1 size at all, are dropped): **33 row(s) dropped**, 123 remain for the main model. The raw panel and every other section of this report still describe the full, unfiltered data -- only the two model-ready output tables are filtered.
+Network predictors (`topic_share_t1`, `cross_topic_rate_t1`, `connectivity_t1`, `modularity_t1`) are measured on the topic's **t-1** collaboration graph, not the t graph -- so the minimum-graph-size condition has to be checked against `n_papers_t1`, not `n_papers`. Both continuous and discretized output tables below have this filter already applied (rows with `n_papers_t1 < 20`, or no recoverable t-1 size at all, are dropped): **33 row(s) dropped**, 123 remain for the main model. The raw panel and every other section of this report still describe the full, unfiltered data -- only the two model-ready output tables are filtered.
 
 ## Recommendation for the first PC model
 
-Per the 2026-08-19 correction, the **main model** outcome is `topic_share_t` (not `topic_growth` -- topic_growth is computed as log(topic_share_t) - log(topic_share_t1), so its dependence on topic_share_t1 is partly mechanical) plus `log1p_median_c2`; `topic_growth` and `hit_rate_2yr` are sensitivity-only outcomes. `bridge_concentration_t1` is dropped from the main model entirely (both continuous and discretized) for now -- near-degenerate, see flags above -- and `year` is included as an exogenous context variable with no edges allowed pointing into it (see constraints.py).
+Per the 2026-08-19 correction, the **main model** outcome is `topic_share_t` (not `topic_growth` -- topic_growth is computed as log(topic_share_t) - log(topic_share_t1), so its dependence on topic_share_t1 is partly mechanical) plus `log1p_median_c2`; `topic_growth` and `hit_rate_2yr` are sensitivity-only outcomes. `bridge_concentration_t1` is excluded from PC modeling entirely -- the main model and every sensitivity setting, not produced in either output table below -- near-degenerate and with a known issue in its underlying computation, see flags above; `year` is included as an exogenous context variable with no edges allowed pointing into it (see constraints.py).
 
 - Use the **continuous** table (`data/processed/topic_year_continuous.csv`) with Fisher-Z for the primary run: predictors `topic_share_t1`, `cross_topic_rate_t1`, `connectivity_t1` (log-transformed), `modularity_t1`, plus `year`; outcomes `topic_share_t`, `log1p_median_c2`.
-- Use the **discretized** table (`data/processed/topic_year_discretized.csv`) with chi-square/G-test as the sensitivity comparison. `bridge_concentration_t1_bin` is still produced in this table (for the separate bridge_concentration sensitivity setting) even though it's excluded from the main discretized model too.
+- Use the **discretized** table (`data/processed/topic_year_discretized.csv`) with chi-square/G-test as the sensitivity comparison. `bridge_concentration_t1`/`_bin` is not produced in either output table -- excluded entirely, see flags above.
 - Carry `modularity_t1` in both versions, but flag any edge touching it during interpretation (Step 5 / thesis D4) as possibly confounded with topic size.
 - `n_papers`/`n_authors` (t) are not part of the causal model but are kept as context columns for small-topic sanity checks; `n_papers_t1`/`n_authors_t1` are kept the same way, and are also what the minimum-graph-size filter above is computed from.

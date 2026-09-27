@@ -40,7 +40,6 @@ PREDICTORS_T1 = [
     "cross_topic_rate_t1",
     "connectivity_t1",
     "modularity_t1",
-    "bridge_concentration_t1",
 ]
 # topic_share (renamed topic_share_t on output) is the new main-model outcome
 # per the 2026-08-19 correction -- topic_growth is computed as
@@ -51,8 +50,6 @@ PREDICTORS_T1 = [
 OUTCOMES = ["topic_growth", "median_cites_2yr", "log1p_median_c2", "hit_rate_2yr", "topic_share"]
 CORE_VARS = PREDICTORS_T1 + OUTCOMES
 
-# bridge_concentration_t1 is near-degenerate (mass piled at 0 and 1), so it
-# gets a binary split instead of a tertile split during discretization.
 TERTILE_VARS = [
     "topic_share_t1",
     "cross_topic_rate_t1",
@@ -225,11 +222,6 @@ def make_discretized_version(df: pd.DataFrame, out_path: Path, n_bins: int = 3) 
         out_name = "topic_share_t_bin" if col == "topic_share" else f"{col}_bin"
         out[out_name] = pd.qcut(filtered[col], q=n_bins, labels=labels, duplicates="drop")
 
-    out["bridge_concentration_t1_bin"] = pd.cut(
-        filtered["bridge_concentration_t1"],
-        bins=[-0.01, 0.95, 1.01],
-        labels=["low_or_mid", "high"],
-    )
     out["year_bin"] = pd.qcut(filtered["year"], q=n_bins, labels=labels, duplicates="drop")
 
     out_path.parent.mkdir(parents=True, exist_ok=True)

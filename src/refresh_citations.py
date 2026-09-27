@@ -299,6 +299,14 @@ def graph_metrics(author_lists):
     deg = float(np.mean([d for _, d in G.degree()]))
     comms = louvain_communities(G, weight="weight", seed=42)
     mod = nx_modularity(G, comms, weight="weight")
+    # KNOWN ISSUE (future work, not fixed): NetworkX treats `weight` here as a
+    # shortest-path distance/cost, not a connection strength, but `weight` is
+    # raw co-authorship frequency -- so heavier collaboration is currently
+    # treated as a *longer*, less-preferred path, the reverse of the intended
+    # interpretation. The correct fix is `distance=1/weight`. Not applied:
+    # bridge_concentration_t1 (derived from `bc` below) is excluded from all
+    # PC modeling anyway due to near-degeneracy (see data_quality.md), so
+    # fixing this wouldn't currently change any modeled result.
     bc = sorted(nx.betweenness_centrality(G, weight="weight").values(), reverse=True)
     k = max(1, int(len(bc) * 0.10))
     bc_share = sum(bc[:k]) / sum(bc) if sum(bc) else 0.0

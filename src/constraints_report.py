@@ -1,7 +1,6 @@
 def render_report(data: dict, exogenous: list, tier_0: list, tier_1: list,
                    tier_1_log_variant: str, main_predictors: list, main_outcomes: list,
-                   sensitivity_predictors_only: list, sensitivity_outcomes_only: list,
-                   size_vars: list) -> str:
+                   sensitivity_outcomes_only: list, size_vars: list) -> str:
     lines = []
     lines.append("# Edge Constraints -- Step 2\n")
     lines.append(
@@ -33,10 +32,15 @@ def render_report(data: dict, exogenous: list, tier_0: list, tier_1: list,
         f"Per the 2026-08-19 correction, the **main PC model** "
         f"uses predictors {', '.join(main_predictors)} (+ `year`) and "
         f"outcomes {', '.join(main_outcomes)}. "
-        f"`{', '.join(sensitivity_predictors_only)}` is a sensitivity-only "
-        f"predictor and `{', '.join(sensitivity_outcomes_only)}` are "
-        "sensitivity-only outcomes -- all still temporally tiered the same "
-        "way above, just excluded from the main Step 3 grid.\n"
+        f"`{', '.join(sensitivity_outcomes_only)}` are "
+        "sensitivity-only outcomes -- still temporally tiered the same "
+        "way above, just excluded from the main Step 3 grid. There are no "
+        "sensitivity-only predictors: `bridge_concentration_t1` (formerly "
+        "tracked here) is excluded from PC modeling entirely -- the main "
+        "model and every sensitivity setting -- due to near-degeneracy and "
+        "a known issue in its underlying betweenness-centrality "
+        "computation; see `data_quality.md`'s flagged-variables section. It "
+        "remains in the raw panel only, as future work.\n"
     )
 
     lines.append("## Forbidden edges (hard rule, always applied)\n")

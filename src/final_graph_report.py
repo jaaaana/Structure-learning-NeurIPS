@@ -97,9 +97,11 @@ def render_report(version: str, classification: list, main_graph: dict,
                         "topic size is available to condition on."
                     )
             lines.append(
-                "- `bridge_concentration_t1` is near-degenerate (mass at 0/1) and was "
-                "already excluded from the main model at Step 1 -- listed here for "
-                "completeness, not because it appeared in the bootstrap.\n"
+                "- `bridge_concentration_t1` is near-degenerate (mass at 0/1) and has "
+                "a known issue in its underlying betweenness computation -- excluded "
+                "from the main model and every sensitivity setting at Step 1, not "
+                "produced in either model-ready table, left as future work; listed "
+                "here for completeness, not because it appeared in the bootstrap.\n"
             )
         else:
             lines.append("")

@@ -13,8 +13,7 @@
       "topic_share_t1",
       "cross_topic_rate_t1",
       "connectivity_t1",
-      "modularity_t1",
-      "bridge_concentration_t1"
+      "modularity_t1"
     ],
     "tier_2_outcomes_t": [
       "topic_growth",
@@ -39,9 +38,7 @@
     ]
   },
   "sensitivity_only": {
-    "predictors": [
-      "bridge_concentration_t1"
-    ],
+    "predictors": [],
     "outcomes": [
       "topic_growth",
       "hit_rate_2yr"
@@ -117,22 +114,6 @@
       "topic_share_t"
     ],
     [
-      "bridge_concentration_t1",
-      "topic_growth"
-    ],
-    [
-      "bridge_concentration_t1",
-      "median_cites_2yr"
-    ],
-    [
-      "bridge_concentration_t1",
-      "hit_rate_2yr"
-    ],
-    [
-      "bridge_concentration_t1",
-      "topic_share_t"
-    ],
-    [
       "year",
       "topic_share_t1"
     ],
@@ -147,10 +128,6 @@
     [
       "year",
       "modularity_t1"
-    ],
-    [
-      "year",
-      "bridge_concentration_t1"
     ],
     [
       "year",
@@ -187,10 +164,6 @@
       "modularity_t1"
     ],
     [
-      "topic_growth",
-      "bridge_concentration_t1"
-    ],
-    [
       "median_cites_2yr",
       "topic_share_t1"
     ],
@@ -205,10 +178,6 @@
     [
       "median_cites_2yr",
       "modularity_t1"
-    ],
-    [
-      "median_cites_2yr",
-      "bridge_concentration_t1"
     ],
     [
       "hit_rate_2yr",
@@ -227,10 +196,6 @@
       "modularity_t1"
     ],
     [
-      "hit_rate_2yr",
-      "bridge_concentration_t1"
-    ],
-    [
       "topic_share_t",
       "topic_share_t1"
     ],
@@ -245,10 +210,6 @@
     [
       "topic_share_t",
       "modularity_t1"
-    ],
-    [
-      "topic_share_t",
-      "bridge_concentration_t1"
     ],
     [
       "topic_share_t1",
@@ -264,10 +225,6 @@
     ],
     [
       "modularity_t1",
-      "year"
-    ],
-    [
-      "bridge_concentration_t1",
       "year"
     ],
     [
@@ -352,10 +309,6 @@
         "modularity_t1"
       ],
       [
-        "topic_share_t1",
-        "bridge_concentration_t1"
-      ],
-      [
         "cross_topic_rate_t1",
         "topic_share_t1"
       ],
@@ -366,10 +319,6 @@
       [
         "cross_topic_rate_t1",
         "modularity_t1"
-      ],
-      [
-        "cross_topic_rate_t1",
-        "bridge_concentration_t1"
       ],
       [
         "connectivity_t1",
@@ -384,10 +333,6 @@
         "modularity_t1"
       ],
       [
-        "connectivity_t1",
-        "bridge_concentration_t1"
-      ],
-      [
         "modularity_t1",
         "topic_share_t1"
       ],
@@ -398,26 +343,6 @@
       [
         "modularity_t1",
         "connectivity_t1"
-      ],
-      [
-        "modularity_t1",
-        "bridge_concentration_t1"
-      ],
-      [
-        "bridge_concentration_t1",
-        "topic_share_t1"
-      ],
-      [
-        "bridge_concentration_t1",
-        "cross_topic_rate_t1"
-      ],
-      [
-        "bridge_concentration_t1",
-        "connectivity_t1"
-      ],
-      [
-        "bridge_concentration_t1",
-        "modularity_t1"
       ]
     ]
   }

@@ -65,7 +65,7 @@ modularity_t1          topic_share_t        0.056       0.078        0.067   0.0
 ```
 - `modularity_t1 -> log1p_median_c2`: size confound -- pc_learning.py's sensitivity_size_control group shows this edge disappears (replaced by `n_papers_t1_log -> modularity_t1`) once topic size is available to condition on.
 - `modularity_t1 -> topic_share_t`: size confound -- pc_learning.py's sensitivity_size_control group shows this edge disappears (replaced by `n_papers_t1_log -> modularity_t1`) once topic size is available to condition on.
-- `bridge_concentration_t1` is near-degenerate (mass at 0/1) and was already excluded from the main model at Step 1 -- listed here for completeness, not because it appeared in the bootstrap.
+- `bridge_concentration_t1` is near-degenerate (mass at 0/1) and has a known issue in its underlying betweenness computation -- excluded from the main model and every sensitivity setting at Step 1, not produced in either model-ready table, left as future work; listed here for completeness, not because it appeared in the bootstrap.
 
 ## Cross-reference: predictive usefulness (Step 5 / D2.3)
 
