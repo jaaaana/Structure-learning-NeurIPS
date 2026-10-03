@@ -30,8 +30,15 @@ def render_report(version: str, seed: int, n_boot: int, boot_alpha: float,
         "independent PC finding); `adjacency_rate` -- not orientation rate -- "
         "is the actual stability evidence (it is also the only quantity "
         "`final_graph.py`'s stable/candidate/ambiguous tiering ever reads). "
-        "See 'Orientation provenance' below for genuine, unconstrained-derived "
-        "orientation evidence.\n"
+        "`same_direction_rate` is only informative for same-tier pairs (two "
+        "predictors or two outcomes, where background knowledge doesn't force "
+        "a direction either way): it reports whether replicates that did "
+        "orient the pair agreed on *which* direction, so a pair that's "
+        "oriented often but flips between A->B and B->A across replicates "
+        "shows up as high `orientation_rate_given_adjacent` but low "
+        "`same_direction_rate` -- a materially weaker finding than a "
+        "consistently-oriented pair. See 'Orientation provenance' below for "
+        "genuine, unconstrained-derived orientation evidence.\n"
     )
 
     for label, diag, freq in [
@@ -61,7 +68,10 @@ def render_report(version: str, seed: int, n_boot: int, boot_alpha: float,
                 "`orientation_rate_given_adjacent` = of those, share where PC "
                 "committed to a direction -- see the caveat above: this is "
                 "mechanical under the constrained setting here, not independent "
-                "evidence. Sorted by adjacency_rate descending -- this table, "
+                "evidence. `same_direction_rate` = of all adjacent replicates, "
+                "share that agreed on the same direction (only non-trivial for "
+                "same-tier pairs -- see caveat above). Sorted by adjacency_rate "
+                "descending -- this table, "
                 "not the settings-grid recurrence table, is the stability "
                 "evidence for Step 5 / thesis Chapter 5. No fixed "
                 "stable/unstable cutoff is applied here; choose and justify a "
@@ -120,10 +130,16 @@ def render_report(version: str, seed: int, n_boot: int, boot_alpha: float,
     lines.append(
         "Predictor-predictor or outcome-outcome pairs -- banned from the "
         "constrained model's skeleton outright (`forbid_within_tier`), so "
-        "they can never appear in the tables above at any adjacency rate. No "
-        "directional comparison is possible for these (there is no "
-        "tier-implied direction to agree or disagree with); adjacency rate "
-        "alone is shown.\n"
+        "they can never appear in the tables above at any adjacency rate. "
+        "There is no tier-implied direction here for PC to agree or disagree "
+        "with (unlike the cross-tier table above), so `same_direction_rate`/"
+        "`reverse_direction_rate` instead measure *internal* consistency: "
+        "the share of adjacent replicates that agreed with each other on "
+        "which of the two (arbitrarily, alphabetically ordered) directions "
+        "to pick. A pair with high adjacency but a near-even split between "
+        "the two is not a stable finding either way -- its direction is "
+        "essentially random noise across replicates, not just unconstrained "
+        "by assumption.\n"
     )
     same = provenance["same_tier_only_unconstrained"]
     if len(same):

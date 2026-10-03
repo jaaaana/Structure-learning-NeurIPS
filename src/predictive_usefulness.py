@@ -20,6 +20,7 @@ N_SPLITS = 5
 GRAPH_PARENT_THRESHOLD = 0.5
 N_BOOT_PER_FOLD = 150
 NESTED_SEED = 0
+ROBUSTNESS_THRESHOLDS = [0.3, 0.5, 0.7]
 
 COLUMN_FOR_BASE = {"connectivity_t1": CONNECTIVITY_LOG_VARIANT}
 
@@ -127,7 +128,9 @@ def nested_graph_parents(df: pd.DataFrame, folds: list, n_boot_per_fold: int, ba
 
         results[outcome] = {
             "label": f"baseline features + graph-selected predictors, nested per-fold bootstrap "
-                     f"({n_boot_per_fold} reps/fold, continuous/Fisher-Z, threshold={GRAPH_PARENT_THRESHOLD})",
+                     f"({n_boot_per_fold} reps/fold, continuous/Fisher-Z, threshold={GRAPH_PARENT_THRESHOLD}, "
+                     f"base_seed={base_seed} -> per-fold seeds {base_seed}..{base_seed + len(folds) - 1})",
+            "base_seed": base_seed,
             "features": BASELINE_FEATURES[outcome],
             "per_fold_added": added_per_fold,
             "fold_diagnostics": fold_diagnostics,
@@ -136,6 +139,82 @@ def nested_graph_parents(df: pd.DataFrame, folds: list, n_boot_per_fold: int, ba
             "r2_mean": float(np.mean(r2s)), "r2_std": float(np.std(r2s)),
             "mae_mean": float(np.mean(maes)), "mae_std": float(np.std(maes)),
         }
+    return results
+
+
+def threshold_robustness(df: pd.DataFrame, folds: list, n_boot_per_fold: int, base_seed: int,
+                          thresholds: list = ROBUSTNESS_THRESHOLDS) -> dict:
+    """Checks whether the predictive-usefulness conclusion depends on the
+    predictor-selection threshold, per the mentor's instruction: same 5
+    folds/settings as `nested_graph_parents`, each fold's training-only
+    bootstrap frequency table computed ONCE (150 reps), then every threshold
+    in `thresholds` is applied to that same table -- never re-bootstrapped
+    per threshold. Baseline features are always kept; only the additional
+    selected predictors vary by threshold. The goal is not to pick the best
+    threshold, but to see whether R2/MAE (and the selected predictors) stay
+    materially the same across a stricter vs. looser selection rule."""
+    node_names = CONTINUOUS_PREDICTORS + CONTINUOUS_OUTCOMES
+    per_outcome = {outcome: {t: {"r2s": [], "maes": [], "added_per_fold": []} for t in thresholds}
+                   for outcome in MAIN_OUTCOMES}
+    fold_diagnostics = []
+
+    for fold_idx, (train_idx, test_idx) in enumerate(folds):
+        train_df = df.iloc[train_idx]
+        test_df = df.iloc[test_idx]
+        n_train_topics = train_df["topic"].nunique()
+        fold_results, fold_diag = run_bootstrap(train_df, node_names, "fisherz", n_boot_per_fold, base_seed + fold_idx)
+        fold_diag["n_train_topics"] = n_train_topics
+        fold_diagnostics.append(fold_diag)
+        print(f"  [threshold robustness] fold {fold_idx}: {n_train_topics} training topics, "
+              f"{fold_diag['n_succeeded']}/{n_boot_per_fold} bootstrap replicates succeeded "
+              f"({fold_diag['n_degenerate_skipped']} degenerate, {fold_diag['n_failed']} failed)")
+        fold_freq = edge_recurrence(fold_results).set_index(["from", "to"])["adjacency_rate"]
+
+        for outcome in MAIN_OUTCOMES:
+            baseline_cols = BASELINE_FEATURES[outcome]
+            for threshold in thresholds:
+                selected_base = [frm for (frm, to) in fold_freq.index
+                                  if to == outcome and fold_freq[(frm, to)] >= threshold]
+                added_cols = [COLUMN_FOR_BASE.get(p, p) for p in selected_base
+                              if COLUMN_FOR_BASE.get(p, p) not in baseline_cols]
+                feature_cols = baseline_cols + added_cols
+
+                model = LinearRegression()
+                model.fit(train_df[feature_cols].to_numpy(dtype=float), train_df[outcome].to_numpy(dtype=float))
+                pred = model.predict(test_df[feature_cols].to_numpy(dtype=float))
+
+                per_outcome[outcome][threshold]["r2s"].append(r2_score(test_df[outcome].to_numpy(dtype=float), pred))
+                per_outcome[outcome][threshold]["maes"].append(
+                    mean_absolute_error(test_df[outcome].to_numpy(dtype=float), pred))
+                per_outcome[outcome][threshold]["added_per_fold"].append(added_cols)
+
+    results = {}
+    for outcome in MAIN_OUTCOMES:
+        results[outcome] = {"base_seed": base_seed, "fold_diagnostics": fold_diagnostics, "by_threshold": {}}
+        for threshold in thresholds:
+            r2s = per_outcome[outcome][threshold]["r2s"]
+            maes = per_outcome[outcome][threshold]["maes"]
+            added_per_fold = per_outcome[outcome][threshold]["added_per_fold"]
+            n_folds = len(r2s)
+
+            counts = {}
+            for added in added_per_fold:
+                for p in added:
+                    counts[p] = counts.get(p, 0) + 1
+            if counts:
+                selection_note = "selected per fold beyond baseline: " + ", ".join(
+                    f"{p} ({c}/{n_folds} folds)" for p, c in sorted(counts.items(), key=lambda kv: -kv[1]))
+            else:
+                selection_note = "no additional predictor cleared this threshold in any fold"
+
+            results[outcome]["by_threshold"][threshold] = {
+                "features": BASELINE_FEATURES[outcome],
+                "per_fold_added": added_per_fold,
+                "n_splits_used": n_folds,
+                "note": selection_note,
+                "r2_mean": float(np.mean(r2s)), "r2_std": float(np.std(r2s)),
+                "mae_mean": float(np.mean(maes)), "mae_std": float(np.std(maes)),
+            }
     return results
 
 
@@ -165,12 +244,17 @@ def run_comparison(version: str) -> dict:
     for outcome in MAIN_OUTCOMES:
         results[outcome]["graph_parents_nested_cv"] = nested[outcome]
 
+    robustness = threshold_robustness(df, folds, N_BOOT_PER_FOLD, NESTED_SEED, ROBUSTNESS_THRESHOLDS)
+    for outcome in MAIN_OUTCOMES:
+        results[outcome]["threshold_robustness"] = robustness[outcome]
+
     return results
 
 
-def main(version: str = "v4"):
+def main(version: str = "v5"):
     results = run_comparison(version)
-    report = render_report(version, results, N_SPLITS, GRAPH_PARENT_THRESHOLD, N_BOOT_PER_FOLD)
+    report = render_report(version, results, N_SPLITS, GRAPH_PARENT_THRESHOLD, N_BOOT_PER_FOLD,
+                            ROBUSTNESS_THRESHOLDS)
     out_path = _report_out(version)
     out_path.write_text(report, encoding="utf-8")
 
@@ -183,6 +267,6 @@ def main(version: str = "v4"):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--version", choices=list(DATASETS.keys()), default="v4")
+    parser.add_argument("--version", choices=list(DATASETS.keys()), default="v5")
     args = parser.parse_args()
     main(args.version)

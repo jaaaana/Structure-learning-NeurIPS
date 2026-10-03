@@ -1,7 +1,7 @@
 def render_report(version: str, classification: list, main_graph: dict,
                    annotated_main: list, pred_usefulness: dict,
                    stable_threshold: float, candidate_threshold: float, gap_threshold: float,
-                   excluded_sources: set, suffix: str) -> str:
+                   size_confound_sources: set, suffix: str) -> str:
     lines = [f"# Final Team Deliverable -- Step 5 ({version})\n"]
     lines.append(
         "Classifies every predictor/exogenous edge seen in the Step 4 "
@@ -9,8 +9,16 @@ def render_report(version: str, classification: list, main_graph: dict,
         "replicates) into a tier, using both the continuous+Fisher-Z and "
         "discretized+chi-square representations rather than a single "
         "adjacency number. `excluded` overrides the numeric tiers "
-        "regardless of rate -- see the 'Excluded from interpretation' "
-        "section. Thresholds: stable >= {:.1f} mean rate (representation "
+        "regardless of rate, but only for variables entirely absent from "
+        "the model-ready data (see 'Excluded from interpretation'). "
+        "`modularity_t1` edges are a different case: they get their real "
+        "tier from the numbers like everything else, but are additionally "
+        "flagged `[SIZE CONFOUND]` wherever they appear, since "
+        "`pc_learning.py`'s `sensitivity_size_control` group shows every "
+        "`modularity_t1 -> outcome` edge disappears once topic size is "
+        "controllable -- a reason to be skeptical of the edge's "
+        "interpretation, not a reason to hide its actual numbers. "
+        "Thresholds: stable >= {:.1f} mean rate (representation "
         "gap <= {:.1f}), candidate >= {:.1f} mean rate (same gap "
         "requirement), ambiguous = gap > {:.1f} regardless of mean, weak = "
         "everything else. Classified independently per dataset version -- "
@@ -27,6 +35,17 @@ def render_report(version: str, classification: list, main_graph: dict,
         "independent PC orientation logic runs; see "
         "`bootstrap_stability.md`'s orientation-stability caveat and "
         "'Orientation provenance' section for the full derivation.\n"
+    )
+    lines.append(
+        "**`stable`/`candidate`/`ambiguous`/`weak` are descriptive labels for "
+        "a bootstrap-adjacency-frequency bucket, nothing more** -- they are "
+        "not p-values, confidence intervals, or any other statistical "
+        "significance test, and clearing the `stable` bar is not a "
+        "correctness or causal-truth claim. They also describe **adjacency "
+        "only**: whether the edge recurs across replicates, never which "
+        "direction it points (see the paragraph above and the `[T]`/"
+        "`unconstrained_same_direction` annotations for that, a fully "
+        "separate question).\n"
     )
 
     lines.append("## Main graph (frozen setting: continuous / Fisher-Z / alpha=0.05 / constrained)\n")
@@ -58,9 +77,10 @@ def render_report(version: str, classification: list, main_graph: dict,
         rate_str = f"{e['mean_rate']:.3f}" if e["mean_rate"] is not None else "n/a"
         sdr = e.get("same_direction_rate")
         sdr_str = f"{sdr:.3f}" if sdr is not None else "n/a"
+        confound_flag = "  [SIZE CONFOUND]" if e.get("size_confound_flag") else ""
         lines.append(
             f"{e['src']} -> {e['dst']}   [T, unconstrained_same_direction={sdr_str}]   "
-            f"[{e['tier']}, mean_rate={rate_str}]"
+            f"[{e['tier']}, mean_rate={rate_str}]{confound_flag}"
         )
     lines.append("```\n")
 
@@ -79,23 +99,27 @@ def render_report(version: str, classification: list, main_graph: dict,
             lines.append("(none)\n")
             continue
         lines.append("```")
-        header = f"{'from':<22} {'to':<20} {'continuous':<11} {'discretized':<12} {'mean':<7} {'gap':<6}"
+        header = (f"{'from':<22} {'to':<20} {'continuous':<11} {'discretized':<12} {'mean':<7} {'gap':<6} "
+                   "flag")
         lines.append(header)
         for r in rows:
+            flag = "SIZE_CONFOUND" if r.get("size_confound_flag") else ""
             lines.append(
                 f"{r['from']:<22} {r['to']:<20} {r['continuous_rate']:<11} "
-                f"{r['discretized_rate']:<12} {r['mean_rate']:<7} {r['gap']:<6}"
+                f"{r['discretized_rate']:<12} {r['mean_rate']:<7} {r['gap']:<6} {flag}"
             )
         lines.append("```")
+        confound_rows = [r for r in rows if r.get("size_confound_flag")]
+        for r in confound_rows:
+            lines.append(
+                f"- `{r['from']} -> {r['to']}`: flagged size confound -- "
+                "pc_learning.py's sensitivity_size_control group shows this edge "
+                "disappears (replaced by `n_papers_t1_log -> modularity_t1`) once "
+                "topic size is available to condition on. Its tier above is from the "
+                "real adjacency rate; this flag is a reason to be skeptical of its "
+                "interpretation, not a reason to disbelieve the rate itself."
+            )
         if tier == "excluded":
-            for r in rows:
-                if r["from"] in excluded_sources:
-                    lines.append(
-                        f"- `{r['from']} -> {r['to']}`: size confound -- "
-                        "pc_learning.py's sensitivity_size_control group shows this edge "
-                        "disappears (replaced by `n_papers_t1_log -> modularity_t1`) once "
-                        "topic size is available to condition on."
-                    )
             lines.append(
                 "- `bridge_concentration_t1` is near-degenerate (mass at 0/1) and has "
                 "a known issue in its underlying betweenness computation -- excluded "
@@ -103,7 +127,7 @@ def render_report(version: str, classification: list, main_graph: dict,
                 "produced in either model-ready table, left as future work; listed "
                 "here for completeness, not because it appeared in the bootstrap.\n"
             )
-        else:
+        elif not confound_rows:
             lines.append("")
 
     lines.append("## Cross-reference: predictive usefulness (Step 5 / D2.3)\n")
@@ -138,8 +162,13 @@ def render_report(version: str, classification: list, main_graph: dict,
         f"{', '.join(stable_pairs) if stable_pairs else '(none)'}. These are dominated by "
         "mechanical persistence (`topic_share_t1->topic_share_t`) and calendar-time "
         "absorption (`year` into `connectivity_t1`/`log1p_median_c2`), not by a genuinely "
-        "novel structural mechanism. `modularity_t1`'s edges, despite moderate raw "
-        "adjacency rates, are excluded outright as a demonstrated size confound. "
+        "novel structural mechanism. `modularity_t1`'s edges get their tier from their "
+        "real adjacency rate like any other edge (typically `candidate` or `weak` here, "
+        "never `stable`), but are flagged `[SIZE CONFOUND]`/`SIZE_CONFOUND` wherever "
+        "they appear: `pc_learning.py`'s `sensitivity_size_control` group shows every "
+        "`modularity_t1 -> outcome` edge disappears, replaced by `n_papers_t1_log -> "
+        "modularity_t1`, once topic size is controllable -- read any `modularity_t1` "
+        "edge below as a demonstrated size confound regardless of its numeric tier. "
         "`connectivity_t1->log1p_median_c2` is flagged ambiguous rather than reported "
         "either way, since its adjacency rate depends almost entirely on which CI test "
         "(linear vs. binned) is used. The most defensible candidate for a real, "

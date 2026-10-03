@@ -229,7 +229,7 @@ def make_discretized_version(df: pd.DataFrame, out_path: Path, n_bins: int = 3) 
     return out
 
 
-def main(version: str = "v4"):
+def main(version: str = "v5"):
     paths = DATASETS[version]
     df = load_data(paths["raw"])
     df = add_t1_size_cols(df)
@@ -264,6 +264,6 @@ def main(version: str = "v4"):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--version", choices=list(DATASETS.keys()), default="v4")
+    parser.add_argument("--version", choices=list(DATASETS.keys()), default="v5")
     args = parser.parse_args()
     main(args.version)

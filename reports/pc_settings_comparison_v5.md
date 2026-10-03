@@ -413,18 +413,18 @@ Undirected / ambiguous:
 
 ## Adjacency vs. orientation stability across constrained main-model settings
 
-Across the 9 constrained **main-model** settings in this grid (continuous+Fisher-Z, discretized+chi-square, continuous+KCI, alpha in {0.01, 0.05, 0.10}): `adjacency_rate` is how often PC places *any* edge (directed or undirected) between the two variables; `orientation_rate_given_adjacent` is, of those adjacent settings, how often PC actually commits to a direction rather than leaving it undirected/ambiguous in the CPDAG. Kept as two separate numbers per the 2026-08-19 correction -- a stable adjacency with unstable orientation is a materially different finding from a fully stable directed edge. Sensitivity settings (different outcome/predictor sets) are excluded from this table. This is a cheap first look, not the Step 4 bootstrap stability analysis -- it only varies representation/test/alpha, not the sample itself.
+Across the 9 constrained **main-model** settings in this grid (continuous+Fisher-Z, discretized+chi-square, continuous+KCI, alpha in {0.01, 0.05, 0.10}): `adjacency_rate` is how often PC places *any* edge (directed or undirected) between the two variables; `orientation_rate_given_adjacent` is, of those adjacent settings, how often PC actually commits to a direction rather than leaving it undirected/ambiguous in the CPDAG. Kept as two separate numbers per the 2026-08-19 correction -- a stable adjacency with unstable orientation is a materially different finding from a fully stable directed edge. **For any pair spanning two different temporal tiers, this 'commitment' is not PC choosing anything** -- the temporal background knowledge forces the direction immediately after skeleton discovery, so `orientation_rate_given_adjacent` near 1.0 there just reflects the tier constraint, not data-driven orientation. The column is only informative for same-tier pairs (two tier-0 predictors, or two tier-1 outcomes), where PC's own v-structure/Meek logic is actually free to decide -- `same_direction_rate` below additionally reports whether that decision was *consistent* across settings, since a pair that gets oriented in every setting but flips direction between them is a different (weaker) finding than one that stays oriented the same way every time. Sensitivity settings (different outcome/predictor sets) are excluded from this table. This is a cheap first look, not the Step 4 bootstrap stability analysis -- it only varies representation/test/alpha, not the sample itself.
 
 ```
-               from                  to  n_settings_adjacent  n_settings_total  adjacency_rate  n_settings_oriented  orientation_rate_given_adjacent
-     topic_share_t1       topic_share_t                    9                 9           1.000                    9                              1.0
-               year     connectivity_t1                    9                 9           1.000                    9                              1.0
-               year     log1p_median_c2                    9                 9           1.000                    9                              1.0
-               year cross_topic_rate_t1                    7                 9           0.778                    7                              1.0
-               year       topic_share_t                    4                 9           0.444                    4                              1.0
-cross_topic_rate_t1     log1p_median_c2                    3                 9           0.333                    3                              1.0
-               year       modularity_t1                    3                 9           0.333                    3                              1.0
-    connectivity_t1     log1p_median_c2                    3                 9           0.333                    3                              1.0
-               year      topic_share_t1                    1                 9           0.111                    1                              1.0
-      modularity_t1     log1p_median_c2                    1                 9           0.111                    1                              1.0
+               from                  to  n_settings_adjacent  n_settings_total  adjacency_rate  n_settings_oriented  orientation_rate_given_adjacent  same_direction_rate
+     topic_share_t1       topic_share_t                    9                 9           1.000                    9                              1.0                  1.0
+               year     connectivity_t1                    9                 9           1.000                    9                              1.0                  1.0
+               year     log1p_median_c2                    9                 9           1.000                    9                              1.0                  1.0
+               year cross_topic_rate_t1                    7                 9           0.778                    7                              1.0                  1.0
+               year       topic_share_t                    4                 9           0.444                    4                              1.0                  1.0
+cross_topic_rate_t1     log1p_median_c2                    3                 9           0.333                    3                              1.0                  1.0
+               year       modularity_t1                    3                 9           0.333                    3                              1.0                  1.0
+    connectivity_t1     log1p_median_c2                    3                 9           0.333                    3                              1.0                  1.0
+               year      topic_share_t1                    1                 9           0.111                    1                              1.0                  1.0
+      modularity_t1     log1p_median_c2                    1                 9           0.111                    1                              1.0                  1.0
 ```

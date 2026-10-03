@@ -18,28 +18,32 @@
         "dst": "topic_share_t",
         "tier": "stable",
         "mean_rate": 1.0,
-        "same_direction_rate": 0.112
+        "same_direction_rate": 0.112,
+        "size_confound_flag": false
       },
       {
         "src": "year",
         "dst": "connectivity_t1_log",
         "tier": "stable",
         "mean_rate": 0.972,
-        "same_direction_rate": 0.57
+        "same_direction_rate": 0.57,
+        "size_confound_flag": false
       },
       {
         "src": "modularity_t1",
         "dst": "log1p_median_c2",
-        "tier": "excluded",
+        "tier": "candidate",
         "mean_rate": 0.333,
-        "same_direction_rate": 0.19
+        "same_direction_rate": 0.19,
+        "size_confound_flag": true
       },
       {
         "src": "year",
         "dst": "log1p_median_c2",
         "tier": "stable",
         "mean_rate": 0.991,
-        "same_direction_rate": 0.086
+        "same_direction_rate": 0.086,
+        "size_confound_flag": false
       }
     ]
   },
@@ -51,7 +55,8 @@
         "continuous_rate": 1.0,
         "discretized_rate": 1.0,
         "mean_rate": 1.0,
-        "gap": 0.0
+        "gap": 0.0,
+        "size_confound_flag": false
       },
       {
         "from": "year",
@@ -59,7 +64,8 @@
         "continuous_rate": 1.0,
         "discretized_rate": 0.982,
         "mean_rate": 0.991,
-        "gap": 0.018
+        "gap": 0.018,
+        "size_confound_flag": false
       },
       {
         "from": "year",
@@ -67,7 +73,8 @@
         "continuous_rate": 1.0,
         "discretized_rate": 0.944,
         "mean_rate": 0.972,
-        "gap": 0.056
+        "gap": 0.056,
+        "size_confound_flag": false
       }
     ],
     "candidate": [
@@ -77,7 +84,8 @@
         "continuous_rate": 0.364,
         "discretized_rate": 0.616,
         "mean_rate": 0.49,
-        "gap": 0.252
+        "gap": 0.252,
+        "size_confound_flag": false
       },
       {
         "from": "year",
@@ -85,7 +93,17 @@
         "continuous_rate": 0.248,
         "discretized_rate": 0.536,
         "mean_rate": 0.392,
-        "gap": 0.288
+        "gap": 0.288,
+        "size_confound_flag": false
+      },
+      {
+        "from": "modularity_t1",
+        "to": "log1p_median_c2",
+        "continuous_rate": 0.41,
+        "discretized_rate": 0.256,
+        "mean_rate": 0.333,
+        "gap": 0.154,
+        "size_confound_flag": true
       },
       {
         "from": "cross_topic_rate_t1",
@@ -93,7 +111,8 @@
         "continuous_rate": 0.2,
         "discretized_rate": 0.418,
         "mean_rate": 0.309,
-        "gap": 0.218
+        "gap": 0.218,
+        "size_confound_flag": false
       }
     ],
     "ambiguous": [
@@ -103,7 +122,8 @@
         "continuous_rate": 0.202,
         "discretized_rate": 0.58,
         "mean_rate": 0.391,
-        "gap": 0.378
+        "gap": 0.378,
+        "size_confound_flag": false
       },
       {
         "from": "connectivity_t1",
@@ -111,7 +131,8 @@
         "continuous_rate": 0.016,
         "discretized_rate": 0.72,
         "mean_rate": 0.368,
-        "gap": 0.704
+        "gap": 0.704,
+        "size_confound_flag": false
       },
       {
         "from": "cross_topic_rate_t1",
@@ -119,35 +140,29 @@
         "continuous_rate": 0.0,
         "discretized_rate": 0.348,
         "mean_rate": 0.174,
-        "gap": 0.348
+        "gap": 0.348,
+        "size_confound_flag": false
       }
     ],
-    "excluded": [
-      {
-        "from": "modularity_t1",
-        "to": "log1p_median_c2",
-        "continuous_rate": 0.41,
-        "discretized_rate": 0.256,
-        "mean_rate": 0.333,
-        "gap": 0.154
-      },
+    "excluded": [],
+    "weak": [
       {
         "from": "modularity_t1",
         "to": "topic_share_t",
         "continuous_rate": 0.274,
         "discretized_rate": 0.31,
         "mean_rate": 0.292,
-        "gap": 0.036
-      }
-    ],
-    "weak": [
+        "gap": 0.036,
+        "size_confound_flag": true
+      },
       {
         "from": "connectivity_t1",
         "to": "topic_share_t",
         "continuous_rate": 0.116,
         "discretized_rate": 0.162,
         "mean_rate": 0.139,
-        "gap": 0.046
+        "gap": 0.046,
+        "size_confound_flag": false
       },
       {
         "from": "year",
@@ -155,7 +170,8 @@
         "continuous_rate": 0.162,
         "discretized_rate": 0.096,
         "mean_rate": 0.129,
-        "gap": 0.066
+        "gap": 0.066,
+        "size_confound_flag": false
       },
       {
         "from": "topic_share_t1",
@@ -163,7 +179,8 @@
         "continuous_rate": 0.028,
         "discretized_rate": 0.128,
         "mean_rate": 0.078,
-        "gap": 0.1
+        "gap": 0.1,
+        "size_confound_flag": false
       }
     ]
   }

@@ -1,5 +1,5 @@
 def render_report(version: str, results: dict, n_splits: int, graph_parent_threshold: float,
-                   n_boot_per_fold: int) -> str:
+                   n_boot_per_fold: int, robustness_thresholds: list) -> str:
     lines = [f"# Predictive Usefulness -- Step 5 / thesis D2.3 ({version})\n"]
     lines.append(
         f"Topic-grouped cross-validation (GroupKFold, k={n_splits}, grouped by "
@@ -74,5 +74,55 @@ def render_report(version: str, results: dict, n_splits: int, graph_parent_thres
             if m.get("note"):
                 lines.append(f"- `{key}` ({m['label']}): {m['note']}")
         lines.append("")
+
+        lines.append(f"### {outcome}: predictor-selection threshold robustness\n")
+        lines.append(
+            "Same 5 folds and settings as `graph_parents_nested_cv` above -- each "
+            f"fold's training-only bootstrap frequency table ({n_boot_per_fold} "
+            "replicates, continuous/Fisher-Z) is computed **once** and reused for "
+            f"every threshold below ({', '.join(f'{t:.2f}' for t in robustness_thresholds)}), "
+            "never re-bootstrapped per threshold. Baseline features are always kept; "
+            "only the additional selected predictors vary. The goal is not to find "
+            "the best-scoring threshold -- it's to check whether the predictive-"
+            "usefulness conclusion holds up under a stricter or looser selection "
+            "rule than the frozen 0.5.\n"
+        )
+        rob = models["threshold_robustness"]["by_threshold"]
+        lines.append("```")
+        header = f"{'threshold':<11} {'R2 (mean+/-std)':<20} {'MAE (mean+/-std)':<20}"
+        lines.append(header)
+        for t in robustness_thresholds:
+            r = rob[t]
+            r2_str = f"{r['r2_mean']:.3f}+/-{r['r2_std']:.3f}"
+            mae_str = f"{r['mae_mean']:.3f}+/-{r['mae_std']:.3f}"
+            lines.append(f"{t:<11.2f} {r2_str:<20} {mae_str:<20}")
+        b_r2, a_r2 = models["baseline"]["r2_mean"], models["all_t1"]["r2_mean"]
+        lines.append(f"{'(baseline)':<11} {b_r2:<20.3f} {models['baseline']['mae_mean']:<20.3f}")
+        lines.append(f"{'(all_t1)':<11} {a_r2:<20.3f} {models['all_t1']['mae_mean']:<20.3f}")
+        lines.append("```")
+        for t in robustness_thresholds:
+            lines.append(f"- threshold={t:.2f}: {rob[t]['note']}")
+
+        r2_means = [rob[t]["r2_mean"] for t in robustness_thresholds]
+        spread = max(r2_means) - min(r2_means)
+        anchor_gap = abs(a_r2 - b_r2)
+        if anchor_gap > 0 and spread < 0.25 * anchor_gap:
+            verdict = (
+                f"R2 varies by only {spread:.3f} across thresholds {robustness_thresholds[0]:.2f}-"
+                f"{robustness_thresholds[-1]:.2f}, small relative to the {anchor_gap:.3f} gap between "
+                "baseline and all_t1 -- the predictive-usefulness conclusion for this outcome looks "
+                "stable to the selection-threshold choice."
+            )
+        else:
+            verdict = (
+                f"R2 varies by {spread:.3f} across thresholds {robustness_thresholds[0]:.2f}-"
+                f"{robustness_thresholds[-1]:.2f}, not small relative to the {anchor_gap:.3f} gap "
+                "between baseline and all_t1 -- the predictive-usefulness conclusion for this outcome "
+                "is sensitive to the selection-threshold choice; treat `graph_parents_nested_cv`'s "
+                "single frozen-threshold result with that in mind."
+            )
+        lines.append(
+            f"- **Threshold-dependence check** (informal yardstick, not a statistical test): {verdict}\n"
+        )
 
     return "\n".join(lines)

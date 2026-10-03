@@ -41,6 +41,8 @@ from scipy.spatial.distance import squareform
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+LOUVAIN_SEED = 42  # fixes graph_metrics' community partition (and modularity_t1) across reruns
+
 ROOT = Path(__file__).resolve().parent.parent
 RAW_DIR = ROOT / "data" / "raw"
 PROCESSED_DIR = ROOT / "data" / "processed"
@@ -297,7 +299,7 @@ def graph_metrics(author_lists):
     if len(G) < 3 or G.number_of_edges() == 0:
         return len(G), np.nan, np.nan, np.nan
     deg = float(np.mean([d for _, d in G.degree()]))
-    comms = louvain_communities(G, weight="weight", seed=42)
+    comms = louvain_communities(G, weight="weight", seed=LOUVAIN_SEED)
     mod = nx_modularity(G, comms, weight="weight")
     # KNOWN ISSUE (future work, not fixed): NetworkX treats `weight` here as a
     # shortest-path distance/cost, not a connection strength, but `weight` is

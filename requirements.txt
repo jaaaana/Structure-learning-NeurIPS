@@ -1,0 +1,9 @@
+# Pinned to the versions this pipeline was run and frozen with (Python 3.10.12).
+pandas==2.3.3
+numpy==2.2.6
+scipy==1.15.3
+scikit-learn==1.7.2
+networkx==3.4.2
+requests==2.25.1
+ftfy==6.3.1
+causal-learn==0.1.4.8

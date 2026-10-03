@@ -45,7 +45,8 @@
       "mae_std": 0.0022796463000126703
     },
     "graph_parents_nested_cv": {
-      "label": "baseline features + graph-selected predictors, nested per-fold bootstrap (150 reps/fold, continuous/Fisher-Z, threshold=0.5)",
+      "label": "baseline features + graph-selected predictors, nested per-fold bootstrap (150 reps/fold, continuous/Fisher-Z, threshold=0.5, base_seed=0 -> per-fold seeds 0..4)",
+      "base_seed": 0,
       "features": [
         "topic_share_t1",
         "year"
@@ -115,6 +116,120 @@
       "r2_std": 0.16069469987688131,
       "mae_mean": 0.009779184396548707,
       "mae_std": 0.0021446382905124317
+    },
+    "threshold_robustness": {
+      "base_seed": 0,
+      "fold_diagnostics": [
+        {
+          "n_boot_requested": 150,
+          "n_succeeded": 150,
+          "n_degenerate_skipped": 0,
+          "n_failed": 0,
+          "row_counts_min": 67,
+          "row_counts_mean": 101.94666666666667,
+          "row_counts_max": 133,
+          "n_train_topics": 17
+        },
+        {
+          "n_boot_requested": 150,
+          "n_succeeded": 150,
+          "n_degenerate_skipped": 0,
+          "n_failed": 0,
+          "row_counts_min": 70,
+          "row_counts_mean": 100.86666666666666,
+          "row_counts_max": 138,
+          "n_train_topics": 18
+        },
+        {
+          "n_boot_requested": 150,
+          "n_succeeded": 150,
+          "n_degenerate_skipped": 0,
+          "n_failed": 0,
+          "row_counts_min": 67,
+          "row_counts_mean": 100.86,
+          "row_counts_max": 130,
+          "n_train_topics": 17
+        },
+        {
+          "n_boot_requested": 150,
+          "n_succeeded": 150,
+          "n_degenerate_skipped": 0,
+          "n_failed": 0,
+          "row_counts_min": 73,
+          "row_counts_mean": 102.22,
+          "row_counts_max": 146,
+          "n_train_topics": 18
+        },
+        {
+          "n_boot_requested": 150,
+          "n_succeeded": 150,
+          "n_degenerate_skipped": 0,
+          "n_failed": 0,
+          "row_counts_min": 61,
+          "row_counts_mean": 99.85333333333334,
+          "row_counts_max": 133,
+          "n_train_topics": 18
+        }
+      ],
+      "by_threshold": {
+        "0.3": {
+          "features": [
+            "topic_share_t1",
+            "year"
+          ],
+          "per_fold_added": [
+            [],
+            [],
+            [],
+            [],
+            []
+          ],
+          "n_splits_used": 5,
+          "note": "no additional predictor cleared this threshold in any fold",
+          "r2_mean": 0.6929118551038428,
+          "r2_std": 0.16069469987688131,
+          "mae_mean": 0.009779184396548707,
+          "mae_std": 0.0021446382905124317
+        },
+        "0.5": {
+          "features": [
+            "topic_share_t1",
+            "year"
+          ],
+          "per_fold_added": [
+            [],
+            [],
+            [],
+            [],
+            []
+          ],
+          "n_splits_used": 5,
+          "note": "no additional predictor cleared this threshold in any fold",
+          "r2_mean": 0.6929118551038428,
+          "r2_std": 0.16069469987688131,
+          "mae_mean": 0.009779184396548707,
+          "mae_std": 0.0021446382905124317
+        },
+        "0.7": {
+          "features": [
+            "topic_share_t1",
+            "year"
+          ],
+          "per_fold_added": [
+            [],
+            [],
+            [],
+            [],
+            []
+          ],
+          "n_splits_used": 5,
+          "note": "no additional predictor cleared this threshold in any fold",
+          "r2_mean": 0.6929118551038428,
+          "r2_std": 0.16069469987688131,
+          "mae_mean": 0.009779184396548707,
+          "mae_std": 0.0021446382905124317
+        }
+      }
     }
   },
   "log1p_median_c2": {
@@ -162,7 +277,8 @@
       "mae_std": 0.05640000347716141
     },
     "graph_parents_nested_cv": {
-      "label": "baseline features + graph-selected predictors, nested per-fold bootstrap (150 reps/fold, continuous/Fisher-Z, threshold=0.5)",
+      "label": "baseline features + graph-selected predictors, nested per-fold bootstrap (150 reps/fold, continuous/Fisher-Z, threshold=0.5, base_seed=0 -> per-fold seeds 0..4)",
+      "base_seed": 0,
       "features": [
         "year"
       ],
@@ -235,6 +351,131 @@
       "r2_std": 0.3825634050515671,
       "mae_mean": 0.491518694206629,
       "mae_std": 0.035538291472694224
+    },
+    "threshold_robustness": {
+      "base_seed": 0,
+      "fold_diagnostics": [
+        {
+          "n_boot_requested": 150,
+          "n_succeeded": 150,
+          "n_degenerate_skipped": 0,
+          "n_failed": 0,
+          "row_counts_min": 67,
+          "row_counts_mean": 101.94666666666667,
+          "row_counts_max": 133,
+          "n_train_topics": 17
+        },
+        {
+          "n_boot_requested": 150,
+          "n_succeeded": 150,
+          "n_degenerate_skipped": 0,
+          "n_failed": 0,
+          "row_counts_min": 70,
+          "row_counts_mean": 100.86666666666666,
+          "row_counts_max": 138,
+          "n_train_topics": 18
+        },
+        {
+          "n_boot_requested": 150,
+          "n_succeeded": 150,
+          "n_degenerate_skipped": 0,
+          "n_failed": 0,
+          "row_counts_min": 67,
+          "row_counts_mean": 100.86,
+          "row_counts_max": 130,
+          "n_train_topics": 17
+        },
+        {
+          "n_boot_requested": 150,
+          "n_succeeded": 150,
+          "n_degenerate_skipped": 0,
+          "n_failed": 0,
+          "row_counts_min": 73,
+          "row_counts_mean": 102.22,
+          "row_counts_max": 146,
+          "n_train_topics": 18
+        },
+        {
+          "n_boot_requested": 150,
+          "n_succeeded": 150,
+          "n_degenerate_skipped": 0,
+          "n_failed": 0,
+          "row_counts_min": 61,
+          "row_counts_mean": 99.85333333333334,
+          "row_counts_max": 133,
+          "n_train_topics": 18
+        }
+      ],
+      "by_threshold": {
+        "0.3": {
+          "features": [
+            "year"
+          ],
+          "per_fold_added": [
+            [],
+            [
+              "cross_topic_rate_t1",
+              "modularity_t1"
+            ],
+            [],
+            [
+              "cross_topic_rate_t1"
+            ],
+            [
+              "modularity_t1",
+              "cross_topic_rate_t1"
+            ]
+          ],
+          "n_splits_used": 5,
+          "note": "selected per fold beyond baseline: cross_topic_rate_t1 (3/5 folds), modularity_t1 (2/5 folds)",
+          "r2_mean": -0.09894390314788841,
+          "r2_std": 0.386892469302243,
+          "mae_mean": 0.48886244272991564,
+          "mae_std": 0.035205761511919995
+        },
+        "0.5": {
+          "features": [
+            "year"
+          ],
+          "per_fold_added": [
+            [],
+            [
+              "cross_topic_rate_t1"
+            ],
+            [],
+            [
+              "cross_topic_rate_t1"
+            ],
+            []
+          ],
+          "n_splits_used": 5,
+          "note": "selected per fold beyond baseline: cross_topic_rate_t1 (2/5 folds)",
+          "r2_mean": -0.0889233003482848,
+          "r2_std": 0.3825634050515671,
+          "mae_mean": 0.491518694206629,
+          "mae_std": 0.035538291472694224
+        },
+        "0.7": {
+          "features": [
+            "year"
+          ],
+          "per_fold_added": [
+            [],
+            [],
+            [],
+            [
+              "cross_topic_rate_t1"
+            ],
+            []
+          ],
+          "n_splits_used": 5,
+          "note": "selected per fold beyond baseline: cross_topic_rate_t1 (1/5 folds)",
+          "r2_mean": -0.08401802132769734,
+          "r2_std": 0.38054284789172843,
+          "mae_mean": 0.49158315134041697,
+          "mae_std": 0.03550861485013331
+        }
+      }
     }
   }
 }

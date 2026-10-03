@@ -83,7 +83,7 @@ def run_bootstrap(df: pd.DataFrame, node_names: list, indep_test: str,
     return results, diagnostics
 
 
-def main(version: str = "v4", n_boot: int = 500, seed: int = 0):
+def main(version: str = "v5", n_boot: int = 500, seed: int = 0):
     cont_df = load_continuous(version)
     disc_df = load_discretized(version)
 
@@ -127,7 +127,7 @@ def main(version: str = "v4", n_boot: int = 500, seed: int = 0):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--version", choices=list(DATASETS.keys()), default="v4")
+    parser.add_argument("--version", choices=list(DATASETS.keys()), default="v5")
     parser.add_argument("--n-boot", type=int, default=500)
     parser.add_argument("--seed", type=int, default=0)
     args = parser.parse_args()

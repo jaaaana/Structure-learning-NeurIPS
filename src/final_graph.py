@@ -12,7 +12,7 @@ from constraints import (
 )
 from data_prep import DATASETS
 from final_graph_report import render_report
-from pc_learning import CONNECTIVITY_LOG_VARIANT, _tier_rank, edge_recurrence, orientation_provenance
+from pc_learning import CONNECTIVITY_LOG_VARIANT, _canon_pair, edge_recurrence, orientation_provenance
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -20,7 +20,7 @@ STABLE_THRESHOLD = 0.7
 CANDIDATE_THRESHOLD = 0.3
 GAP_THRESHOLD = 0.3
 
-EXCLUDED_SOURCES = {"modularity_t1"}
+SIZE_CONFOUND_SOURCES = {"modularity_t1"}
 EXCLUDED_VARS = {"bridge_concentration_t1"}
 
 _OUTCOME_NAMES = set(TIER_1) | {TIER_1_LOG_VARIANT}
@@ -50,15 +50,12 @@ def _json_out(version: str) -> Path:
     return ROOT / "reports" / f"final_graph{_suffix(version)}.json"
 
 
-def _canon_pair(a: str, b: str) -> tuple:
-    ba, bb = _base_name(a), _base_name(b)
-    return (ba, bb) if _tier_rank(ba) <= _tier_rank(bb) else (bb, ba)
-
-
 def is_excluded(frm: str, to: str) -> bool:
-    if frm in EXCLUDED_VARS or to in EXCLUDED_VARS:
-        return True
-    return frm in EXCLUDED_SOURCES and to in _OUTCOME_NAMES
+    return frm in EXCLUDED_VARS or to in EXCLUDED_VARS
+
+
+def is_size_confound(frm: str, to: str) -> bool:
+    return frm in SIZE_CONFOUND_SOURCES and to in _OUTCOME_NAMES
 
 
 def classify_rate(mean_rate: float, gap: float) -> str:
@@ -89,6 +86,7 @@ def build_classification(version: str) -> list:
             "continuous_rate": round(cont_rate, 3), "discretized_rate": round(disc_rate, 3),
             "mean_rate": round(mean_rate, 3), "gap": round(gap, 3),
             "tier": tier,
+            "size_confound_flag": is_size_confound(frm, to),
         })
     rows.sort(key=lambda r: r["mean_rate"], reverse=True)
     return rows
@@ -116,13 +114,14 @@ def annotate_main_graph(main_graph: dict, classification: list, orientation_look
     by_pair = {(r["from"], r["to"]): r for r in classification}
     annotated = []
     for src, dst in main_graph["directed_edges"]:
-        pair = _canon_pair(src, dst)
+        pair = _canon_pair(_base_name(src), _base_name(dst))
         row = by_pair.get(pair)
         annotated.append({
             "src": src, "dst": dst,
             "tier": row["tier"] if row else "unclassified (not seen in bootstrap)",
             "mean_rate": row["mean_rate"] if row else None,
             "same_direction_rate": orientation_lookup.get(pair),
+            "size_confound_flag": is_size_confound(pair[0], pair[1]),
         })
     return annotated
 
@@ -146,7 +145,8 @@ def export_json(version: str, classification: list, main_graph: dict, annotated_
             "edges": annotated_main,
         },
         "tiers": {
-            tier: [{k: r[k] for k in ("from", "to", "continuous_rate", "discretized_rate", "mean_rate", "gap")}
+            tier: [{k: r[k] for k in ("from", "to", "continuous_rate", "discretized_rate", "mean_rate", "gap",
+                                       "size_confound_flag")}
                    for r in classification if r["tier"] == tier]
             for tier in ["stable", "candidate", "ambiguous", "excluded", "weak"]
         },
@@ -156,7 +156,7 @@ def export_json(version: str, classification: list, main_graph: dict, annotated_
     return data
 
 
-def main(version: str = "v4"):
+def main(version: str = "v5"):
     classification = build_classification(version)
     main_graph = load_main_graph(version)
     orientation_lookup = orientation_provenance_lookup(version)
@@ -165,7 +165,7 @@ def main(version: str = "v4"):
 
     report = render_report(version, classification, main_graph, annotated_main, pred_usefulness,
                             STABLE_THRESHOLD, CANDIDATE_THRESHOLD, GAP_THRESHOLD,
-                            EXCLUDED_SOURCES, _suffix(version))
+                            SIZE_CONFOUND_SOURCES, _suffix(version))
     report_out = _report_out(version)
     report_out.write_text(report, encoding="utf-8")
 
@@ -180,6 +180,6 @@ def main(version: str = "v4"):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--version", choices=list(DATASETS.keys()), default="v4")
+    parser.add_argument("--version", choices=list(DATASETS.keys()), default="v5")
     args = parser.parse_args()
     main(args.version)

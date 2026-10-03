@@ -213,41 +213,61 @@ def _tier_rank(name: str) -> float:
     return 2
 
 
+def _canon_pair(a: str, b: str) -> tuple:
+    """Canonical, direction-independent key for an unordered variable pair.
+    Cross-tier: lower tier first (temporal order). Same-tier: alphabetical,
+    since tier rank alone can't break the tie -- without this, a same-tier
+    edge observed as (x, y) in one setting and (y, x) in another (both
+    orientations are unconstrained by background knowledge there) would
+    canonicalize to two different keys instead of one, undercounting its
+    adjacency rate."""
+    ra, rb = _tier_rank(a), _tier_rank(b)
+    if ra == rb:
+        return tuple(sorted((a, b)))
+    return (a, b) if ra < rb else (b, a)
+
+
 def edge_recurrence(results: list) -> pd.DataFrame:
     n_settings = len(results)
 
     adjacency_counts = {}
     directed_counts = {}
+    direction_counts = {}
     for r in results:
         seen_this_run = set()
         for src, dst in r["directed_edges"]:
             a, b = _base_name(src), _base_name(dst)
-            pair = (a, b) if _tier_rank(a) <= _tier_rank(b) else (b, a)
-            directed_counts[pair] = directed_counts.get(pair, 0) + 1
+            pair = _canon_pair(a, b)
             if pair not in seen_this_run:
+                directed_counts[pair] = directed_counts.get(pair, 0) + 1
                 adjacency_counts[pair] = adjacency_counts.get(pair, 0) + 1
+                d = direction_counts.setdefault(pair, {"n_same": 0, "n_reverse": 0})
+                d["n_same" if (a, b) == pair else "n_reverse"] += 1
                 seen_this_run.add(pair)
         for x, y in r["undirected_edges"]:
             a, b = _base_name(x), _base_name(y)
-            pair = (a, b) if _tier_rank(a) <= _tier_rank(b) else (b, a)
+            pair = _canon_pair(a, b)
             if pair not in seen_this_run:
                 adjacency_counts[pair] = adjacency_counts.get(pair, 0) + 1
                 seen_this_run.add(pair)
 
     cols = ["from", "to", "n_settings_adjacent", "n_settings_total", "adjacency_rate",
-            "n_settings_oriented", "orientation_rate_given_adjacent"]
+            "n_settings_oriented", "orientation_rate_given_adjacent", "same_direction_rate"]
     if not adjacency_counts:
         return pd.DataFrame(columns=cols)
 
     rows = []
     for pair, n_adj in adjacency_counts.items():
         n_dir = directed_counts.get(pair, 0)
+        d = direction_counts.get(pair, {"n_same": 0, "n_reverse": 0})
+        n_dominant = max(d["n_same"], d["n_reverse"])
         rows.append({
             "from": pair[0], "to": pair[1],
             "n_settings_adjacent": n_adj, "n_settings_total": n_settings,
             "adjacency_rate": round(n_adj / n_settings, 3),
             "n_settings_oriented": n_dir,
             "orientation_rate_given_adjacent": round(n_dir / n_adj, 3),
+            "same_direction_rate": round(n_dominant / n_adj, 3) if n_dir else None,
         })
     return pd.DataFrame(rows).sort_values("adjacency_rate", ascending=False)[cols]
 
@@ -267,7 +287,9 @@ def orientation_provenance(results: list) -> dict:
                 if pair in seen_this_run:
                     continue
                 seen_this_run.add(pair)
-                same_tier_counts[pair] = same_tier_counts.get(pair, 0) + 1
+                d = same_tier_counts.setdefault(pair, {"n_adjacent": 0, "n_same": 0, "n_reverse": 0, "n_undirected": 0})
+                d["n_adjacent"] += 1
+                d["n_same" if (a, b) == pair else "n_reverse"] += 1
                 continue
             pair = (a, b) if ra < rb else (b, a)
             if pair in seen_this_run:
@@ -285,7 +307,9 @@ def orientation_provenance(results: list) -> dict:
                 if pair in seen_this_run:
                     continue
                 seen_this_run.add(pair)
-                same_tier_counts[pair] = same_tier_counts.get(pair, 0) + 1
+                d = same_tier_counts.setdefault(pair, {"n_adjacent": 0, "n_same": 0, "n_reverse": 0, "n_undirected": 0})
+                d["n_adjacent"] += 1
+                d["n_undirected"] += 1
                 continue
             pair = (a, b) if ra < rb else (b, a)
             if pair in seen_this_run:
@@ -311,11 +335,18 @@ def orientation_provenance(results: list) -> dict:
     cross_df = (pd.DataFrame(cross_rows).sort_values("n_adjacent", ascending=False)[cross_cols]
                 if cross_rows else pd.DataFrame(columns=cross_cols))
 
-    same_cols = ["from", "to", "n_adjacent", "adjacency_rate"]
+    same_cols = ["from", "to", "n_adjacent", "adjacency_rate",
+                 "same_direction_rate", "reverse_direction_rate", "undirected_rate"]
     same_rows = [
-        {"from": frm, "to": to, "n_adjacent": n,
-         "adjacency_rate": round(n / n_settings, 3) if n_settings else 0.0}
-        for (frm, to), n in same_tier_counts.items()
+        {
+            "from": frm, "to": to,
+            "n_adjacent": d["n_adjacent"],
+            "adjacency_rate": round(d["n_adjacent"] / n_settings, 3) if n_settings else 0.0,
+            "same_direction_rate": round(d["n_same"] / d["n_adjacent"], 3),
+            "reverse_direction_rate": round(d["n_reverse"] / d["n_adjacent"], 3),
+            "undirected_rate": round(d["n_undirected"] / d["n_adjacent"], 3),
+        }
+        for (frm, to), d in same_tier_counts.items()
     ]
     same_df = (pd.DataFrame(same_rows).sort_values("n_adjacent", ascending=False)[same_cols]
                if same_rows else pd.DataFrame(columns=same_cols))
@@ -323,7 +354,7 @@ def orientation_provenance(results: list) -> dict:
     return {"cross_tier": cross_df, "same_tier_only_unconstrained": same_df}
 
 
-def main(version: str = "v4"):
+def main(version: str = "v5"):
     results = run_grid(version)
     main_constrained = [r for r in results if r["constrained"] and r.get("group") == "main"]
     recurrence = edge_recurrence(main_constrained)
@@ -345,6 +376,6 @@ def main(version: str = "v4"):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--version", choices=list(DATASETS.keys()), default="v4")
+    parser.add_argument("--version", choices=list(DATASETS.keys()), default="v5")
     args = parser.parse_args()
     main(args.version)
