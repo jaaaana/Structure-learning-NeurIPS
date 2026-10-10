@@ -1,67 +1,127 @@
-from constraints import _base_name
-from golem_learning import compare_graphs, edge_recurrence, model_nodes
+import argparse
+import json
+
+from constraints import TIER_0, TIER_1, TIER_1_LOG_VARIANT, _base_name
+from data_prep import DATASETS
+from golem_learning import edge_recurrence, paths
 from golem_learning_report import recurrence_text, table
 
 
-def render_report(version, payload, pc=None, pc_note="PC artifact unavailable"):
+def direction_provenance(constrained, unconstrained):
+    """Compare GOLEM directions on the same successful bootstrap draws."""
+    c_ok = {r["replicate"]: r for r in constrained if r["status"] == "converged"}
+    u_ok = {r["replicate"]: r for r in unconstrained if r["status"] == "converged"}
+    paired_ids = sorted(set(c_ok) & set(u_ok))
+    constrained_dirs, constrained_adj = {}, {}
+    for rep in paired_ids:
+        r = c_ok[rep]
+        for src, dst in r.get("directed_edges", []):
+            a, b = _base_name(src), _base_name(dst)
+            pair = tuple(sorted((a, b)))
+            state = constrained_dirs.setdefault(pair, {"ab": 0, "ba": 0})
+            state["ab" if (a, b) == pair else "ba"] += 1
+            constrained_adj[pair] = constrained_adj.get(pair, 0) + 1
+        for src, dst in r.get("undirected_edges", []):
+            pair = tuple(sorted((_base_name(src), _base_name(dst))))
+            constrained_adj[pair] = constrained_adj.get(pair, 0) + 1
+
+    rows = []
+    for pair, n_adj in constrained_adj.items():
+        d = constrained_dirs.get(pair, {"ab": 0, "ba": 0})
+        if d["ab"] == d["ba"]:
+            continue
+        expected = "ab" if d["ab"] > d["ba"] else "ba"
+        same = reverse = undirected = adjacent = 0
+        for rep in paired_ids:
+            r = u_ok[rep]
+            found = None
+            for src, dst in r.get("directed_edges", []):
+                a, b = _base_name(src), _base_name(dst)
+                if tuple(sorted((a, b))) == pair:
+                    found = "ab" if (a, b) == pair else "ba"
+                    break
+            if found is None:
+                for src, dst in r.get("undirected_edges", []):
+                    if tuple(sorted((_base_name(src), _base_name(dst)))) == pair:
+                        found = "undirected"
+                        break
+            if found is not None:
+                adjacent += 1
+                if found == expected:
+                    same += 1
+                elif found == "undirected":
+                    undirected += 1
+                else:
+                    reverse += 1
+        rows.append({
+            "a": pair[0], "b": pair[1],
+            "constrained_adjacency_rate": n_adj / len(paired_ids) if paired_ids else 0.0,
+            "constrained_direction": f"{pair[0]} -> {pair[1]}" if expected == "ab" else f"{pair[1]} -> {pair[0]}",
+            "unconstrained_adjacency_rate": adjacent / len(paired_ids) if paired_ids else 0.0,
+            "same_direction_rate": same / adjacent if adjacent else 0.0,
+            "reverse_direction_rate": reverse / adjacent if adjacent else 0.0,
+            "undirected_rate": undirected / adjacent if adjacent else 0.0,
+        })
+    return sorted(rows, key=lambda r: -r["constrained_adjacency_rate"])
+
+
+def relaxed_tier_recurrence(unconstrained):
+    """Return bootstrap recurrence for edges unavailable under the tier bans."""
+    tier_sets = [set(TIER_0), set(TIER_1) | {TIER_1_LOG_VARIANT}]
+    table = edge_recurrence([r for r in unconstrained if r["status"] == "converged"])
+    if table.empty:
+        return table
+    return table[[
+        not any(row.a in tier and row.b in tier for tier in tier_sets)
+        for row in table.itertuples(index=False)
+    ]]
+
+
+def render_report(version, payload):
     meta = payload["metadata"]
+    cfg = meta["config"]
     lines = [f"# GOLEM Bootstrap Stability ({version})\n",
-             f"Topic-block bootstrap: seed={meta['seed']}, requested B={meta['n_boot']} per representation. "
-             "Topics are sampled with replacement; all years and duplicate draws are retained. "
-             "Sampling matches PC; settings are fixed, with temporal constraints enabled.\n",
-             f"Fit configuration: `{meta['config']}`. Threshold: {meta['threshold']}.\n",
+             f"Topic-block bootstrap: seed={meta['seed']}, requested B={meta['n_boot']} per run. "
+             f"Constrained continuous and discretized fits, plus paired unconstrained continuous refits. "
+             f"lambda1={cfg['lambda1']}, lambda_dag={cfg['lambda_dag']}, "
+             f"learning_rate={cfg['learning_rate']}, edge threshold={meta['threshold']}, "
+             f"tolerance={cfg['tolerance']}, max_iter={cfg['max_iter']}.\n",
              recurrence_text()]
     for representation in ("continuous", "discretized"):
         records = payload[representation]
         successful = [r for r in records if r["status"] == "converged"]
-        lines += [f"## {representation}\n", table([payload[f"{representation}_diagnostics"]]),
-                  "Only converged replicates enter the denominator, including converged empty graphs. "
-                  "Nonconvergence is not evidence for an absent edge. Frequencies describe the converged "
-                  "subset; substantial attrition can bias stability estimates. No stable/unstable cutoff is imposed.\n",
+        lines += [f"## {representation} representation\n", table([payload[f"{representation}_diagnostics"]]),
+                  "Frequencies use converged replicates, including empty graphs; nonconverged fits are excluded.\n",
                   table(edge_recurrence(successful))]
-        problem_rows = [{"replicate": r["replicate"], "status": r["status"],
-                         "reason": r.get("failure_reason") or "Iteration limit reached"}
-                        for r in records if r["status"] != "converged"]
-        if problem_rows:
-            lines += ["### Skipped, failed, and nonconverged replicates\n", table(problem_rows)]
-        lines += ["### Cycle conversion and temporal diagnostics\n",
-                  table([{"replicate": r["replicate"], "cyclic_components": len(r.get("cyclic_components", [])),
-                          "converted_orientations": len(r.get("converted_orientations", [])),
-                          "violations_before": r.get("n_temporal_violations_before"),
-                          "violations_after": r.get("n_temporal_violations")}
-                         for r in successful if r.get("converted_orientations") or r.get("n_temporal_violations_before")])]
-        lines += ["### Comparison with PC bootstrap\n", pc_note + "\n"]
-        if pc is None or representation not in pc:
-            lines.append("PC bootstrap comparison unavailable.\n")
-            continue
-        expected_nodes = {_base_name(n) for n in model_nodes(representation)}
-        pc_runs = [r for r in pc[representation]
-                   if r.get("constrained", True) and r.get("group", "main") == "main"
-                   and {_base_name(n) for n in r.get("node_names", model_nodes(representation))} == expected_nodes]
-        gf = edge_recurrence(successful)
-        pf = edge_recurrence(pc_runs)
-        if not gf.empty or not pf.empty:
-            joined = gf.merge(pf, on=["a", "b"], how="outer", suffixes=("_golem", "_pc"))
-            # An unobserved edge has rate zero only when that method has eligible fits.
-            for suffix_, runs in (("golem", successful), ("pc", pc_runs)):
-                if runs:
-                    cols = [c for c in joined if c.endswith("_" + suffix_)]
-                    joined[cols] = joined[cols].fillna(0)
-                    joined[f"n_total_{suffix_}"] = len(runs)
-            columns = ["a", "b", "adjacency_rate_golem", "adjacency_rate_pc",
-                       "a_to_b_rate_golem", "a_to_b_rate_pc", "b_to_a_rate_golem", "b_to_a_rate_pc",
-                       "undirected_rate_golem", "undirected_rate_pc"]
-            lines.append(table(joined[columns]))
-        if pc.get("seed") != meta["seed"] or pc.get("n_boot") != meta["n_boot"]:
-            lines.append("Paired replicate comparisons unavailable: PC seed or requested replicate count differs.\n")
-            continue
-        pc_by_id = {r["replicate"]: r for r in pc_runs}
-        paired = []
-        for g in successful:
-            p = pc_by_id.get(g["replicate"])
-            if p is not None and p["n_rows"] == g["n_rows"]:
-                paired.append({"replicate": g["replicate"], **compare_graphs(g, p)})
-        lines += ["Paired comparisons include only replicates successful in both methods with matching "
-                  "row counts. Historical PC files lack input hashes; identical historical inputs cannot "
-                  "be verified independently.\n", table(paired)]
+    unconstrained = payload.get("continuous_unconstrained")
+    if unconstrained is not None:
+        representation = "continuous"
+        constrained = payload.get(representation, [])
+        paired_n = len({r["replicate"] for r in constrained if r["status"] == "converged"}
+                       & {r["replicate"] for r in unconstrained if r["status"] == "converged"})
+        lines += ["## Direction provenance (continuous, paired unconstrained refits)\n",
+                  "Same topic-block draws refit without constraints. Direction rates use successful paired "
+                  "fits; same/reverse/undirected rates are conditional on unconstrained adjacency.\n",
+                  f"Common successful replicate IDs: {paired_n}. Requested unconstrained replicates: "
+                  f"{len(unconstrained)}; converged: "
+                  f"{sum(r['status'] == 'converged' for r in unconstrained)}.\n"]
+        lines.append(table(direction_provenance(constrained, unconstrained)) if paired_n
+                     else "No paired fits converged in both constraint modes; direction corroboration is unavailable.\n")
+        lines += ["## Edges only visible with tier restrictions relaxed\n",
+                  "Same-tier edge recurrence in the unconstrained bootstrap.\n",
+                  table(relaxed_tier_recurrence(unconstrained))]
     return "\n".join(lines)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--version", choices=list(DATASETS), default="v5")
+    args = parser.parse_args()
+    report, source = paths(args.version, bootstrap=True)
+    payload = json.loads(source.read_text(encoding="utf-8"))
+    report.write_text(render_report(args.version, payload), encoding="utf-8")
+    print(f"Wrote {report}")
+
+
+if __name__ == "__main__":
+    main()

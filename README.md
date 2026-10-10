@@ -38,6 +38,20 @@ python src/predictive_usefulness.py  # Step 5a: baseline vs. graph-selected pred
 python src/final_graph.py            # Step 5b: final tiered graph + team deliverable
 ```
 
+GOLEM comparison reports use parallel scripts and report generators:
+
+```bash
+python src/golem_learning.py                         # settings grid + report
+python src/golem_learning_report.py                  # render settings report from saved fits
+python src/golem_bootstrap_stability.py              # 500 topic-block replicates + report
+python src/golem_predictive_usefulness.py             # nested five-fold evaluation + report
+python src/golem_bootstrap_stability_report.py        # regenerate bootstrap report from saved JSON
+python src/golem_predictive_usefulness_report.py      # regenerate predictive report from saved JSON
+```
+
+The GOLEM optimizer uses a relative objective tolerance of `1e-6` and a
+10,000-iteration limit by default.
+
 `src/refresh_citations.py` only needs to be rerun if the raw citation panel
 itself must be regenerated from OpenAlex -- **not needed for the thesis now**
 that V5 is frozen. See the caveat below before ever rerunning it.
@@ -55,6 +69,7 @@ the code:
 | `LOUVAIN_SEED` | `42` | `refresh_citations.py` | Louvain community detection inside `graph_metrics`, which determines `modularity_t1` -- the one seed that affects the frozen dataset itself, not just a stability add-on |
 | `ALPHAS` | `[0.01, 0.05, 0.10]` | `pc_learning.py` | PC algorithm significance grid |
 | `GRAPH_PARENT_THRESHOLD` | `0.5` | `predictive_usefulness.py` | per-fold predictor-selection adjacency cutoff (nested CV) |
+| `SELECTION_THRESHOLD` | `0.5` | `golem_predictive_usefulness.py` | per-fold GOLEM parent-selection frequency cutoff (nested CV) |
 | `STABLE_THRESHOLD` / `CANDIDATE_THRESHOLD` / `GAP_THRESHOLD` | `0.7` / `0.3` / `0.3` | `final_graph.py` | bootstrap-adjacency tier classification (descriptive buckets, not significance -- see `final_team_deliverable*.md`) |
 
 These two threshold sets are deliberately different numbers for different

@@ -54,8 +54,11 @@ def model_nodes(representation, group="main"):
         predictors = [n for n in predictors if _base_name(n) not in EXOGENOUS]
     elif group == "sensitivity_size_control":
         if not continuous:
-            raise ValueError("PC size-control sensitivity is continuous only")
+            raise ValueError("Size-control sensitivity is available only for continuous inputs")
         predictors = list(SIZE_CONTROL_PREDICTORS)
+    elif group == "sensitivity_relaxed_tiers":
+        if not continuous:
+            raise ValueError("Relaxed-tier sensitivity is continuous only")
     elif group != "main":
         raise ValueError(f"Unknown model group: {group}")
     return predictors + outcomes
@@ -89,6 +92,8 @@ def edge_recurrence(results):
                "a_to_b_given_adjacent", "b_to_a_given_adjacent", "undirected_given_adjacent"]
     rows = []
     for (a, b), (adj, ab, ba, und) in sorted(counts.items()):
+        if ba > ab:
+            a, b, ab, ba = b, a, ba, ab
         rows.append([a, b, adj, len(results), adj / len(results), ab / len(results),
                      ba / len(results), und / len(results), (ab + ba) / adj,
                      ab / adj, ba / adj, und / adj])
@@ -149,19 +154,23 @@ def run_grid(version, config=FitConfig(), sparsities=None, thresholds=None):
     panels = {"continuous": load_continuous(version), "discretized": load_discretized(version)}
     results = []
     _, out = paths(version)
-    groups = ["main"] + [f"sensitivity_outcome:{o}" for o in SENSITIVITY_OUTCOMES_ONLY] + ["sensitivity_no_year", "sensitivity_size_control"]
+    groups = ["main"] + [f"sensitivity_outcome:{o}" for o in SENSITIVITY_OUTCOMES_ONLY] + [
+        "sensitivity_no_year", "sensitivity_size_control", "sensitivity_relaxed_tiers"]
     for group in groups:
         for representation, df in panels.items():
-            if group == "sensitivity_size_control" and representation != "continuous":
+            if group in ("sensitivity_size_control", "sensitivity_relaxed_tiers") and representation != "continuous":
                 continue
             names = model_nodes(representation, group)
             cats = vocabulary(df, names) if representation == "discretized" else None
             grid = group in ("main", "sensitivity_size_control")
-            for constrained in (True, False):
+            constrained_modes = (True,) if group == "sensitivity_relaxed_tiers" else (True, False)
+            for constrained in constrained_modes:
                 for penalty in sparsities if grid else [0.02]:
                     cfg = replace(config, lambda1=penalty)
                     fit = fit_many([df], names, representation, constrained, cfg, cats,
-                                   SIZE_VARS if group == "sensitivity_size_control" else None)[0]
+                                   SIZE_VARS if group == "sensitivity_size_control" else None,
+                                   allow_predictor_predictor=group == "sensitivity_relaxed_tiers",
+                                   allow_outcome_outcome=group == "sensitivity_relaxed_tiers")[0]
                     fit["input_fingerprint"] = panel_fingerprint(df)
                     for threshold in thresholds if grid else [0.10]:
                         results.append(graph_result(fit, threshold, group))
@@ -172,12 +181,12 @@ def run_grid(version, config=FitConfig(), sparsities=None, thresholds=None):
 
 
 def add_optimizer_arguments(parser):
-    parser.add_argument("--version", choices=list(DATASETS), default="v4")
+    parser.add_argument("--version", choices=list(DATASETS), default="v5")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--lambda-dag", type=float, default=5.0)
     parser.add_argument("--learning-rate", type=float, default=0.001)
     parser.add_argument("--max-iter", type=int, default=10000)
-    parser.add_argument("--tolerance", type=float, default=1e-7)
+    parser.add_argument("--tolerance", type=float, default=1e-6)
     parser.add_argument("--check-every", type=int, default=100)
     parser.add_argument("--patience", type=int, default=5)
 
@@ -196,9 +205,8 @@ def main():
     if any(t < 0 or not __import__('math').isfinite(t) for t in args.thresholds):
         parser.error("thresholds must be finite and nonnegative")
     results = run_grid(args.version, config_from_args(args), args.sparsities, args.thresholds)
-    pc, pc_note = load_pc(args.version)
     report, _ = paths(args.version)
-    report.write_text(render_report(args.version, results, pc, pc_note), encoding="utf-8")
+    report.write_text(render_report(args.version, results), encoding="utf-8")
     print(f"Wrote {report}")
 
 

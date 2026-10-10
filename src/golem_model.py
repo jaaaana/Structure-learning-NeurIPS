@@ -19,7 +19,7 @@ class FitConfig:
     lambda_dag: float = 5.0
     learning_rate: float = 0.001
     max_iter: int = 10000
-    tolerance: float = 1e-7
+    tolerance: float = 1e-6
     check_every: int = 100
     patience: int = 5
     seed: int = 0
@@ -65,10 +65,15 @@ def prepare(df, names, representation, categories=None):
                       "categories": categories, "group_sizes": sizes}
 
 
-def allowed_mask(names, constrained, size_vars=None):
+def allowed_mask(names, constrained, size_vars=None, allow_predictor_predictor=False,
+                 allow_outcome_outcome=False):
     mask = np.ones((len(names), len(names))) - np.eye(len(names))
     if constrained:
-        bk = build_background_knowledge(names, size_vars=size_vars)
+        bk = build_background_knowledge(
+            names, size_vars=size_vars,
+            allow_predictor_predictor=allow_predictor_predictor,
+            allow_outcome_outcome=allow_outcome_outcome,
+        )
         for i, a in enumerate(names):
             for j, b in enumerate(names):
                 if bk.is_forbidden(GraphNode(a), GraphNode(b)):
@@ -106,7 +111,8 @@ def objective(w, covariance, indices, config):
 
 
 def fit_many(frames, names, representation, constrained, config=FitConfig(),
-             categories=None, size_vars=None):
+             categories=None, size_vars=None, allow_predictor_predictor=False,
+             allow_outcome_outcome=False):
     """Batch independent fits; each has its own Adam moments and stopping state."""
     config.validate()
     torch.set_num_threads(1)
@@ -116,7 +122,8 @@ def fit_many(frames, names, representation, constrained, config=FitConfig(),
     if any(p[1] != sizes for p in prepared):
         raise ValueError("Batch requires a shared category vocabulary")
     covariance = torch.tensor(np.stack([x.T @ x / len(x) for x, _, _ in prepared]), dtype=torch.float64)
-    group_mask = allowed_mask(names, constrained, size_vars)
+    group_mask = allowed_mask(names, constrained, size_vars,
+                              allow_predictor_predictor, allow_outcome_outcome)
     expanded_mask = torch.tensor(np.repeat(np.repeat(group_mask, sizes, axis=0), sizes, axis=1), dtype=torch.float64)
     indices = block_indices(sizes)
     # Zero initialization is deterministic and equivariant to category permutations.

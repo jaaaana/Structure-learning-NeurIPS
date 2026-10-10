@@ -8,11 +8,11 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, r2_score
 from sklearn.model_selection import GroupKFold
 
-from bootstrap_stability import run_bootstrap
+from pc_bootstrap_stability import run_bootstrap
 from constraints import EXOGENOUS, MAIN_OUTCOMES
 from data_prep import DATASETS
 from pc_learning import CONNECTIVITY_LOG_VARIANT, CONTINUOUS_PREDICTORS, CONTINUOUS_OUTCOMES, edge_recurrence, load_continuous
-from predictive_usefulness_report import render_report
+from pc_predictive_usefulness_report import render_report
 
 ROOT = Path(__file__).resolve().parent.parent
 
