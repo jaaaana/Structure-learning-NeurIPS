@@ -12,7 +12,7 @@ from constraints import (
 )
 from data_prep import DATASETS
 from final_graph_report import render_report
-from pc_learning import CONNECTIVITY_LOG_VARIANT, _canon_pair, edge_recurrence, orientation_provenance
+from pc.learning import CONNECTIVITY_LOG_VARIANT, _canon_pair, edge_recurrence, orientation_provenance
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -31,15 +31,15 @@ def _suffix(version: str) -> str:
 
 
 def _bootstrap_runs_path(version: str) -> Path:
-    return ROOT / "reports" / "pc_runs" / f"bootstrap_runs{_suffix(version)}.json"
+    return ROOT / "reports" / "pc" / "runs" / f"bootstrap_runs{_suffix(version)}.json"
 
 
 def _pc_runs_path(version: str) -> Path:
-    return ROOT / "reports" / "pc_runs" / f"pc_runs{_suffix(version)}.json"
+    return ROOT / "reports" / "pc" / "runs" / f"runs{_suffix(version)}.json"
 
 
 def _predictive_nested_cv_path(version: str) -> Path:
-    return ROOT / "reports" / "pc_runs" / f"predictive_nested_cv{_suffix(version)}.json"
+    return ROOT / "reports" / "pc" / "runs" / f"predictive_nested_cv{_suffix(version)}.json"
 
 
 def _report_out(version: str) -> Path:
@@ -130,7 +130,7 @@ def predictive_usefulness_summary(version: str) -> dict:
     path = _predictive_nested_cv_path(version)
     if not path.exists():
         raise FileNotFoundError(
-            f"{path} not found -- run `python src/predictive_usefulness.py "
+            f"{path} not found -- run `python src/pc/predictive_usefulness.py "
             f"--version {version}` first."
         )
     return json.loads(path.read_text(encoding="utf-8"))

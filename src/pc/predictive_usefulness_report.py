@@ -1,3 +1,8 @@
+﻿import sys
+from pathlib import Path as _Path
+_SRC_ROOT = str(_Path(__file__).resolve().parents[1])
+if _SRC_ROOT not in sys.path:
+    sys.path.insert(0, _SRC_ROOT)
 def render_report(version: str, results: dict, n_splits: int, graph_parent_threshold: float,
                    n_boot_per_fold: int, robustness_thresholds: list) -> str:
     lines = [f"# Predictive Usefulness -- Step 5 / thesis D2.3 ({version})\n"]
@@ -9,7 +14,7 @@ def render_report(version: str, results: dict, n_splits: int, graph_parent_thres
         "repeated topic-year measurements -- a random split could put the "
         "same topic's rows in both train and test, leaking topic-level "
         "persistence into the score (same concern as "
-        "`bootstrap_stability.py`'s topic-block resampling).\n"
+        "`src/pc/bootstrap_stability.py`'s topic-block resampling).\n"
         "\n"
         "`baseline` is the minimal, non-graph comparison per outcome: "
         "`year` only for `log1p_median_c2`, `topic_share_t1` + `year` for "
@@ -42,7 +47,7 @@ def render_report(version: str, results: dict, n_splits: int, graph_parent_thres
         "not the same one restated.\n"
         "\n"
         "`all_t1_no_modularity` is `all_t1` with `modularity_t1` dropped -- "
-        "added after `pc_learning.py`'s `sensitivity_size_control` group "
+        "added after `src/pc/learning.py`'s `sensitivity_size_control` group "
         "showed every `modularity_t1 -> outcome` edge in the main model "
         "disappears once topic size (`n_papers_t1`) is controllable, "
         "replaced by `n_papers_t1 -> modularity_t1`. This checks how much "

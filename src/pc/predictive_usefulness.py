@@ -1,3 +1,8 @@
+﻿import sys
+from pathlib import Path as _Path
+_SRC_ROOT = str(_Path(__file__).resolve().parents[1])
+if _SRC_ROOT not in sys.path:
+    sys.path.insert(0, _SRC_ROOT)
 import argparse
 import json
 from pathlib import Path
@@ -8,13 +13,13 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, r2_score
 from sklearn.model_selection import GroupKFold
 
-from bootstrap_stability import run_bootstrap
+from pc.bootstrap_stability import run_bootstrap
 from constraints import EXOGENOUS, MAIN_OUTCOMES
 from data_prep import DATASETS
-from pc_learning import CONNECTIVITY_LOG_VARIANT, CONTINUOUS_PREDICTORS, CONTINUOUS_OUTCOMES, edge_recurrence, load_continuous
-from predictive_usefulness_report import render_report
+from pc.learning import CONNECTIVITY_LOG_VARIANT, CONTINUOUS_PREDICTORS, CONTINUOUS_OUTCOMES, edge_recurrence, load_continuous
+from pc.predictive_usefulness_report import render_report
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 
 N_SPLITS = 5
 GRAPH_PARENT_THRESHOLD = 0.5
@@ -32,11 +37,11 @@ def _suffix(version: str) -> str:
 
 
 def _report_out(version: str) -> Path:
-    return ROOT / "reports" / f"predictive_usefulness{_suffix(version)}.md"
+    return ROOT / "reports" / "pc" / f"predictive_usefulness{_suffix(version)}.md"
 
 
 def _nested_cv_path(version: str) -> Path:
-    return ROOT / "reports" / "pc_runs" / f"predictive_nested_cv{_suffix(version)}.json"
+    return ROOT / "reports" / "pc" / "runs" / f"predictive_nested_cv{_suffix(version)}.json"
 
 
 def _cv_scores(df: pd.DataFrame, features: list, target: str, model, folds: list) -> dict:

@@ -1,0 +1,713 @@
+{
+  "version": "v5",
+  "settings": {
+    "n_splits": 5,
+    "n_boot_per_fold": 150,
+    "seed": 0,
+    "batch_size": 25,
+    "lambda1": 0.02,
+    "lambda_dag": 5.0,
+    "tolerance": 1e-06,
+    "max_iter": 10000,
+    "graph_threshold": 0.1,
+    "selection_threshold": 0.5,
+    "robustness_thresholds": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "baseline_features": {
+      "topic_share_t": [
+        "topic_share_t1",
+        "year"
+      ],
+      "log1p_median_c2": [
+        "year"
+      ]
+    }
+  },
+  "folds": [
+    {
+      "fold": 0,
+      "diagnostics": {
+        "n_boot_requested": 150,
+        "n_completed": 150,
+        "n_succeeded": 150,
+        "n_nonconverged": 0,
+        "n_failed": 0,
+        "n_degenerate_skipped": 0,
+        "n_train_topics": 17
+      },
+      "directional_parent_rates": [
+        {
+          "source": "connectivity_t1_log",
+          "outcome": "log1p_median_c2",
+          "rate": 1.0
+        },
+        {
+          "source": "connectivity_t1_log",
+          "outcome": "topic_share_t",
+          "rate": 0.7866666666666666
+        },
+        {
+          "source": "cross_topic_rate_t1",
+          "outcome": "log1p_median_c2",
+          "rate": 0.22
+        },
+        {
+          "source": "cross_topic_rate_t1",
+          "outcome": "topic_share_t",
+          "rate": 0.09333333333333334
+        },
+        {
+          "source": "modularity_t1",
+          "outcome": "log1p_median_c2",
+          "rate": 0.8933333333333333
+        },
+        {
+          "source": "modularity_t1",
+          "outcome": "topic_share_t",
+          "rate": 0.03333333333333333
+        },
+        {
+          "source": "topic_share_t1",
+          "outcome": "log1p_median_c2",
+          "rate": 0.9866666666666667
+        },
+        {
+          "source": "topic_share_t1",
+          "outcome": "topic_share_t",
+          "rate": 1.0
+        },
+        {
+          "source": "year",
+          "outcome": "log1p_median_c2",
+          "rate": 1.0
+        },
+        {
+          "source": "year",
+          "outcome": "topic_share_t",
+          "rate": 0.9466666666666667
+        }
+      ],
+      "selected": {
+        "topic_share_t": [
+          "connectivity_t1_log"
+        ],
+        "log1p_median_c2": [
+          "connectivity_t1_log",
+          "modularity_t1",
+          "topic_share_t1"
+        ]
+      }
+    },
+    {
+      "fold": 1,
+      "diagnostics": {
+        "n_boot_requested": 150,
+        "n_completed": 150,
+        "n_succeeded": 150,
+        "n_nonconverged": 0,
+        "n_failed": 0,
+        "n_degenerate_skipped": 0,
+        "n_train_topics": 18
+      },
+      "directional_parent_rates": [
+        {
+          "source": "connectivity_t1_log",
+          "outcome": "log1p_median_c2",
+          "rate": 1.0
+        },
+        {
+          "source": "connectivity_t1_log",
+          "outcome": "topic_share_t",
+          "rate": 0.3333333333333333
+        },
+        {
+          "source": "cross_topic_rate_t1",
+          "outcome": "log1p_median_c2",
+          "rate": 0.3333333333333333
+        },
+        {
+          "source": "cross_topic_rate_t1",
+          "outcome": "topic_share_t",
+          "rate": 0.04666666666666667
+        },
+        {
+          "source": "modularity_t1",
+          "outcome": "log1p_median_c2",
+          "rate": 0.9933333333333333
+        },
+        {
+          "source": "modularity_t1",
+          "outcome": "topic_share_t",
+          "rate": 0.1
+        },
+        {
+          "source": "topic_share_t1",
+          "outcome": "log1p_median_c2",
+          "rate": 1.0
+        },
+        {
+          "source": "topic_share_t1",
+          "outcome": "topic_share_t",
+          "rate": 1.0
+        },
+        {
+          "source": "year",
+          "outcome": "log1p_median_c2",
+          "rate": 1.0
+        },
+        {
+          "source": "year",
+          "outcome": "topic_share_t",
+          "rate": 0.7866666666666666
+        }
+      ],
+      "selected": {
+        "topic_share_t": [],
+        "log1p_median_c2": [
+          "connectivity_t1_log",
+          "modularity_t1",
+          "topic_share_t1"
+        ]
+      }
+    },
+    {
+      "fold": 2,
+      "diagnostics": {
+        "n_boot_requested": 150,
+        "n_completed": 150,
+        "n_succeeded": 150,
+        "n_nonconverged": 0,
+        "n_failed": 0,
+        "n_degenerate_skipped": 0,
+        "n_train_topics": 17
+      },
+      "directional_parent_rates": [
+        {
+          "source": "connectivity_t1_log",
+          "outcome": "log1p_median_c2",
+          "rate": 1.0
+        },
+        {
+          "source": "connectivity_t1_log",
+          "outcome": "topic_share_t",
+          "rate": 0.7
+        },
+        {
+          "source": "cross_topic_rate_t1",
+          "outcome": "log1p_median_c2",
+          "rate": 0.2
+        },
+        {
+          "source": "cross_topic_rate_t1",
+          "outcome": "topic_share_t",
+          "rate": 0.006666666666666667
+        },
+        {
+          "source": "modularity_t1",
+          "outcome": "log1p_median_c2",
+          "rate": 0.9533333333333334
+        },
+        {
+          "source": "modularity_t1",
+          "outcome": "topic_share_t",
+          "rate": 0.013333333333333334
+        },
+        {
+          "source": "topic_share_t1",
+          "outcome": "log1p_median_c2",
+          "rate": 1.0
+        },
+        {
+          "source": "topic_share_t1",
+          "outcome": "topic_share_t",
+          "rate": 1.0
+        },
+        {
+          "source": "year",
+          "outcome": "log1p_median_c2",
+          "rate": 1.0
+        },
+        {
+          "source": "year",
+          "outcome": "topic_share_t",
+          "rate": 0.9666666666666667
+        }
+      ],
+      "selected": {
+        "topic_share_t": [
+          "connectivity_t1_log"
+        ],
+        "log1p_median_c2": [
+          "connectivity_t1_log",
+          "modularity_t1",
+          "topic_share_t1"
+        ]
+      }
+    },
+    {
+      "fold": 3,
+      "diagnostics": {
+        "n_boot_requested": 150,
+        "n_completed": 150,
+        "n_succeeded": 150,
+        "n_nonconverged": 0,
+        "n_failed": 0,
+        "n_degenerate_skipped": 0,
+        "n_train_topics": 18
+      },
+      "directional_parent_rates": [
+        {
+          "source": "connectivity_t1_log",
+          "outcome": "log1p_median_c2",
+          "rate": 0.9933333333333333
+        },
+        {
+          "source": "connectivity_t1_log",
+          "outcome": "topic_share_t",
+          "rate": 0.5866666666666667
+        },
+        {
+          "source": "cross_topic_rate_t1",
+          "outcome": "log1p_median_c2",
+          "rate": 0.2733333333333333
+        },
+        {
+          "source": "cross_topic_rate_t1",
+          "outcome": "topic_share_t",
+          "rate": 0.10666666666666667
+        },
+        {
+          "source": "modularity_t1",
+          "outcome": "log1p_median_c2",
+          "rate": 0.9333333333333333
+        },
+        {
+          "source": "modularity_t1",
+          "outcome": "topic_share_t",
+          "rate": 0.06666666666666667
+        },
+        {
+          "source": "topic_share_t1",
+          "outcome": "log1p_median_c2",
+          "rate": 0.9866666666666667
+        },
+        {
+          "source": "topic_share_t1",
+          "outcome": "topic_share_t",
+          "rate": 1.0
+        },
+        {
+          "source": "year",
+          "outcome": "log1p_median_c2",
+          "rate": 1.0
+        },
+        {
+          "source": "year",
+          "outcome": "topic_share_t",
+          "rate": 0.9666666666666667
+        }
+      ],
+      "selected": {
+        "topic_share_t": [
+          "connectivity_t1_log"
+        ],
+        "log1p_median_c2": [
+          "connectivity_t1_log",
+          "modularity_t1",
+          "topic_share_t1"
+        ]
+      }
+    },
+    {
+      "fold": 4,
+      "diagnostics": {
+        "n_boot_requested": 150,
+        "n_completed": 150,
+        "n_succeeded": 150,
+        "n_nonconverged": 0,
+        "n_failed": 0,
+        "n_degenerate_skipped": 0,
+        "n_train_topics": 18
+      },
+      "directional_parent_rates": [
+        {
+          "source": "connectivity_t1_log",
+          "outcome": "log1p_median_c2",
+          "rate": 0.9933333333333333
+        },
+        {
+          "source": "connectivity_t1_log",
+          "outcome": "topic_share_t",
+          "rate": 0.82
+        },
+        {
+          "source": "cross_topic_rate_t1",
+          "outcome": "log1p_median_c2",
+          "rate": 0.38
+        },
+        {
+          "source": "cross_topic_rate_t1",
+          "outcome": "topic_share_t",
+          "rate": 0.14666666666666667
+        },
+        {
+          "source": "modularity_t1",
+          "outcome": "log1p_median_c2",
+          "rate": 0.9866666666666667
+        },
+        {
+          "source": "modularity_t1",
+          "outcome": "topic_share_t",
+          "rate": 0.13333333333333333
+        },
+        {
+          "source": "topic_share_t1",
+          "outcome": "log1p_median_c2",
+          "rate": 0.9933333333333333
+        },
+        {
+          "source": "topic_share_t1",
+          "outcome": "topic_share_t",
+          "rate": 1.0
+        },
+        {
+          "source": "year",
+          "outcome": "log1p_median_c2",
+          "rate": 1.0
+        },
+        {
+          "source": "year",
+          "outcome": "topic_share_t",
+          "rate": 0.98
+        }
+      ],
+      "selected": {
+        "topic_share_t": [
+          "connectivity_t1_log"
+        ],
+        "log1p_median_c2": [
+          "connectivity_t1_log",
+          "modularity_t1",
+          "topic_share_t1"
+        ]
+      }
+    }
+  ],
+  "outcomes": {
+    "topic_share_t": {
+      "baseline": {
+        "features": [
+          "topic_share_t1",
+          "year"
+        ],
+        "n_splits_used": 5,
+        "r2_mean": 0.6722040710044254,
+        "r2_std": 0.16161676253711837,
+        "mae_mean": 0.009802480720288883,
+        "mae_std": 0.0015534622544372872
+      },
+      "all_t1": {
+        "features": [
+          "topic_share_t1",
+          "cross_topic_rate_t1",
+          "connectivity_t1_log",
+          "modularity_t1",
+          "year"
+        ],
+        "n_splits_used": 5,
+        "r2_mean": 0.6659409645820762,
+        "r2_std": 0.1885612600027723,
+        "mae_mean": 0.009796474440215943,
+        "mae_std": 0.001488119750589255
+      },
+      "all_t1_no_modularity": {
+        "features": [
+          "topic_share_t1",
+          "cross_topic_rate_t1",
+          "connectivity_t1_log",
+          "year"
+        ],
+        "n_splits_used": 5,
+        "r2_mean": 0.6679956522555676,
+        "r2_std": 0.18098010746393323,
+        "mae_mean": 0.009712373051900812,
+        "mae_std": 0.0014939501694194468
+      },
+      "golem_parents_nested_cv": {
+        "features": [
+          "topic_share_t1",
+          "year"
+        ],
+        "selection_note": "connectivity_t1_log (4/5 folds)",
+        "per_fold_added": [
+          [
+            "connectivity_t1_log"
+          ],
+          [],
+          [
+            "connectivity_t1_log"
+          ],
+          [
+            "connectivity_t1_log"
+          ],
+          [
+            "connectivity_t1_log"
+          ]
+        ],
+        "n_splits_used": 5,
+        "r2_mean": 0.6767912942298423,
+        "r2_std": 0.15960788073601972,
+        "mae_mean": 0.009846556713446725,
+        "mae_std": 0.001214564650775525
+      },
+      "threshold_robustness": {
+        "0.3": {
+          "per_fold_added": [
+            [
+              "connectivity_t1_log"
+            ],
+            [
+              "connectivity_t1_log"
+            ],
+            [
+              "connectivity_t1_log"
+            ],
+            [
+              "connectivity_t1_log"
+            ],
+            [
+              "connectivity_t1_log"
+            ]
+          ],
+          "r2_mean": 0.6811632234704191,
+          "r2_std": 0.16497547950685193,
+          "mae_mean": 0.009677860435682818,
+          "mae_std": 0.0014326758127857307
+        },
+        "0.5": {
+          "per_fold_added": [
+            [
+              "connectivity_t1_log"
+            ],
+            [],
+            [
+              "connectivity_t1_log"
+            ],
+            [
+              "connectivity_t1_log"
+            ],
+            [
+              "connectivity_t1_log"
+            ]
+          ],
+          "r2_mean": 0.6767912942298423,
+          "r2_std": 0.15960788073601972,
+          "mae_mean": 0.009846556713446725,
+          "mae_std": 0.001214564650775525
+        },
+        "0.7": {
+          "per_fold_added": [
+            [
+              "connectivity_t1_log"
+            ],
+            [],
+            [
+              "connectivity_t1_log"
+            ],
+            [],
+            [
+              "connectivity_t1_log"
+            ]
+          ],
+          "r2_mean": 0.6724053680724638,
+          "r2_std": 0.15737165623193022,
+          "mae_mean": 0.009971750415115443,
+          "mae_std": 0.0014185897872990671
+        }
+      }
+    },
+    "log1p_median_c2": {
+      "baseline": {
+        "features": [
+          "year"
+        ],
+        "n_splits_used": 5,
+        "r2_mean": -0.04560739538634444,
+        "r2_std": 0.3225839989055314,
+        "mae_mean": 0.48186305587935496,
+        "mae_std": 0.05997847347913486
+      },
+      "all_t1": {
+        "features": [
+          "topic_share_t1",
+          "cross_topic_rate_t1",
+          "connectivity_t1_log",
+          "modularity_t1",
+          "year"
+        ],
+        "n_splits_used": 5,
+        "r2_mean": 0.25236385237316067,
+        "r2_std": 0.18466135270783843,
+        "mae_mean": 0.41205401923920837,
+        "mae_std": 0.03496839893577866
+      },
+      "all_t1_no_modularity": {
+        "features": [
+          "topic_share_t1",
+          "cross_topic_rate_t1",
+          "connectivity_t1_log",
+          "year"
+        ],
+        "n_splits_used": 5,
+        "r2_mean": 0.1543944790156033,
+        "r2_std": 0.28416426489650254,
+        "mae_mean": 0.43906639827206406,
+        "mae_std": 0.06532915541461227
+      },
+      "golem_parents_nested_cv": {
+        "features": [
+          "year"
+        ],
+        "selection_note": "connectivity_t1_log (5/5 folds), modularity_t1 (5/5 folds), topic_share_t1 (5/5 folds)",
+        "per_fold_added": [
+          [
+            "connectivity_t1_log",
+            "modularity_t1",
+            "topic_share_t1"
+          ],
+          [
+            "connectivity_t1_log",
+            "modularity_t1",
+            "topic_share_t1"
+          ],
+          [
+            "connectivity_t1_log",
+            "modularity_t1",
+            "topic_share_t1"
+          ],
+          [
+            "connectivity_t1_log",
+            "modularity_t1",
+            "topic_share_t1"
+          ],
+          [
+            "connectivity_t1_log",
+            "modularity_t1",
+            "topic_share_t1"
+          ]
+        ],
+        "n_splits_used": 5,
+        "r2_mean": 0.26073748671578556,
+        "r2_std": 0.18650988281073957,
+        "mae_mean": 0.4108594500171547,
+        "mae_std": 0.03632535806121889
+      },
+      "threshold_robustness": {
+        "0.3": {
+          "per_fold_added": [
+            [
+              "connectivity_t1_log",
+              "modularity_t1",
+              "topic_share_t1"
+            ],
+            [
+              "connectivity_t1_log",
+              "cross_topic_rate_t1",
+              "modularity_t1",
+              "topic_share_t1"
+            ],
+            [
+              "connectivity_t1_log",
+              "modularity_t1",
+              "topic_share_t1"
+            ],
+            [
+              "connectivity_t1_log",
+              "modularity_t1",
+              "topic_share_t1"
+            ],
+            [
+              "connectivity_t1_log",
+              "cross_topic_rate_t1",
+              "modularity_t1",
+              "topic_share_t1"
+            ]
+          ],
+          "r2_mean": 0.2543069711345333,
+          "r2_std": 0.1819969057641751,
+          "mae_mean": 0.4120586286660054,
+          "mae_std": 0.0351852038732194
+        },
+        "0.5": {
+          "per_fold_added": [
+            [
+              "connectivity_t1_log",
+              "modularity_t1",
+              "topic_share_t1"
+            ],
+            [
+              "connectivity_t1_log",
+              "modularity_t1",
+              "topic_share_t1"
+            ],
+            [
+              "connectivity_t1_log",
+              "modularity_t1",
+              "topic_share_t1"
+            ],
+            [
+              "connectivity_t1_log",
+              "modularity_t1",
+              "topic_share_t1"
+            ],
+            [
+              "connectivity_t1_log",
+              "modularity_t1",
+              "topic_share_t1"
+            ]
+          ],
+          "r2_mean": 0.26073748671578556,
+          "r2_std": 0.18650988281073957,
+          "mae_mean": 0.4108594500171547,
+          "mae_std": 0.03632535806121889
+        },
+        "0.7": {
+          "per_fold_added": [
+            [
+              "connectivity_t1_log",
+              "modularity_t1",
+              "topic_share_t1"
+            ],
+            [
+              "connectivity_t1_log",
+              "modularity_t1",
+              "topic_share_t1"
+            ],
+            [
+              "connectivity_t1_log",
+              "modularity_t1",
+              "topic_share_t1"
+            ],
+            [
+              "connectivity_t1_log",
+              "modularity_t1",
+              "topic_share_t1"
+            ],
+            [
+              "connectivity_t1_log",
+              "modularity_t1",
+              "topic_share_t1"
+            ]
+          ],
+          "r2_mean": 0.26073748671578556,
+          "r2_std": 0.18650988281073957,
+          "mae_mean": 0.4108594500171547,
+          "mae_std": 0.03632535806121889
+        }
+      }
+    }
+  }
+}
