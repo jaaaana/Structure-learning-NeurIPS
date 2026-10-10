@@ -32,21 +32,21 @@ From the repo root, in order -- each step reads the previous step's output:
 ```bash
 python src/data_prep.py              # Step 1: data quality report + continuous/discretized tables
 python src/constraints.py            # Step 2: temporal edge constraints (shared by v4/v5, not versioned)
-python src/pc_learning.py            # Step 3: PC algorithm settings grid
-python src/bootstrap_stability.py    # Step 4: topic-block bootstrap stability (500 replicates)
-python src/predictive_usefulness.py  # Step 5a: baseline vs. graph-selected predictive evaluation
+python src/pc/learning.py            # Step 3: PC algorithm settings grid
+python src/pc/bootstrap_stability.py # Step 4: topic-block bootstrap stability (500 replicates)
+python src/pc/predictive_usefulness.py # Step 5a: baseline vs. graph-selected predictive evaluation
 python src/final_graph.py            # Step 5b: final tiered graph + team deliverable
 ```
 
 GOLEM comparison reports use parallel scripts and report generators:
 
 ```bash
-python src/golem_learning.py                         # settings grid + report
-python src/golem_learning_report.py                  # render settings report from saved fits
-python src/golem_bootstrap_stability.py              # 500 topic-block replicates + report
-python src/golem_predictive_usefulness.py             # nested five-fold evaluation + report
-python src/golem_bootstrap_stability_report.py        # regenerate bootstrap report from saved JSON
-python src/golem_predictive_usefulness_report.py      # regenerate predictive report from saved JSON
+python src/golem/learning.py                         # settings grid + report
+python src/golem/learning_report.py                  # render settings report from saved fits
+python src/golem/bootstrap_stability.py              # 500 topic-block replicates + report
+python src/golem/predictive_usefulness.py             # nested five-fold evaluation + report
+python src/golem/bootstrap_stability_report.py        # regenerate bootstrap report from saved JSON
+python src/golem/predictive_usefulness_report.py      # regenerate predictive report from saved JSON
 ```
 
 The GOLEM optimizer uses a relative objective tolerance of `1e-6` and a
@@ -67,9 +67,9 @@ the code:
 | `--seed` | `0` | `bootstrap_stability.py` | topic-block resampling for the 500-replicate bootstrap (continuous, discretized, and unconstrained) |
 | `NESTED_SEED` | `0` (-> per-fold seeds `0..4`) | `predictive_usefulness.py` | the nested, training-fold-only predictor-selection bootstrap; now also written into `predictive_usefulness{_v}.md` and `predictive_nested_cv{_v}.json`, not just the source |
 | `LOUVAIN_SEED` | `42` | `refresh_citations.py` | Louvain community detection inside `graph_metrics`, which determines `modularity_t1` -- the one seed that affects the frozen dataset itself, not just a stability add-on |
-| `ALPHAS` | `[0.01, 0.05, 0.10]` | `pc_learning.py` | PC algorithm significance grid |
+| `ALPHAS` | `[0.01, 0.05, 0.10]` | `src/pc/learning.py` | PC algorithm significance grid |
 | `GRAPH_PARENT_THRESHOLD` | `0.5` | `predictive_usefulness.py` | per-fold predictor-selection adjacency cutoff (nested CV) |
-| `SELECTION_THRESHOLD` | `0.5` | `golem_predictive_usefulness.py` | per-fold GOLEM parent-selection frequency cutoff (nested CV) |
+| `SELECTION_THRESHOLD` | `0.5` | `src/golem/predictive_usefulness.py` | per-fold GOLEM parent-selection frequency cutoff (nested CV) |
 | `STABLE_THRESHOLD` / `CANDIDATE_THRESHOLD` / `GAP_THRESHOLD` | `0.7` / `0.3` / `0.3` | `final_graph.py` | bootstrap-adjacency tier classification (descriptive buckets, not significance -- see `final_team_deliverable*.md`) |
 
 These two threshold sets are deliberately different numbers for different

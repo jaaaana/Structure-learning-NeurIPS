@@ -1,3 +1,8 @@
+﻿import sys
+from pathlib import Path as _Path
+_SRC_ROOT = str(_Path(__file__).resolve().parents[1])
+if _SRC_ROOT not in sys.path:
+    sys.path.insert(0, _SRC_ROOT)
 import argparse
 from dataclasses import asdict
 import hashlib
@@ -6,17 +11,17 @@ from pathlib import Path
 
 import numpy as np
 
-from pc_bootstrap_stability import resample_topics, _is_degenerate
-from golem_learning import (add_optimizer_arguments, config_from_args, graph_result,
+from pc.bootstrap_stability import resample_topics, _is_degenerate
+from golem.learning import (add_optimizer_arguments, config_from_args, graph_result,
                             model_nodes, panel_fingerprint, paths, write_json)
-from golem_model import FitConfig, fit_many, vocabulary
-from pc_learning import load_continuous, load_discretized
+from golem.model import FitConfig, fit_many, vocabulary
+from pc.learning import load_continuous, load_discretized
 
 
 def implementation_fingerprint():
-    root = Path(__file__).parent
-    names = ["golem_model.py", "golem_learning.py", "golem_bootstrap_stability.py",
-             "golem_predictive_usefulness.py", "pc_learning.py", "pc_bootstrap_stability.py",
+    root = Path(__file__).resolve().parents[1]
+    names = ["golem/model.py", "golem/learning.py", "golem/bootstrap_stability.py",
+             "golem/predictive_usefulness.py", "pc/learning.py", "pc/bootstrap_stability.py",
              "constraints.py"]
     return hashlib.sha256(b"".join((root / n).read_bytes() for n in names)).hexdigest()
 
@@ -85,7 +90,7 @@ def run_bootstrap(df, names, representation, n_boot=500, seed=0, config=FitConfi
 
 
 def main():
-    from golem_bootstrap_stability_report import render_report
+    from golem.bootstrap_stability_report import render_report
     parser = argparse.ArgumentParser(description=__doc__)
     add_optimizer_arguments(parser)
     parser.add_argument("--n-boot", type=int, default=500)

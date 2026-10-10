@@ -1,3 +1,8 @@
+﻿import sys
+from pathlib import Path as _Path
+_SRC_ROOT = str(_Path(__file__).resolve().parents[1])
+if _SRC_ROOT not in sys.path:
+    sys.path.insert(0, _SRC_ROOT)
 def render_report(version: str, seed: int, n_boot: int, boot_alpha: float,
                    cont_diag: dict, cont_freq, disc_diag: dict, disc_freq,
                    unc_diag: dict, provenance: dict) -> str:
@@ -12,7 +17,7 @@ def render_report(version: str, seed: int, n_boot: int, boot_alpha: float,
         "topic, per the 2026-08-19 correction: rows are repeated "
         "topic-year measurements, so plain row-level bootstrap would treat a "
         "topic's own yearly observations as independent draws. This is a "
-        f"separate sensitivity axis from `pc_settings_comparison{suffix}.md`'s "
+        f"separate sensitivity axis from `reports/pc/settings_comparison{suffix}.md`'s "
         "alpha/representation grid -- that grid holds the sample fixed and "
         "varies settings; this analysis holds settings fixed and varies the "
         "sample.\n"

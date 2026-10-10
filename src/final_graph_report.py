@@ -14,7 +14,7 @@ def render_report(version: str, classification: list, main_graph: dict,
         "`modularity_t1` edges are a different case: they get their real "
         "tier from the numbers like everything else, but are additionally "
         "flagged `[SIZE CONFOUND]` wherever they appear, since "
-        "`pc_learning.py`'s `sensitivity_size_control` group shows every "
+        "`src/pc/learning.py`'s `sensitivity_size_control` group shows every "
         "`modularity_t1 -> outcome` edge disappears once topic size is "
         "controllable -- a reason to be skeptical of the edge's "
         "interpretation, not a reason to hide its actual numbers. "
@@ -33,7 +33,7 @@ def render_report(version: str, classification: list, main_graph: dict,
         "two different tiers, and `causal-learn` mechanically forces its "
         "direction immediately after skeleton discovery, before any "
         "independent PC orientation logic runs; see "
-        "`bootstrap_stability.md`'s orientation-stability caveat and "
+        f"`reports/pc/bootstrap_stability{suffix}.md`'s orientation-stability caveat and "
         "'Orientation provenance' section for the full derivation.\n"
     )
     lines.append(
@@ -63,7 +63,7 @@ def render_report(version: str, classification: list, main_graph: dict,
         "such edge immediately after skeleton discovery, before its own "
         "v-structure or Meek orientation logic ever runs -- there is no edge "
         "in this graph that could have been genuinely `[PC]`-oriented under "
-        "these constraints (see `bootstrap_stability.md`'s 'Orientation "
+        f"these constraints (see `reports/pc/bootstrap_stability{suffix}.md`'s 'Orientation "
         "provenance' section for the full derivation). "
         "`unconstrained_same_direction` below is the one independent check "
         "available: the share of an unconstrained bootstrap's adjacent "
@@ -113,7 +113,7 @@ def render_report(version: str, classification: list, main_graph: dict,
         for r in confound_rows:
             lines.append(
                 f"- `{r['from']} -> {r['to']}`: flagged size confound -- "
-                "pc_learning.py's sensitivity_size_control group shows this edge "
+                "src/pc/learning.py's sensitivity_size_control group shows this edge "
                 "disappears (replaced by `n_papers_t1_log -> modularity_t1`) once "
                 "topic size is available to condition on. Its tier above is from the "
                 "real adjacency rate; this flag is a reason to be skeptical of its "
@@ -136,7 +136,7 @@ def render_report(version: str, classification: list, main_graph: dict,
         "separately inside each cross-validation fold, using only that "
         "fold's training topics, specifically to avoid the held-out fold's "
         "topics leaking into predictor selection (see "
-        "`predictive_usefulness{}.md` for the full nested-CV detail). It is "
+        "`reports/pc/predictive_usefulness{}.md` for the full nested-CV detail). It is "
         "a different statistic from the stable/candidate tiers above (which "
         "use the full-dataset, both-representations bootstrap) -- not the "
         "same number restated under a new name.\n".format(suffix)
@@ -146,11 +146,11 @@ def render_report(version: str, classification: list, main_graph: dict,
         lines.append(
             f"- `{outcome}`: baseline R²={b['r2_mean']:.3f}, all_t1={a['r2_mean']:.3f}, "
             f"all_t1_no_modularity={an['r2_mean']:.3f}, graph_parents_nested_cv={g['r2_mean']:.3f} "
-            "(see `predictive_usefulness{}.md` for full CV detail).".format(suffix)
+            "(see `reports/pc/predictive_usefulness{}.md` for full CV detail).".format(suffix)
         )
     lines.append(
         "\nNote: `sensitivity_outcome:topic_growth`/`:hit_rate_2yr` and "
-        "`sensitivity_no_year` (in `pc_settings_comparison{}.md`) are single-run "
+        "`sensitivity_no_year` (in `reports/pc/settings_comparison{}.md`) are single-run "
         "results, not bootstrap-replicated, so they are not tier-classified above "
         "-- treat them as context, not stability evidence.\n".format(suffix)
     )
@@ -165,7 +165,7 @@ def render_report(version: str, classification: list, main_graph: dict,
         "novel structural mechanism. `modularity_t1`'s edges get their tier from their "
         "real adjacency rate like any other edge (typically `candidate` or `weak` here, "
         "never `stable`), but are flagged `[SIZE CONFOUND]`/`SIZE_CONFOUND` wherever "
-        "they appear: `pc_learning.py`'s `sensitivity_size_control` group shows every "
+        "they appear: `src/pc/learning.py`'s `sensitivity_size_control` group shows every "
         "`modularity_t1 -> outcome` edge disappears, replaced by `n_papers_t1_log -> "
         "modularity_t1`, once topic size is controllable -- read any `modularity_t1` "
         "edge below as a demonstrated size confound regardless of its numeric tier. "

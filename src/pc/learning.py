@@ -1,3 +1,8 @@
+﻿import sys
+from pathlib import Path as _Path
+_SRC_ROOT = str(_Path(__file__).resolve().parents[1])
+if _SRC_ROOT not in sys.path:
+    sys.path.insert(0, _SRC_ROOT)
 import argparse
 import json
 from itertools import product
@@ -21,9 +26,9 @@ from constraints import (
     build_background_knowledge,
 )
 from data_prep import DATASETS
-from pc_learning_report import render_report
+from pc.learning_report import render_report
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 
 ALPHAS = [0.01, 0.05, 0.10]
 
@@ -42,14 +47,14 @@ SENSITIVITY_OUTCOME_ALPHA = 0.05
 
 
 def _reports_dir(version: str) -> Path:
-    d = ROOT / "reports" / "pc_runs"
+    d = ROOT / "reports" / "pc" / "runs"
     d.mkdir(parents=True, exist_ok=True)
     return d
 
 
 def _report_out(version: str) -> Path:
     suffix = "" if version == "v4" else f"_{version}"
-    return ROOT / "reports" / f"pc_settings_comparison{suffix}.md"
+    return ROOT / "reports" / "pc" / f"settings_comparison{suffix}.md"
 
 
 def load_continuous(version: str) -> pd.DataFrame:
@@ -366,7 +371,7 @@ def main(version: str = "v5"):
 
     runs_dir = _reports_dir(version)
     suffix = "" if version == "v4" else f"_{version}"
-    json_path = runs_dir / f"pc_runs{suffix}.json"
+    json_path = runs_dir / f"runs{suffix}.json"
     json_path.write_text(json.dumps(results, indent=2, default=str), encoding="utf-8")
 
     print(f"[{version}] Ran {len(results)} PC settings.")

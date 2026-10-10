@@ -1,3 +1,8 @@
+﻿import sys
+from pathlib import Path as _Path
+_SRC_ROOT = str(_Path(__file__).resolve().parents[1])
+if _SRC_ROOT not in sys.path:
+    sys.path.insert(0, _SRC_ROOT)
 """Leakage-free predictive evaluation using GOLEM-selected graph parents."""
 import argparse
 import json
@@ -11,13 +16,13 @@ from sklearn.model_selection import GroupKFold
 
 from constraints import MAIN_OUTCOMES
 from data_prep import DATASETS
-from golem_learning import graph_result
-from golem_model import FitConfig, fit_many
-from pc_bootstrap_stability import _is_degenerate, resample_topics
-from pc_learning import CONTINUOUS_OUTCOMES, CONTINUOUS_PREDICTORS, load_continuous
-from golem_predictive_usefulness_report import render_report
+from golem.learning import graph_result
+from golem.model import FitConfig, fit_many
+from pc.bootstrap_stability import _is_degenerate, resample_topics
+from pc.learning import CONTINUOUS_OUTCOMES, CONTINUOUS_PREDICTORS, load_continuous
+from golem.predictive_usefulness_report import render_report
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 N_SPLITS = 5
 N_BOOT_PER_FOLD = 150
 NESTED_SEED = 0
@@ -219,8 +224,8 @@ def main():
     payload = run_comparison(args.version, n_boot=args.n_boot_per_fold, seed=args.seed,
                              batch_size=args.batch_size,
                              selection_threshold=args.selection_threshold)
-    out_json = ROOT / "reports" / "golem_runs" / f"golem_predictive_nested_cv{_suffix(args.version)}.json"
-    out_md = ROOT / "reports" / f"golem_predictive_usefulness{_suffix(args.version)}.md"
+    out_json = ROOT / "reports" / "golem" / "runs" / f"predictive_nested_cv{_suffix(args.version)}.json"
+    out_md = ROOT / "reports" / "golem" / f"predictive_usefulness{_suffix(args.version)}.md"
     out_json.parent.mkdir(parents=True, exist_ok=True)
     out_json.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     out_md.write_text(render_report(payload), encoding="utf-8")

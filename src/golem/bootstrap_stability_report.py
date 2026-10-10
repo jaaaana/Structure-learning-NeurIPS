@@ -1,10 +1,15 @@
+﻿import sys
+from pathlib import Path as _Path
+_SRC_ROOT = str(_Path(__file__).resolve().parents[1])
+if _SRC_ROOT not in sys.path:
+    sys.path.insert(0, _SRC_ROOT)
 import argparse
 import json
 
 from constraints import TIER_0, TIER_1, TIER_1_LOG_VARIANT, _base_name
 from data_prep import DATASETS
-from golem_learning import edge_recurrence, paths
-from golem_learning_report import recurrence_text, table
+from golem.learning import edge_recurrence, paths
+from golem.learning_report import recurrence_text, table
 
 
 def direction_provenance(constrained, unconstrained):

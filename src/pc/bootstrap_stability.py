@@ -1,3 +1,8 @@
+﻿import sys
+from pathlib import Path as _Path
+_SRC_ROOT = str(_Path(__file__).resolve().parents[1])
+if _SRC_ROOT not in sys.path:
+    sys.path.insert(0, _SRC_ROOT)
 import argparse
 import json
 from pathlib import Path
@@ -5,9 +10,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from pc_bootstrap_stability_report import render_report
+from pc.bootstrap_stability_report import render_report
 from data_prep import DATASETS
-from pc_learning import (
+from pc.learning import (
     CONTINUOUS_PREDICTORS,
     CONTINUOUS_OUTCOMES,
     DISCRETIZED_PREDICTORS,
@@ -19,19 +24,19 @@ from pc_learning import (
     orientation_provenance,
 )
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 
 BOOT_ALPHA = 0.05
 
 
 def _report_out(version: str) -> Path:
     suffix = "" if version == "v4" else f"_{version}"
-    return ROOT / "reports" / f"bootstrap_stability{suffix}.md"
+    return ROOT / "reports" / "pc" / f"bootstrap_stability{suffix}.md"
 
 
 def _runs_out(version: str) -> Path:
     suffix = "" if version == "v4" else f"_{version}"
-    d = ROOT / "reports" / "pc_runs"
+    d = ROOT / "reports" / "pc" / "runs"
     d.mkdir(parents=True, exist_ok=True)
     return d / f"bootstrap_runs{suffix}.json"
 

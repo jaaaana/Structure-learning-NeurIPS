@@ -1,3 +1,8 @@
+﻿import sys
+from pathlib import Path as _Path
+_SRC_ROOT = str(_Path(__file__).resolve().parents[1])
+if _SRC_ROOT not in sys.path:
+    sys.path.insert(0, _SRC_ROOT)
 import argparse
 import json
 
@@ -5,8 +10,8 @@ import pandas as pd
 
 from constraints import TIER_0, TIER_1, TIER_1_LOG_VARIANT, _base_name
 from data_prep import DATASETS
-from golem_learning import edge_recurrence, panel_fingerprint, paths
-from pc_learning import load_continuous, load_discretized
+from golem.learning import edge_recurrence, panel_fingerprint, paths
+from pc.learning import load_continuous, load_discretized
 
 
 
@@ -125,9 +130,9 @@ def main():
     fingerprints = {name: panel_fingerprint(df) for name, df in panels.items()}
     if any(r.get("input_fingerprint") != fingerprints.get(r["representation"])
            for r in results):
-        parser.error("saved GOLEM fits use different inputs; rerun golem_learning.py")
+        parser.error("saved GOLEM fits use different inputs; rerun src/golem/learning.py")
     if not any(r["group"] == "sensitivity_relaxed_tiers" for r in results):
-        parser.error("saved GOLEM fits lack the relaxed-tier sensitivity; rerun golem_learning.py")
+        parser.error("saved GOLEM fits lack the relaxed-tier sensitivity; rerun src/golem/learning.py")
     report.write_text(render_report(args.version, results), encoding="utf-8")
     print(f"Wrote {report}")
 

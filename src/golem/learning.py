@@ -1,3 +1,8 @@
+﻿import sys
+from pathlib import Path as _Path
+_SRC_ROOT = str(_Path(__file__).resolve().parents[1])
+if _SRC_ROOT not in sys.path:
+    sys.path.insert(0, _SRC_ROOT)
 import argparse
 from dataclasses import asdict, replace
 import hashlib
@@ -8,14 +13,14 @@ import pandas as pd
 
 from constraints import EXOGENOUS, SENSITIVITY_OUTCOMES_ONLY, SIZE_VARS, _base_name
 from data_prep import DATASETS
-from golem_model import FitConfig, extract_graph, fit_many, vocabulary
-from pc_learning import (
+from golem.model import FitConfig, extract_graph, fit_many, vocabulary
+from pc.learning import (
     CONTINUOUS_PREDICTORS, CONTINUOUS_OUTCOMES, DISCRETIZED_PREDICTORS,
     DISCRETIZED_OUTCOMES, SIZE_CONTROL_PREDICTORS, load_continuous,
     load_discretized, count_temporal_violations,
 )
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 SPARSITIES = [0.01, 0.02, 0.05]
 THRESHOLDS = [0.05, 0.10, 0.20]
 
@@ -25,10 +30,12 @@ def suffix(version):
 
 
 def paths(version, bootstrap=False):
-    stem = "golem_bootstrap_stability" if bootstrap else "golem_settings_comparison"
-    raw = "bootstrap_runs" if bootstrap else "golem_runs"
-    return (ROOT / "reports" / f"{stem}{suffix(version)}.md",
-            ROOT / "reports" / "golem_runs" / f"{raw}{suffix(version)}.json")
+    stem = "bootstrap_stability" if bootstrap else "settings_comparison"
+    raw = "bootstrap_runs" if bootstrap else "runs"
+    report_dir = ROOT / "reports" / "golem"
+    runs_dir = report_dir / "runs"
+    return (report_dir / f"{stem}{suffix(version)}.md",
+            runs_dir / f"{raw}{suffix(version)}.json")
 
 
 def write_json(path, value):
@@ -117,8 +124,8 @@ def compare_graphs(golem, pc):
 
 
 def load_pc(version, bootstrap=False):
-    name = "bootstrap_runs" if bootstrap else "pc_runs"
-    path = ROOT / "reports" / "pc_runs" / f"{name}{suffix(version)}.json"
+    name = "bootstrap_runs" if bootstrap else "runs"
+    path = ROOT / "reports" / "pc" / "runs" / f"{name}{suffix(version)}.json"
     if not path.exists():
         return None, f"PC artifact unavailable: {path.relative_to(ROOT)}"
     try:
@@ -196,7 +203,7 @@ def config_from_args(args, lambda1=0.02):
 
 
 def main():
-    from golem_learning_report import render_report
+    from golem.learning_report import render_report
     parser = argparse.ArgumentParser(description=__doc__)
     add_optimizer_arguments(parser)
     parser.add_argument("--sparsities", nargs="+", type=float, default=SPARSITIES)

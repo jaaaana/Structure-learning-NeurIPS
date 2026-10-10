@@ -1,3 +1,8 @@
+﻿import sys
+from pathlib import Path as _Path
+_SRC_ROOT = str(_Path(__file__).resolve().parents[1])
+if _SRC_ROOT not in sys.path:
+    sys.path.insert(0, _SRC_ROOT)
 """Equal-variance GOLEM and a one-hot, group-lasso Gaussian surrogate.
 
 W[source, target]; X_hat = X @ W. The categorical extension penalizes DAGs

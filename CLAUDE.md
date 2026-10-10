@@ -27,7 +27,7 @@ output files:
 ```bash
 python src/data_prep.py --version v5       # Step 1: data quality report + continuous/discretized tables
 python src/constraints.py                  # Step 2: temporal edge constraints (not versioned, shared by v4/v5)
-python src/pc_learning.py --version v5     # Step 3: PC algorithm grid, imports constraints.py + data_prep.py
+python src/pc/learning.py --version v5     # Step 3: PC algorithm grid, imports constraints.py + data_prep.py
 ```
 
 Refreshing the raw citation panel (upstream of Step 1, only needed to
@@ -82,7 +82,7 @@ same pattern rather than branching internally on version-specific logic.
    main-vs-sensitivity variable split (`MAIN_PREDICTORS`/`MAIN_OUTCOMES` vs.
    `SENSITIVITY_PREDICTORS_ONLY`/`SENSITIVITY_OUTCOMES_ONLY`) that Step 3
    consumes. Writes `reports/edge_constraints.{md,json}`.
-4. `src/pc_learning.py` (Step 3) — runs `causallearn`'s PC algorithm across a
+4. `src/pc/learning.py` (Step 3) — runs `causallearn`'s PC algorithm across a
    grid: {continuous+Fisher-Z, discretized+chi-square, continuous+KCI} x
    {alpha in 0.01/0.05/0.10} x {constrained (Step 2 background knowledge) /
    unconstrained}, plus lighter sensitivity groups (alternate outcomes,
@@ -90,8 +90,8 @@ same pattern rather than branching internally on version-specific logic.
    rule after the fact (`count_temporal_violations`) rather than being
    constrained during search — that's the point of running them
    unconstrained. Writes the full settings comparison
-   (`reports/pc_settings_comparison[_v5].md`) plus raw results JSON
-   (`reports/pc_runs/pc_runs[_v5].json`).
+   (`reports/pc/settings_comparison[_v5].md`) plus raw results JSON
+   (`reports/pc/runs/runs[_v5].json`).
 
 **Main model** (current, per the 2026-08-19 correction — see
 below): predictors `topic_share_t1`, `cross_topic_rate_t1`, `connectivity_t1`
@@ -109,7 +109,7 @@ t outcomes — giving exactly "no t -> t-1" and "nothing -> year" with no extra
 forbidden-pattern rules. When adding a new variable, decide its tier by
 whether it's measured at t-1, at t, or is context/exogenous, then add it to
 the corresponding list in `constraints.py` — everything downstream
-(`data_prep.py`'s `PREDICTORS_T1`/`OUTCOMES`, `pc_learning.py`'s node-name
+(`data_prep.py`'s `PREDICTORS_T1`/`OUTCOMES`, `pc/learning.py`'s node-name
 lists) needs to agree on the same variable name.
 
 **Notebooks** (`nips_pipeline_v4_clean.ipynb`, `nips_analysis_v4_clean.ipynb`)

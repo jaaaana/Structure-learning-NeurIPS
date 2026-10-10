@@ -112,9 +112,9 @@ def render_report(data: dict, exogenous: list, tier_0: list, tier_1: list,
         "predictors so it can enter `modularity_t1`'s conditioning set "
         "(forbid_within_tier would otherwise block a same-tier variable from "
         "ever doing that, regardless of correlation -- see the SIZE_VARS "
-        "comment in this module). Used only by `pc_learning.py`'s "
+        "comment in this module). Used only by `src/pc/learning.py`'s "
         "`sensitivity_size_control` group, not the main model; see "
-        "`pc_settings_comparison.md` for results.\n"
+        "`reports/pc/settings_comparison.md` for results.\n"
     )
     lines.append(
         "- JSON export (`edge_constraints.json`) mirrors the schema already "

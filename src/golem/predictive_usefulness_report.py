@@ -1,3 +1,8 @@
+﻿import sys
+from pathlib import Path as _Path
+_SRC_ROOT = str(_Path(__file__).resolve().parents[1])
+if _SRC_ROOT not in sys.path:
+    sys.path.insert(0, _SRC_ROOT)
 """Markdown report rendering for GOLEM predictive-usefulness results."""
 
 import argparse
@@ -6,7 +11,7 @@ from pathlib import Path
 
 from data_prep import DATASETS
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def render_report(payload):
@@ -109,8 +114,8 @@ def main():
     parser.add_argument("--version", choices=list(DATASETS), default="v5")
     args = parser.parse_args()
     suffix = "" if args.version == "v4" else f"_{args.version}"
-    source = ROOT / "reports" / "golem_runs" / f"golem_predictive_nested_cv{suffix}.json"
-    target = ROOT / "reports" / f"golem_predictive_usefulness{suffix}.md"
+    source = ROOT / "reports" / "golem" / "runs" / f"predictive_nested_cv{suffix}.json"
+    target = ROOT / "reports" / "golem" / f"predictive_usefulness{suffix}.md"
     payload = json.loads(source.read_text(encoding="utf-8"))
     target.write_text(render_report(payload), encoding="utf-8")
     print(f"Wrote {target}")
